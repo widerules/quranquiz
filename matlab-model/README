@@ -1,0 +1,19 @@
+SA,
+
+- I downloaded the QuranArabicNoTashkil
+- Run ./rm_nums, it gets words.txt
+- Recoding and manual edits > simple-words-totashkil (77797 lines)
+- Matlab> Qreader, saves QWords.mat and dumps idx-data.csv
+- Matlab> QQ, begin the questionaire game!
+
+- Using sqliteman: create table q:
+            -- Describe Q
+            CREATE TABLE "q" (
+                "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                "txt" TEXT NOT NULL,
+                "sim1" INTEGER NOT NULL DEFAULT (1),
+                "sim2" INTEGER NOT NULL DEFAULT (0),
+                "sim3" INTEGER NOT NULL DEFAULT (0)
+            )
+  then import Table Data from: idx-data.csv
+
