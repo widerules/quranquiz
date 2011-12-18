@@ -19,11 +19,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
  
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
- 
     private static String DB_NAME = "qq.sqlite";
- 
+    private static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-v1.sqlite";
+    
     private SQLiteDatabase myDataBase; 
- 
     private final Context myContext;
  
     /**
@@ -106,7 +105,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     	//InputStream myInput = myContext.getAssets().open(DB_NAME);
  
     	//Open URL connection to download from
-        URLConnection ucon = new URL("http://some-url.com/db/" + "db_name.s3db").openConnection();
+        URLConnection ucon = new URL(DB_DOWNLOAD).openConnection();
         InputStream myInput = ucon.getInputStream();  
     	
     	// Path to the just created empty db

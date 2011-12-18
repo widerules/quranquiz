@@ -8,8 +8,6 @@ import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import com.google.code.quranquiz.R;
-import com.google.code.quranquiz.R.id;
-import com.google.code.quranquiz.R.layout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
