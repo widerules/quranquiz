@@ -16,35 +16,52 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 
 	private TextView tv;
 	private RadioGroup rgQQOptions;
+	private QQDataBaseHelper q;
 	private int i=0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		tv = (TextView) findViewById(R.id.textView1);
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(), "fonts/KacstQurn.ttf");
+		tv = (TextView) findViewById(R.id.textView1);
+		tv.setTypeface(othmanyFont);
+		tv = (TextView) findViewById(R.id.radioOp1);
+		tv.setTypeface(othmanyFont);
+		tv = (TextView) findViewById(R.id.radioOp2);
+		tv.setTypeface(othmanyFont);
+		tv = (TextView) findViewById(R.id.radioOp3);
+		tv.setTypeface(othmanyFont);
+		tv = (TextView) findViewById(R.id.radioOp4);
+		tv.setTypeface(othmanyFont);
+		tv = (TextView) findViewById(R.id.radioOp5);
 		tv.setTypeface(othmanyFont);
 		
 		rgQQOptions = (RadioGroup) findViewById(R.id.radioQQOptions);
 		rgQQOptions.setOnCheckedChangeListener(this);
 		
 		
-        QQDataBaseHelper myDbHelper = new QQDataBaseHelper(this);
+        q = new QQDataBaseHelper(this);
         try {
-        	myDbHelper.createDataBase();
+        	q.createDataBase();
  
         } catch(IOException ioe) {
         	throw new Error("Unable to create database");
         }
  
 	 	try {
-	 		myDbHelper.openDataBase();
+	 		q.openDataBase();
 	 	} catch(SQLException sqle) {
 	 		throw sqle;
 	 	}
 	}
 
+	@Override
+	protected void onDestroy() {
+		if(q != null)q.closeDatabase();
+		super.onDestroy();
+	}
+	
 	public void onCheckedChanged(RadioGroup rg, int CheckedID) {
 		int SelID=-2;
 
@@ -77,7 +94,7 @@ private void userAction(int selID) {
 	i = i+selID+1;
 	String strTemp = new String();
 	for(int j=0;j<5;j++){
-		strTemp = new Integer(i+j).toString();
+		strTemp = q.txt(i+j);
 		((RadioButton)rgQQOptions.getChildAt(j)).setText(strTemp);
 	}
 	

@@ -2,8 +2,8 @@ package com.google.code.quranquiz;
 
 import java.io.IOException;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -16,10 +16,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
     private static String DB_NAME = "qq.sqlite";
     private static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-v1.sqlite";
-    
+	
     private SQLiteDatabase myDataBase; 
     private final Context myContext;
  
+    public static int fileLength = 0;
+	
     /**
      * Constructor
      * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
@@ -78,11 +80,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
      * */
     private void downloadDataBase(Context myContext) {
     	
-    	ProgressDialog mProgressDialog = new ProgressDialog(myContext);
-    	mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
-    	mProgressDialog.setIndeterminate(false);
-    	mProgressDialog.setMax(100);
-    	mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     	QQDownloader downloadFile = new QQDownloader();
     	//mProgressDialog.show();
     	downloadFile.execute(DB_DOWNLOAD);
@@ -95,9 +92,23 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
         String myPath = DB_PATH + DB_NAME;
     	myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
     	
-    	// Do bla ..
+    }
+    
+    /* QQ Adaptors set */
+    public String txt(int idx){
+    	String s = new String("");
     	
-    	myDataBase.close();
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select txt from q where _id="+idx, null);
+    		if (cur.moveToFirst()) {
+    			s = cur.getString(0);
+    			cur.close();
+    		}
+    	}
+    	
+		return s;
+
+    	
     }
  
     @Override
@@ -119,9 +130,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
  
 	}
- 
-        // Add your public helper methods to access and get content from the database.
-       // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-       // to you to create adapters for your views.
+
+	public void closeDatabase() {
+    	myDataBase.close();
+		
+	}
  
 }
