@@ -7,8 +7,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
-
 
 public class QQDownloader extends AsyncTask<String, Integer, String>{
     
@@ -17,6 +18,15 @@ public class QQDownloader extends AsyncTask<String, Integer, String>{
     private static String DB_NAME = "qq.sqlite";
 	String outFileName = DB_PATH + DB_NAME;
 	private static int fileLength = 0;
+	private ProgressDialog mProgressDialog;
+
+	protected void onPreExecute(Context... contexts)
+    {
+    	mProgressDialog = new ProgressDialog(contexts[0]);
+    	mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
+    	mProgressDialog.setIndeterminate(false);
+    	mProgressDialog.setMax(100);
+    	mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);    }
 	
 	@Override
     protected String doInBackground(String... url) {
@@ -51,4 +61,11 @@ public class QQDownloader extends AsyncTask<String, Integer, String>{
         } catch (Exception e) { }
         return null;
     }
+
+    public void onProgressUpdate(String... args){
+        // here you will have to update the progressbar
+        // with something like
+        mProgressDialog.setProgress(Integer.parseInt(args[0]));
+    }
+
 }
