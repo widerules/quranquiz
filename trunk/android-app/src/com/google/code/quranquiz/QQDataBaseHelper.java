@@ -19,7 +19,15 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     private static String DB_NAME = "qq.sqlite";
     private static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-v1.sqlite";
 	
+    /**
+	 * @uml.property  name="myDataBase"
+	 * @uml.associationEnd  
+	 */
     private SQLiteDatabase myDataBase; 
+    /**
+	 * @uml.property  name="myContext"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
     private final Context myContext;
  
     public static int fileLength = 0;
@@ -116,10 +124,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     	if(myDataBase != null){
     		Cursor cur=myDataBase.rawQuery("select txt from q where _id>"+(idx-1)+" and _id<"+(idx+len), null);
     		if (cur.moveToFirst()) {
-    			for (; !cur.isAfterLast(); cur.moveToNext()) {
-    				s.concat(cur.getString(0));
-    				s.concat(" ");
-                }
+    			do {
+    				s = s + " " + cur.getString(0);
+                } while(cur.moveToNext());
     			cur.close();
     		}
     	}  	
@@ -154,9 +161,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     
     public List<Integer> sim1idx(int idx){
 
-    	List<Integer> ids = new ArrayList<Integer>();
-		ids.clear();
-    	
+    	List<Integer> ids = new ArrayList<Integer>();    	
     	if(myDataBase != null){
     		Cursor cur=myDataBase.rawQuery("select _id from q where txt=(select txt from q where _id="+idx+") and _id !="+idx, null);
     		if (cur.moveToFirst()) {

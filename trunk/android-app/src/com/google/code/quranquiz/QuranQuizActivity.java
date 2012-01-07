@@ -15,10 +15,29 @@ import android.widget.Toast;
 
 public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
 
+	/**
+	 * @uml.property  name="tv"
+	 * @uml.associationEnd  
+	 */
 	private TextView tv;
+	/**
+	 * @uml.property  name="rgQQOptions"
+	 * @uml.associationEnd  
+	 */
 	private RadioGroup rgQQOptions;
+	/**
+	 * @uml.property  name="q"
+	 * @uml.associationEnd  
+	 */
 	private QQDataBaseHelper q;
+	/**
+	 * @uml.property  name="quest"
+	 * @uml.associationEnd  
+	 */
 	private QQQuestion Quest;
+	/**
+	 * @uml.property  name="qOptIdx"
+	 */
 	private int QOptIdx=-1;
 	
 	@Override
@@ -107,7 +126,7 @@ private void userAction(int selID) {
 		Quest = new QQQuestion(lastSeed,level,q); 
 		
 		// Show the Question!
-		tv.setText(tv.getText().toString().concat(q.txt(Quest.startIdx,Quest.qLen)));
+		tv.setText(q.txt(Quest.startIdx,Quest.qLen));
 		QOptIdx = 0;
 	}
 	
@@ -118,12 +137,12 @@ private void userAction(int selID) {
     //Scramble options
     int[] scrambled = new int[5];
     scrambled  = QQUtils.randperm(5);
-    int correct_choice = QQUtils.findIdx(scrambled,1); //idx=1
+    int correct_choice = QQUtils.findIdx(scrambled,0); //idx=1
     
     //Display Options:
 	String strTemp = new String();
 	for(int j=0;j<5;j++){
-		strTemp = q.txt(Quest.op[QOptIdx][j]) ;
+		strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]]) ;
 		((RadioButton)rgQQOptions.getChildAt(j)).setText(strTemp);
 	}
 	
@@ -136,7 +155,7 @@ private void userAction(int selID) {
     
 
         // Check if wrong choice
-        if(correct_choice != selID){
+        if(QOptIdx > 0 && correct_choice != selID){
             //Display Correct answer
     		Toast.makeText(this, q.txt(Quest.startIdx,10), Toast.LENGTH_LONG).show();
             QOptIdx = -1;
