@@ -16,8 +16,15 @@ public class QQDownloader extends AsyncTask<String, Integer, String>{
 	//The Android's default system path of QQ database.
     private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
     private static String DB_NAME = "qq.sqlite";
+	/**
+	 * @uml.property  name="outFileName"
+	 */
 	String outFileName = DB_PATH + DB_NAME;
 	private static int fileLength = 0;
+	/**
+	 * @uml.property  name="mProgressDialog"
+	 * @uml.associationEnd  
+	 */
 	private ProgressDialog mProgressDialog;
 
 	protected void onPreExecute(Context... contexts)
