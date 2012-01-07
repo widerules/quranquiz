@@ -1,6 +1,8 @@
 package com.google.code.quranquiz;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -104,23 +106,116 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     			s = cur.getString(0);
     			cur.close();
     		}
-    	}
-    	
+    	}  	
 		return s;
-
-    	
     }
  
-    @Override
-	public synchronized void close() {
- 
-    	    if(myDataBase != null)
-    		    myDataBase.close();
- 
-    	    super.close();
- 
+    public String txt(int idx, int len){
+    	String s = new String("");
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select txt from q where _id>"+(idx-1)+" and _id<"+(idx+len), null);
+    		if (cur.moveToFirst()) {
+    			for (; !cur.isAfterLast(); cur.moveToNext()) {
+    				s.concat(cur.getString(0));
+    				s.concat(" ");
+                }
+    			cur.close();
+    		}
+    	}  	
+		return s;
+    }
+    
+    public int sim2cnt(int idx){
+    	int s=0 ;
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select sim2 from q where _id="+idx, null);
+    		if (cur.moveToFirst()) {
+    			s = cur.getInt(0);
+    			cur.close();
+    		}
+    	}  	
+		return s;
+    }
+    
+    public int sim3cnt(int idx){
+    	int s=0 ;
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select sim3 from q where _id="+idx, null);
+    		if (cur.moveToFirst()) {
+    			s = cur.getInt(0);
+    			cur.close();
+    		}
+    	}  	
+		return s;
+    }
+    
+    public List<Integer> sim1idx(int idx){
+
+    	List<Integer> ids = new ArrayList<Integer>();
+		ids.clear();
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select _id from q where txt=(select txt from q where _id="+idx+") and _id !="+idx, null);
+    		if (cur.moveToFirst()) {
+    			do{
+    				ids.add( cur.getInt(0));
+    			 } while (cur.moveToNext());
+    			cur.close();
+    		}
+    	}  	
+		return ids;
+    }
+
+    public List<Integer> sim2idx(int idx){
+
+    	List<Integer> ids = new ArrayList<Integer>();
+		ids.clear();
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select q1._id from q q1 join q q2 where q1._id+1=q2._id " +
+    						"and q1._id in (select _id from q where txt=(select txt from q where _id="+idx+") and _id !="+idx+") " +
+    						"and q2._id in (select _id from q where txt=(select txt from q where _id="+(idx+1)+") and _id !="+(idx+1)+")", null);
+    		if (cur.moveToFirst()) {
+    			do{
+    				ids.add( cur.getInt(0) );
+    			 } while (cur.moveToNext());
+    			cur.close();
+    		}
+    	}  	
+		return ids;
+    }
+    
+    public List<Integer> sim3idx(int idx){
+
+    	List<Integer> ids = new ArrayList<Integer>();
+		ids.clear();
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select q1._id from q q1 join q q2 join q q3 where q1._id+1=q2._id and q1._id+2=q3._id"+
+							"and q1._id in (select _id from q where txt=(select txt from q where _id="+(idx  )+") and _id !="+(idx)+")" +
+							"and q2._id in (select _id from q where txt=(select txt from q where _id="+(idx+1)+") and _id !="+(idx+1)+")" +
+							"and q3._id in (select _id from q where txt=(select txt from q where _id="+(idx+2)+") and _id !="+(idx+2)+")", null);
+    		if (cur.moveToFirst()) {
+    			do{
+    				ids.add( cur.getInt(0) );
+    			 } while (cur.moveToNext());
+    			cur.close();
+    		}
+    	}  	
+		return ids;
+    }
+    
+	public List<Integer> uniqueWordsList(List<Integer> diffList) {
+		List<Integer> uniq = new ArrayList<Integer>();
+		// TODO: Implement the required queries
+		uniq = diffList;
+		return uniq;
 	}
- 
+	
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
  
@@ -135,5 +230,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     	myDataBase.close();
 		
 	}
+
  
 }
