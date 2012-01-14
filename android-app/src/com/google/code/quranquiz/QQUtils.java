@@ -38,4 +38,17 @@ public class QQUtils {
 				return j;
 		return -1;
 	}
+	
+	public static String getSuraName(int wordIdx){
+		final int[] sura_idx = {20,23434,232,23,23,23,77799};
+		final String[] sura_name = {"الفاتحة","البقرة","ال عمران","النساء","","","","الناس"};
+		
+		// TODO: Make a binary search, faster!
+		for(int i=0;i<114;i++)
+			if ( wordIdx < sura_idx[i] ){
+				return sura_name[0];
+			}
+		return new String("");
+		
+	}
 }

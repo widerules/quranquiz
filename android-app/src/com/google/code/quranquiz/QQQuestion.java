@@ -184,4 +184,8 @@ public class QQQuestion {
 	    }		
 	}
 
+	public int getSeed() {
+		return lastSeed;
+	}
+
 }

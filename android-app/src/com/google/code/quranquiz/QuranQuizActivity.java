@@ -39,6 +39,10 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 	 * @uml.property  name="qOptIdx"
 	 */
 	private int QOptIdx=-1;
+	//TODO: Grab the last seed from the loaded profile! (replace -1, level 1)
+	private int level = 1;
+	private int lastSeed = -1;
+	private int correct_choice=0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,6 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(), "fonts/KacstQurn.ttf");
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
-		tv.setText(q.txt(5, 3));
 		tv = (TextView) findViewById(R.id.radioOp1);
 		tv.setTypeface(othmanyFont);
 		tv = (TextView) findViewById(R.id.radioOp2);
@@ -75,11 +78,13 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 		tv.setTypeface(othmanyFont);
 		
 		tv = (TextView) findViewById(R.id.textView1);
-
+		
 		rgQQOptions = (RadioGroup) findViewById(R.id.radioQQOptions);
+		
+		// Make the first Question
+		userAction(-1);
+		// Set action Listener
 		rgQQOptions.setOnCheckedChangeListener(this);
-		
-		
 
 	}
 
@@ -118,12 +123,20 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 	}
 
 private void userAction(int selID) {
-	//TODO: Grab the last seed from the loaded profile! (replace -1, level 1)
-	int level = 1;
-	int lastSeed = -1;
+	
+    // Check if wrong choice
+    if(QOptIdx > 0 && correct_choice != selID){
+        //Display Correct answer
+		Toast.makeText(this, "["+QQUtils.getSuraName(Quest.startIdx)+"] "+q.txt(Quest.startIdx,10), Toast.LENGTH_LONG).show();
+        QOptIdx = -1;
+    }
+    else{
+    	QOptIdx = (QOptIdx==-1)?-1:QOptIdx +1;
+    }
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
 		Quest = new QQQuestion(lastSeed,level,q); 
+		lastSeed = Quest.getSeed();
 		
 		// Show the Question!
 		tv.setText(q.txt(Quest.startIdx,Quest.qLen));
@@ -132,12 +145,12 @@ private void userAction(int selID) {
 	
 	// Concat correct options to the Question!
 	if(QOptIdx>0)
-		tv.setText(tv.getText().toString().concat(q.txt(Quest.startIdx+Quest.qLen+QOptIdx-1)+ ' '));
+		tv.setText(tv.getText().toString().concat(' ' +q.txt(Quest.startIdx+Quest.qLen+QOptIdx-1)+' '));
 	
     //Scramble options
     int[] scrambled = new int[5];
     scrambled  = QQUtils.randperm(5);
-    int correct_choice = QQUtils.findIdx(scrambled,0); //idx=1
+    correct_choice = QQUtils.findIdx(scrambled,0); //idx=1
     
     //Display Options:
 	String strTemp = new String();
@@ -152,16 +165,6 @@ private void userAction(int selID) {
     else if(level==3 && QOptIdx==1){
         //display('  [-] No more valid Motashabehat!');
     }
-    
 
-        // Check if wrong choice
-        if(QOptIdx > 0 && correct_choice != selID){
-            //Display Correct answer
-    		Toast.makeText(this, q.txt(Quest.startIdx,10), Toast.LENGTH_LONG).show();
-            QOptIdx = -1;
-        }
-
-
-	QOptIdx = QOptIdx +1;
 }
 }

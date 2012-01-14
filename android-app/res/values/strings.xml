@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">اختبار القران</string>
-    <string name="radio_male">ذكر</string>
-    <string name="radio_female">انثى</string>
     <string name="txt_start">بسم الله الرحمن الرحيم</string>
     <string name="txt_end">اختر الاجابة الصحيحة</string>
+  
 </resources>
