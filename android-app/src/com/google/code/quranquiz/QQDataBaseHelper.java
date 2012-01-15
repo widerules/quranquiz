@@ -56,16 +56,19 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     	}else{
  
     		//By calling this method an empty database will be created into the default system path
-               //of your application so we are gonna be able to overwrite that database with our database.
-        	this.getReadableDatabase();
- 
-        	downloadDataBase(myContext);
-			Toast.makeText(this.myContext, "Database Copied!", Toast.LENGTH_LONG).show();
+            //of the application so we are gonna be able to overwrite that database with our database.
+        	try{
+            	this.getReadableDatabase();
+        		downloadDataBase(myContext);
+        	}catch(Error e){
+    			Toast.makeText(this.myContext, "Failed to create/download database. Please check your internet connection and try again!", Toast.LENGTH_LONG).show();
+        	}
+			Toast.makeText(this.myContext, "Database Downloaded!", Toast.LENGTH_LONG).show();
     	}
  
     }
- 
-    /**
+
+	/**
      * Check if the database already exist to avoid re-downloading the file each time you open the application.
      * @return true if it exists, false if it doesn't
      */
@@ -93,7 +96,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     	QQDownloader downloadFile = new QQDownloader();
     	//mProgressDialog.show();
     	downloadFile.execute(DB_DOWNLOAD);
-		
     }
  
     public void openDataBase() throws SQLException{
