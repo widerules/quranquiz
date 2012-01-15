@@ -3,6 +3,7 @@ package com.google.code.quranquiz;
 import java.util.List;
 import java.util.Random;
 
+
 public class QQQuestion {
 	/**
 	 * @uml.property  name="op" multiplicity="(0 -1)" dimension="2"
@@ -40,7 +41,9 @@ public class QQQuestion {
 	private Random rand;				// Random Generator for the next Question
 	
 	public QQQuestion(int previousSeed, int userlevel, QQDataBaseHelper qdb){
-		
+	// start tracing to "/sdcard/calc.trace"
+	//Debug.startMethodTracing("QQ.trace");
+
 		// If no seed, -ve, in case of a newly created profile
 		// Then generate a new random starting point
 		if(previousSeed < 0)
@@ -52,7 +55,8 @@ public class QQQuestion {
 		level = userlevel;
 		q = qdb;
 		createQ();
-
+	// stop tracing
+	//Debug.stopMethodTracing();
 	}
 	
 	private void createQ() {
@@ -155,8 +159,8 @@ public class QQQuestion {
 	        diffList.removeAll(q.sim2idx(last_correct));
 	        
 	        // '+1' means the next word
-	        diffList = q.uniqueWordsList(diffList);
 	        diffList = QQUtils.ListPlus(diffList,1);
+	        diffList = q.uniqueWordsList(diffList);
 	        uniq_cnt= diffList.size();
 	        
 	        int[] rnd_idx = new int[uniq_cnt];
