@@ -215,11 +215,25 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
 		return ids;
     }
     
-	public List<Integer> uniqueWordsList(List<Integer> diffList) {
-		List<Integer> uniq = new ArrayList<Integer>();
-		// TODO: Implement the required queries
-		uniq = diffList;
-		return uniq;
+	public List<Integer> uniqueSim1Not2Plus1(int idx) {
+    	List<Integer> ids = new ArrayList<Integer>();
+		ids.clear();
+    	
+    	if(myDataBase != null){
+    		Cursor cur=myDataBase.rawQuery("select min(_id) from q where _id in (select _id+1 from q where " +
+    			    "_id in (select _id from q where txt=(select txt from q where _id="+idx+") and _id !="+idx+")" + 
+    			    "and _id not in (select q1._id from q q1 join q q2 where q1._id+1=q2._id " +
+    			    					"and q1._id in (select _id from q where txt=(select txt from q where _id="+idx+") and _id !="+idx+") " +
+    			    					"and q2._id in (select _id from q where txt=(select txt from q where _id="+(idx+1)+") and _id !="+(idx+1)+")) "+
+    			") group by txt", null);
+    		if (cur.moveToFirst()) {
+    			do{
+    				ids.add( cur.getInt(0) );
+    			 } while (cur.moveToNext());
+    			cur.close();
+    		}
+    	}  	
+		return ids;
 	}
 	
 	

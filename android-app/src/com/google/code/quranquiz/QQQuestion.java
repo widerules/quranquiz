@@ -155,12 +155,9 @@ public class QQQuestion {
 	        
 	        // We want to remove redundant correct choices from the given
 	        // options, this is made by removing subset sim2 from sim1
-	        diffList =q.sim1idx(last_correct);
-	        diffList.removeAll(q.sim2idx(last_correct));
-	        
-	        // '+1' means the next word
-	        diffList = QQUtils.ListPlus(diffList,1);
-	        diffList = q.uniqueWordsList(diffList);
+	        // then finding the next unique set of words
+	        diffList =q.uniqueSim1Not2Plus1(last_correct);
+
 	        uniq_cnt= diffList.size();
 	        
 	        int[] rnd_idx = new int[uniq_cnt];
