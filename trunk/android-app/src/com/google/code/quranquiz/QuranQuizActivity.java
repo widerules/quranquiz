@@ -126,8 +126,11 @@ private void userAction(int selID) {
 	
     // Check if wrong choice
     if(QOptIdx > 0 && correct_choice != selID){
+    	String tmp = new String("");
         //Display Correct answer
-		Toast.makeText(this, "["+QQUtils.getSuraName(Quest.startIdx)+"] "+q.txt(Quest.startIdx,10), Toast.LENGTH_LONG).show();
+    	tmp = "["+QQUtils.getSuraName(Quest.startIdx)+"] "+q.txt(Quest.startIdx,10+Quest.qLen);
+		for(int i=0;i<2;i++) //TODO: Load from profile?
+			Toast.makeText(this, tmp, Toast.LENGTH_LONG).show();
         QOptIdx = -1;
     }
     else{
