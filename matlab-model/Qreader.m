@@ -1,7 +1,7 @@
 % Parses the Quran Words ..
 
 words_cnt = 77797;
-fid=fopen('simple-words-NoTashkil.txt');
+fid=fopen('quran-uthmani-words.txt');
 
 
 display('Loading Quran txt ..');
