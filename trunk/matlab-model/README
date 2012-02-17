@@ -1,8 +1,10 @@
 SA,
 
-- I downloaded the QuranArabicNoTashkil
-- Run ./rm_nums, it gets words.txt
-- Recoding and manual edits > simple-words-totashkil (77797 lines)
+- Download Uthmani minimal without any extra symbols from http://tanzil.net/wiki/Download_Quran_Text
+- Run the script: clearQSymbols.sh
+-- Copy Quran only, without footer: head -6236 quran-uthmani-min.txt
+-- Removes all harakat an unneeded symbols (check unicode list http://jrgraphix.net/r/Unicode/0600-06FF)
+-- Put each word on a line (totalling to 77878)
 - Matlab> Qreader, saves QWords.mat and dumps idx-data.csv
 - Matlab> QQ, begin the questionaire game!
 
@@ -17,3 +19,4 @@ SA,
             )
   then import Table Data from: idx-data.csv
 
+grep -n "بسم الله الرحمٰن الرحيم" quran-uthmani-min.nosym.txt | awk -F: '{print $1}'
