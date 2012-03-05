@@ -127,7 +127,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     		Cursor cur=myDataBase.rawQuery("select txt from q where _id>"+(idx-1)+" and _id<"+(idx+len), null);
     		if (cur.moveToFirst()) {
     			do {
-    				s = s + " " + cur.getString(0);
+    				s = s + "   " + cur.getString(0);
                 } while(cur.moveToNext());
     			cur.close();
     		}
