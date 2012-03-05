@@ -5,54 +5,28 @@ import java.util.Random;
 
 
 public class QQQuestion {
-	/**
-	 * @uml.property  name="op" multiplicity="(0 -1)" dimension="2"
-	 */
+
 	public int[][] op = new int[10][5];	// Holds all options for the current Question
-	/**
-	 * @uml.property  name="startIdx"
-	 */
 	public int startIdx;		// Precise Position near seed, valid options
-	/**
-	 * @uml.property  name="validCount"
-	 */
 	public int validCount;
-	/**
-	 * @uml.property  name="qLen"
-	 */
 	public int qLen;					// Length of the Question
+	public int oLen;					// Length of each option
 	
-	/**
-	 * @uml.property  name="lastSeed"
-	 */
 	private int lastSeed;				// Seed for the Question
-	/**
-	 * @uml.property  name="level"
-	 */
 	private int level;					// User Level, currently
-	/**
-	 * @uml.property  name="q"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	private QQDataBaseHelper q;			// Reference to the DB
-	/**
-	 * @uml.property  name="rand"
-	 */
-	private Random rand;				// Random Generator for the next Question
+	private Random rand;
 	
-	public QQQuestion(int previousSeed, int userlevel, QQDataBaseHelper qdb){
+	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb){
 	// start tracing to "/sdcard/calc.trace"
 	//Debug.startMethodTracing("QQ.trace");
 
-		// If no seed, -ve, in case of a newly created profile
-		// Then generate a new random starting point
-		if(previousSeed < 0)
-			rand = new Random();
-		else // resume from the last seed
-			rand = new Random(previousSeed);
+		// resume from the last seed
+		int previousSeed = prof.getLastSeed();
+		rand = new Random(previousSeed);
 		
 		// Keep Reference of Level, Q
-		level = userlevel;
+		level = prof.getLevel();
 		q = qdb;
 		createQ();
 	// stop tracing
@@ -60,7 +34,7 @@ public class QQQuestion {
 	}
 	
 	private void createQ() {
-		lastSeed = rand.nextInt(77797);
+		lastSeed = rand.nextInt(QQUtils.QuranWords);
 		
 		// +1 to compensate the rand-gen integer [0-77796]
 		startIdx = getValidStartNear(lastSeed+1); 
@@ -83,7 +57,7 @@ public class QQQuestion {
 	        srch_cond = true;
 	        while (srch_cond){
 	            start_shadow = start_shadow+dir;
-	            if (start_shadow == 0 || start_shadow == 77798){
+	            if (start_shadow == 0 || start_shadow == QQUtils.QuranWords-1){
 	                limitHit=1;
 	                dir = -dir;
 	                break;
@@ -93,6 +67,7 @@ public class QQQuestion {
 	                srch_cond=q.sim2cnt(start_shadow) >1; //TODO: check: Is 0 better? 
 	                validCount = 1;	// \
 	                qLen   = 3;		// -|-> Default Constants for level-1
+	                oLen	= 2;
 	            } else {
 	                // Search for a motashabehat near selected index
 	                // Specify # Words to display
@@ -111,6 +86,7 @@ public class QQQuestion {
 	                	validCount 	= (disp2>disp3)? disp2+1: disp3+1;// Count start-position as well
 	                	qLen		= (disp2>disp3)? 1:2;
 	                }
+	                oLen = 1;
 	            } 
 	    	}
 
@@ -124,7 +100,7 @@ public class QQQuestion {
 		List<Integer> tmp;
 	    op[0][0]=startIdx+qLen;
 	    for(int k=1;k<10;k++){
-	    	op[k][0] = op[k-1][0]+1;
+	    	op[k][0] = op[k-1][0]+oLen; // The next word, or offset=2 for level-1
 	    }
 	    if (level>1){
 	        if (qLen==1){ // A 2-word Question
@@ -175,12 +151,12 @@ public class QQQuestion {
 	            	op[i][j] = diffList.get(rnd_idx[j-1]);
 	            }
 	            for(int j=uniq_cnt+1;j<5;j++){
-	            	op[i][j] = randg.nextInt(77799);
+	            	op[i][j] = randg.nextInt(QQUtils.QuranWords);
 	            }
 	        }
 	        else{ // uniq_cnt=0, all random options!
 	        	for(int j=1;j<5;j++)
-	            	op[i][j] = randg.nextInt(77799);
+	            	op[i][j] = randg.nextInt(QQUtils.QuranWords);
 	        }
 	    }		
 	}

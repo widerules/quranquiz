@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class QQUtils {
 
+	public static int QuranWords = 77878;
+	
 	public static List<Integer> ListPlus(List<Integer> diffList, int i) {
 		List<Integer> plus = new ArrayList<Integer>();
 		plus = diffList;
@@ -76,4 +78,5 @@ public class QQUtils {
 			}
 		return sura_name[113];
 	}
+	
 }
