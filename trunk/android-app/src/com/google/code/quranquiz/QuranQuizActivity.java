@@ -8,6 +8,10 @@ import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import com.google.code.quranquiz.R;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -26,13 +30,37 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 	private int correct_choice=0;
 	
 	private Toast correctAnswerToast;
-
+	private QQProfileHandler profileHandler;
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	
+	@Override
+    protected void onStop(){
+       super.onStop();
+       //profileHandler.saveProfile(prof); // TODO:
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.Profile:     Toast.makeText(this, "Going to Profile!", Toast.LENGTH_LONG).show();
+	                            break;
+	        case R.id.Settings:     Toast.makeText(this, "Edit Settings!", Toast.LENGTH_LONG).show();
+	                            break;
+	    }
+	    return true;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-        q = new QQDataBaseHelper(this);
+
+		profileHandler = new QQProfileHandler(this);
+        
+		q = new QQDataBaseHelper(this);
         try {
         	q.createDataBase();
  
@@ -129,7 +157,7 @@ private void userAction(int selID) {
     }
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
-		Quest = new QQQuestion(QQProfileHandler.getProfile(),q); 
+		Quest = new QQQuestion(profileHandler.getProfile(),q); 
 		lastSeed = Quest.getSeed();
 		
 		// Show the Question!
