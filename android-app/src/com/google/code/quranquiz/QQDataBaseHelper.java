@@ -19,24 +19,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
     private static String DB_NAME = "qq.sqlite";
     private static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-v1.sqlite";
 	
-    /**
-	 * @uml.property  name="myDataBase"
-	 * @uml.associationEnd  
-	 */
     private SQLiteDatabase myDataBase; 
-    /**
-	 * @uml.property  name="myContext"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
+
     private final Context myContext;
  
     public static int fileLength = 0;
-	
-    /**
-     * Constructor
-     * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
-     * @param context
-     */
+
     public QQDataBaseHelper(Context context) {
  
     	super(context, DB_NAME, null, 1);
