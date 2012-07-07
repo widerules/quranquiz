@@ -31,6 +31,7 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 	
 	private Toast correctAnswerToast;
 	private QQProfileHandler profileHandler;
+	private QQProfile myQQProfile;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -141,8 +142,7 @@ private void userAction(int selID) {
 	// Cancel any previously showing toasts
 	correctAnswerToast.cancel();
 	
-    // Check if wrong choice
-    if(QOptIdx >= 0 && correct_choice != selID){
+    if(QOptIdx >= 0 && correct_choice != selID){// Check if wrong choice
     	String tmp = new String("");
         //Display Correct answer
     	tmp = "["+QQUtils.getSuraName(Quest.startIdx)+"] "+q.txt(Quest.startIdx,10+Quest.qLen);
@@ -150,15 +150,24 @@ private void userAction(int selID) {
     	for(int i=0;i<2;i++){ //TODO: Fix duration!
     		correctAnswerToast.show();
 		}
-        QOptIdx = -1;
+        QOptIdx = -1; // trigger a new question
     }
     else{
-    	QOptIdx = (QOptIdx==-1)?-1:QOptIdx +1;
+    	QOptIdx = (QOptIdx==-1)?-1:QOptIdx +1; //Proceed with options ..
     }
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
-		Quest = new QQQuestion(profileHandler.getProfile(),q); 
+		myQQProfile = profileHandler.getProfile();
+		Quest = new QQQuestion(myQQProfile,q);
+		
+		//Update profile after a new Question!
 		lastSeed = Quest.getSeed();
+		
+		myQQProfile.setLastSeed(lastSeed);
+		myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
+		//TODO: Update the score !!
+		
+		profileHandler.saveProfile(myQQProfile); //TODO: Do I need to save after each question? On exit only?
 		
 		// Show the Question!
 		tv.setText(q.txt(Quest.startIdx,Quest.qLen));
