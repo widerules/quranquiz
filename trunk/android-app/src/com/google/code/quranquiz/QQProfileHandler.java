@@ -28,12 +28,16 @@ public class QQProfileHandler {
     }
     
 	public QQProfile getProfile(){
-		if (checkLastProfile()){
-			Toast.makeText(myContext, "Loaded Your profile!", Toast.LENGTH_LONG).show();
+		QQProfile myQQProfile;
+		
+		if (checkLastProfile()){ // Found a previously saved profile
+			//Toast.makeText(myContext, "Loaded Your profile!", Toast.LENGTH_LONG).show();
 			return getLastProfile();
-		}else{
-			Toast.makeText(myContext, "Created a new profile!", Toast.LENGTH_LONG).show();
-			return new QQProfile(new Random().nextInt(QQUtils.QuranWords), 1, 0, 0 );
+		}else{ // Create a new profile with a random start
+			//Toast.makeText(myContext, "Created a new profile!", Toast.LENGTH_LONG).show();
+			myQQProfile = new QQProfile(new Random().nextInt(QQUtils.QuranWords), 1, 0, 0 );
+			saveProfile(myQQProfile);
+			return myQQProfile;
 		}
 	}
 	
