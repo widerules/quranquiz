@@ -3,5 +3,6 @@
     <string name="app_name">اختبار القران</string>
     <string name="txt_start">بسم الله الرحمن الرحيم</string>
     <string name="txt_end">اختر الاجابة الصحيحة</string>
+    <string name="txt_score">نقاط</string>
   
 </resources>
