@@ -7,20 +7,28 @@ import android.app.Activity;
 import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+
 import com.google.code.quranquiz.R;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
+public class QuranQuizActivity extends Activity implements android.view.View.OnClickListener {
 
 	private TextView tv;
-	private RadioGroup rgQQOptions;
+	private TextView tvScore;
+	private ProgressBar bar;
+	private CountDownTimer cdt;
+    private Button[] btnArray;
 	private QQDataBaseHelper q;
 	private QQQuestion Quest;
 	private int QOptIdx=-1;
@@ -58,7 +66,16 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
+		btnArray = new Button[5];
+		btnArray[0] = (Button)findViewById(R.id.bOp1); 
+		btnArray[1] = (Button)findViewById(R.id.bOp2); 
+		btnArray[2] = (Button)findViewById(R.id.bOp3); 
+		btnArray[3] = (Button)findViewById(R.id.bOp4); 
+		btnArray[4] = (Button)findViewById(R.id.bOp5); 
+		
+		tvScore = (TextView) findViewById(R.id.Score);
+				
 		profileHandler = new QQProfileHandler(this);
         
 		q = new QQDataBaseHelper(this);
@@ -78,29 +95,32 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(), "fonts/me_quran.ttf");
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
-		tv = (TextView) findViewById(R.id.radioOp1);
+		tv = (TextView) findViewById(R.id.bOp1);
 		tv.setTypeface(othmanyFont);
-		tv = (TextView) findViewById(R.id.radioOp2);
+		tv = (TextView) findViewById(R.id.bOp2);
 		tv.setTypeface(othmanyFont);
-		tv = (TextView) findViewById(R.id.radioOp3);
+		tv = (TextView) findViewById(R.id.bOp3);
 		tv.setTypeface(othmanyFont);
-		tv = (TextView) findViewById(R.id.radioOp4);
+		tv = (TextView) findViewById(R.id.bOp4);
 		tv.setTypeface(othmanyFont);
-		tv = (TextView) findViewById(R.id.radioOp5);
+		tv = (TextView) findViewById(R.id.bOp5);
 		tv.setTypeface(othmanyFont);
 		
 		tv = (TextView) findViewById(R.id.textView1);
-		
-		rgQQOptions = (RadioGroup) findViewById(R.id.radioQQOptions);
-		
+			
 		//Prepare the Toast for displaying correct answers
 		correctAnswerToast = Toast.makeText(this,"", Toast.LENGTH_LONG);
 		
 		// Make the first Question
 		userAction(-1);
+		
 		// Set action Listener
-		rgQQOptions.setOnCheckedChangeListener(this);
-
+		( (Button)findViewById(R.id.bOp1)).setOnClickListener(this);
+		( (Button)findViewById(R.id.bOp2)).setOnClickListener(this);
+		( (Button)findViewById(R.id.bOp3)).setOnClickListener(this);
+		( (Button)findViewById(R.id.bOp4)).setOnClickListener(this);
+		( (Button)findViewById(R.id.bOp5)).setOnClickListener(this);
+		
 	}
 
 	@Override
@@ -109,34 +129,6 @@ public class QuranQuizActivity extends Activity implements RadioGroup.OnCheckedC
 		super.onDestroy();
 	}
 	
-	public void onCheckedChanged(RadioGroup rg, int CheckedID) {
-		int SelID=-2;
-
-		switch(CheckedID){
-		case R.id.radioOp1:
-			SelID=0;
-			break;
-		case R.id.radioOp2:
-			SelID=1;
-			break;
-		case R.id.radioOp3:
-			SelID=2;
-			break;
-		case R.id.radioOp4:
-			SelID=3;
-			break;
-		case R.id.radioOp5:
-			SelID=4;
-			break;
-		}
-		if( SelID<0)
-			return;
-		
-		userAction(SelID);
-		//rgQQOptions.clearCheck();
-		((RadioButton)rgQQOptions.getChildAt(SelID)).setChecked(false);
-	}
-
 private void userAction(int selID) {
 	
 	// Cancel any previously showing toasts
@@ -158,6 +150,7 @@ private void userAction(int selID) {
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
 		myQQProfile = profileHandler.getProfile();
+		showScore(myQQProfile.getScore());
 		Quest = new QQQuestion(myQQProfile,q);
 		
 		//Update profile after a new Question!
@@ -165,7 +158,9 @@ private void userAction(int selID) {
 		
 		myQQProfile.setLastSeed(lastSeed);
 		myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
-		//TODO: Update the score !!
+		
+		//TODO: Update the score correctly !!
+		myQQProfile.setScore(myQQProfile.getScore()+QOptIdx);
 		
 		profileHandler.saveProfile(myQQProfile); //TODO: Do I need to save after each question? On exit only?
 		
@@ -191,7 +186,7 @@ private void userAction(int selID) {
 	String strTemp = new String();
 	for(int j=0;j<5;j++){
 		strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]],Quest.oLen) ;
-		((RadioButton)rgQQOptions.getChildAt(j)).setText(strTemp);
+		btnArray[j].setText(strTemp);
 	}
 	
     if(level==2){
@@ -201,5 +196,64 @@ private void userAction(int selID) {
         //display('  [-] No more valid Motashabehat!');
     }
 
+	// Start the timer
+	startTimer(5);
 }
+
+@Override
+public void onClick(View v) {
+	int SelID=-2;
+
+	switch(v.getId()){
+	case R.id.bOp1:
+		SelID=0;
+		break;
+	case R.id.bOp2:
+		SelID=1;
+		break;
+	case R.id.bOp3:
+		SelID=2;
+		break;
+	case R.id.bOp4:
+		SelID=3;
+		break;
+	case R.id.bOp5:
+		SelID=4;
+		break;
+	}
+	if( SelID<0)
+		return;
+	
+	userAction(SelID);	
+}
+
+private void showScore(int score){
+	tvScore.setText(String.valueOf(score));
+}
+
+private void startTimer(int fire){
+	bar = (ProgressBar) findViewById(R.id.progressBar1);
+    bar.setProgress(100);
+    bar.setVisibility(View.VISIBLE);
+
+    final int millis = fire * 1000; // milli seconds
+
+    /** CountDownTimer starts with fire seconds and every onTick is 1 second */
+    if (cdt != null)
+    	cdt.cancel();
+    cdt = new CountDownTimer(millis, 1000) { 
+    	int cc=1;
+    		public void onTick(long millisUntilFinished) {
+    			bar.setProgress((1-cc*1000/millis)*100);
+    			cc++;
+        }
+
+        public void onFinish() {
+            // DO something when time is up
+        	bar.setVisibility(View.GONE);
+        }
+    }.start();
+
+}
+
 }
