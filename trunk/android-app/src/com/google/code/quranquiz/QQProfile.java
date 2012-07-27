@@ -2,15 +2,14 @@ package com.google.code.quranquiz;
 
 public class QQProfile {
 
-
 	private int lastSeed;				// Seed for the Question
 	private int level;					// User Level, currently
-	private int score;
+	private int correct;
 	private int quesCount;
-	public QQProfile(int lastSeed, int level, int score, int quesCount ){
+	public QQProfile(int lastSeed, int level, int corr, int quesCount ){
 		setLastSeed(lastSeed);
 		setLevel(level);
-		setScore(score);
+		setCorrect(corr);
 		setQuesCount(quesCount);
 	}
 	public int getLastSeed() {
@@ -25,11 +24,11 @@ public class QQProfile {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	public int getScore() {
-		return score;
+	public int getCorrect() {
+		return correct;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void setCorrect(int corr) {
+		this.correct = corr;
 	}
 	public int getQuesCount() {
 		return quesCount;

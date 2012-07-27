@@ -20,7 +20,7 @@ public class QQProfileHandler {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("lastSeed", prof.getLastSeed());
         editor.putInt("level", prof.getLevel());
-        editor.putInt("score", prof.getScore());     
+        editor.putInt("score", prof.getCorrect());     
         editor.putInt("quesCount", prof.getQuesCount());
 
         editor.commit();

@@ -17,8 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +30,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private QQDataBaseHelper q;
 	private QQQuestion Quest;
 	private int QOptIdx=-1;
+	private int QQinit=1;
 	//TODO: Grab the last seed from the loaded profile! (replace -1, level 1)
 	private int level = 1;
 	private int lastSeed = -1;
@@ -145,22 +144,25 @@ private void userAction(int selID) {
         QOptIdx = -1; // trigger a new question
     }
     else{
-    	QOptIdx = (QOptIdx==-1)?-1:QOptIdx +1; //Proceed with options ..
+    	QOptIdx = (QOptIdx==-1)?-1:QOptIdx +1; //Keep -1, or Proceed with options ..
     }
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
 		myQQProfile = profileHandler.getProfile();
-		showScore(myQQProfile.getScore());
+		showScore(myQQProfile.getCorrect(), myQQProfile.getQuesCount(), 30);
 		Quest = new QQQuestion(myQQProfile,q);
+		
+		if(QQinit == 0 && QOptIdx == -1){ // A wrong answer
+			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
+
+		}else{ // A correct answer
+			myQQProfile.setCorrect(myQQProfile.getCorrect()+1);
+			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
+		}
 		
 		//Update profile after a new Question!
 		lastSeed = Quest.getSeed();
-		
 		myQQProfile.setLastSeed(lastSeed);
-		myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
-		
-		//TODO: Update the score correctly !!
-		myQQProfile.setScore(myQQProfile.getScore()+QOptIdx);
 		
 		profileHandler.saveProfile(myQQProfile); //TODO: Do I need to save after each question? On exit only?
 		
@@ -198,6 +200,9 @@ private void userAction(int selID) {
 
 	// Start the timer
 	startTimer(5);
+	
+	QQinit = 0;
+
 }
 
 @Override
@@ -227,8 +232,10 @@ public void onClick(View v) {
 	userAction(SelID);	
 }
 
-private void showScore(int score){
-	tvScore.setText(String.valueOf(score));
+private void showScore(int correct, int total, int juz){
+	tvScore.setText(String.valueOf((int)Math.ceil(
+			100*juz*0.5*(1+Math.tanh(5*(double)correct/total-2.5)))
+			)+"("+String.valueOf(correct)+","+String.valueOf(total)+")");
 }
 
 private void startTimer(int fire){
