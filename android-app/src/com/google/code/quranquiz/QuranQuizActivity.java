@@ -4,6 +4,7 @@ package com.google.code.quranquiz;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -235,7 +236,7 @@ public void onClick(View v) {
 private void showScore(int correct, int total, int juz){
 	tvScore.setText(String.valueOf((int)Math.ceil(
 			100*juz*0.5*(1+Math.tanh(5*(double)correct/total-2.5)))
-			)+"("+String.valueOf(correct)+","+String.valueOf(total)+")");
+			));
 }
 
 private void startTimer(int fire){
@@ -257,10 +258,18 @@ private void startTimer(int fire){
 
         public void onFinish() {
             // DO something when time is up
-        	bar.setVisibility(View.GONE);
+        	bar.setVisibility(View.INVISIBLE);
         }
     }.start();
 
+}
+
+@Override
+public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    //setContentView(R.layout.main);
+
+    // some work that needs to be done on orientation change
 }
 
 }
