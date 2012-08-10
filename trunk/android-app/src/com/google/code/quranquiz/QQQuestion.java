@@ -66,7 +66,7 @@ public class QQQuestion {
 	                // Motashabehat found,continue!
 	                srch_cond=q.sim2cnt(start_shadow) >1; //TODO: check: Is 0 better? 
 	                validCount = 1;	// \
-	                qLen   = 3;		// -|-> Default Constants for level-1
+	                qLen   	= 3;	// -|-> Default Constants for level-1
 	                oLen	= 2;
 	            } else {
 	                // Search for a motashabehat near selected index
