@@ -4,7 +4,6 @@ import java.util.Random;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 public class QQProfileHandler {
     public static final String MY_PROFILE = "MyQQProfile";

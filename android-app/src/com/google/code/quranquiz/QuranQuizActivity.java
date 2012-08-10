@@ -4,6 +4,9 @@ package com.google.code.quranquiz;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
@@ -28,6 +31,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private ProgressBar bar;
 	private CountDownTimer cdt;
     private Button[] btnArray;
+    private AlertDialog.Builder correctAnswer;
 	private QQDataBaseHelper q;
 	private QQQuestion Quest;
 	private int QOptIdx=-1;
@@ -55,8 +59,11 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.Profile:     Toast.makeText(this, "Going to Profile!", Toast.LENGTH_LONG).show();
-	                            break;
+	        case R.id.Profile:     
+	        	Intent intent = new Intent(QuranQuizActivity.this,
+	        	QQPreferences.class);
+	        	startActivity(intent);
+                break;
 	        case R.id.Settings:     Toast.makeText(this, "Edit Settings!", Toast.LENGTH_LONG).show();
 	                            break;
 	    }
@@ -66,7 +73,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+	
 		btnArray = new Button[5];
 		btnArray[0] = (Button)findViewById(R.id.bOp1); 
 		btnArray[1] = (Button)findViewById(R.id.bOp2); 
@@ -75,7 +82,20 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 		btnArray[4] = (Button)findViewById(R.id.bOp5); 
 		
 		tvScore = (TextView) findViewById(R.id.Score);
-				
+		
+		correctAnswer  = new AlertDialog.Builder(this);
+
+		correctAnswer.setTitle("الاية المرادة هي");
+		correctAnswer.setPositiveButton("حسنا", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	            //dismiss the dialog  
+	          }
+	      });
+		correctAnswer.setCancelable(true);
+		
+
+
+		
 		profileHandler = new QQProfileHandler(this);
         
 		q = new QQDataBaseHelper(this);
@@ -131,17 +151,14 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	
 private void userAction(int selID) {
 	
-	// Cancel any previously showing toasts
-	correctAnswerToast.cancel();
-	
     if(QOptIdx >= 0 && correct_choice != selID){// Check if wrong choice
     	String tmp = new String("");
+    	
         //Display Correct answer
-    	tmp = "["+QQUtils.getSuraName(Quest.startIdx)+"] "+q.txt(Quest.startIdx,10+Quest.qLen);
-		correctAnswerToast.setText(tmp);
-    	for(int i=0;i<2;i++){ //TODO: Fix duration!
-    		correctAnswerToast.show();
-		}
+    	tmp = "["+QQUtils.getSuraName(Quest.startIdx)+"] "+
+    				q.txt(Quest.startIdx,10*Quest.oLen+Quest.qLen)+" ...";
+		showCorrectAnswer(tmp);
+		
         QOptIdx = -1; // trigger a new question
     }
     else{
@@ -204,6 +221,11 @@ private void userAction(int selID) {
 	
 	QQinit = 0;
 
+}
+
+private void showCorrectAnswer(String tmp) {
+	correctAnswer.setMessage(tmp);
+	correctAnswer.create().show();	
 }
 
 @Override
