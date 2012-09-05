@@ -41,7 +41,6 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private int lastSeed = -1;
 	private int correct_choice=0;
 	
-	private Toast correctAnswerToast;
 	private QQProfileHandler profileHandler;
 	private QQProfile myQQProfile;
 	@Override
@@ -128,8 +127,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 		
 		tv = (TextView) findViewById(R.id.textView1);
 			
-		//Prepare the Toast for displaying correct answers
-		correctAnswerToast = Toast.makeText(this,"", Toast.LENGTH_LONG);
+		Toast.makeText(this,"", Toast.LENGTH_LONG);
 		
 		// Make the first Question
 		userAction(-1);
@@ -228,7 +226,6 @@ private void showCorrectAnswer(String tmp) {
 	correctAnswer.create().show();	
 }
 
-@Override
 public void onClick(View v) {
 	int SelID=-2;
 

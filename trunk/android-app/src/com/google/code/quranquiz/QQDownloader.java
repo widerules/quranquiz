@@ -9,7 +9,6 @@ import java.net.URLConnection;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
 public class QQDownloader extends AsyncTask<String, Integer, String>{

@@ -7,20 +7,20 @@
         android:key="first_category">
         
         <CheckBoxPreference 
-            android:key="perform_updates"
-            android:summary="Enable or disable data updates"
-            android:title="Enable updates" 
+            android:key="pref_fixedLevel"
+            android:summary="@string/pref_fixedLevel_sum"
+            android:title="@string/pref_fixedLevel_title" 
             android:defaultValue="true"
         />
         
         <ListPreference 
             android:key="pref_userLevel"
-            android:title="QQ Level"
-            android:summary="Select the difficulty level"
-            android:defaultValue="1000" 
-            android:entries="@array/updateInterval"
-            android:entryValues="@array/updateIntervalValues"
-            android:dependency="perform_updates"
+            android:title="@string/pref_userLevel_title"
+            android:summary="@string/pref_userLevel_sum"
+            android:defaultValue="1" 
+            android:entries="@array/userLevels"
+            android:entryValues="@array/userLevelsValues"
+            android:dependency="pref_fixedLevel"
         />    
             
  </PreferenceCategory>

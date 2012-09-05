@@ -24,7 +24,6 @@ public class QQPreferences extends PreferenceActivity {
  
         //when the user choose other item the description changes too with the selected item
         userLevel.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 preference.setSummary(o.toString());
                 return true;    
