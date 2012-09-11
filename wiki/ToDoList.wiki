@@ -2,5 +2,3 @@
 
 Add your wishes here:
   * Post score on facebook: http://stackoverflow.com/questions/4641680/android-facebook-graph-api-to-update-status
-  * Fix score colorize
-  * Fix different layout sizes
