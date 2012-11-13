@@ -189,7 +189,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper{
 		ids.clear();
     	
     	if(myDataBase != null){
-    		Cursor cur=myDataBase.rawQuery("select q1._id from q q1 join q q2 join q q3 where q1._id+1=q2._id and q1._id+2=q3._id"+
+    		Cursor cur=myDataBase.rawQuery("select q1._id from q q1 join q q2 join q q3 where q1._id+1=q2._id and q1._id+2=q3._id "+
 							"and q1._id in (select _id from q where txt=(select txt from q where _id="+(idx  )+") and _id !="+(idx)+")" +
 							"and q2._id in (select _id from q where txt=(select txt from q where _id="+(idx+1)+") and _id !="+(idx+1)+")" +
 							"and q3._id in (select _id from q where txt=(select txt from q where _id="+(idx+2)+") and _id !="+(idx+2)+")", null);
