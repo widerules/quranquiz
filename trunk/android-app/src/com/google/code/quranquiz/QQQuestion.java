@@ -63,11 +63,14 @@ public class QQQuestion {
 	                break;
 	            }
 	            if (level==1){ // Get a non-motashabehat near selected index
-	                // Motashabehat found,continue!
-	                srch_cond=q.sim2cnt(start_shadow) >1; //TODO: check: Is 0 better? 
+	                
+	            	// Motashabehat found,continue!
+	                srch_cond=q.sim2cnt(start_shadow) >1;
 	                validCount = 1;	// \
 	                qLen   	= 3;	// -|-> Default Constants for level-1
 	                oLen	= 2;
+	                
+	            //} else if(level == 2) { //TODO: Implement Level-3
 	            } else {
 	                // Search for a motashabehat near selected index
 	                // Specify # Words to display
@@ -83,7 +86,7 @@ public class QQQuestion {
 	                srch_cond = (disp3==0  && disp2==0);
 	                
 	                if (srch_cond == false){ // Found!
-	                	validCount 	= (disp2>disp3)? disp2+1: disp3+1;// Count start-position as well
+	                	validCount 	= (disp2>disp3)? disp2: disp3;// TODO: Check, +1 caused bound excep
 	                	qLen		= (disp2>disp3)? 1:2;
 	                }
 	                oLen = 1;
@@ -111,7 +114,7 @@ public class QQQuestion {
 	        else{  // A 3-word Question
 	        	tmp = q.sim3idx(startIdx);
 	        	for(int i=1;i<validCount;i++)
-	        		op[0][i] = tmp.get(i);
+	        		op[0][i] = tmp.get(i); //TODO: Check start 49969
 	        	}
     	    for(int k=1;k<10;k++)
     	    	for(int j=1;j<validCount;j++)

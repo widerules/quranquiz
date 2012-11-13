@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class QQProfileHandler {
     public static final String MY_PROFILE = "MyQQProfile";
@@ -15,10 +16,10 @@ public class QQProfileHandler {
     
     public void saveProfile(QQProfile prof){
 
-    	SharedPreferences settings = myContext.getSharedPreferences(MY_PROFILE, 0);
+    	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(myContext);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("lastSeed", prof.getLastSeed());
-        editor.putInt("level", prof.getLevel());
+        editor.putString("pref_userLevel", Integer.toString(prof.getLevel()));
         editor.putInt("score", prof.getCorrect());     
         editor.putInt("quesCount", prof.getQuesCount());
 
@@ -41,10 +42,13 @@ public class QQProfileHandler {
 	}
 	
 	private QQProfile getLastProfile() {
-	    SharedPreferences settings = myContext.getSharedPreferences(MY_PROFILE, 0);
+	    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(myContext);
+	    
+	    // Note: Pref entries from xml are strings!
+	    // manually inserted via editor are integers 
 	    
 		return new QQProfile(settings.getInt("lastSeed", 0),
-							 settings.getInt("level", 0),
+							 Integer.parseInt(settings.getString("pref_userLevel", "")),
 							 settings.getInt("score", 0),
 							 settings.getInt("quesCount", 0) );
 
@@ -52,7 +56,7 @@ public class QQProfileHandler {
 
 	private boolean checkLastProfile(){
 		// Check if a profile exists
-	    SharedPreferences settings = myContext.getSharedPreferences(MY_PROFILE, 0);
+	    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(myContext);
 	    return settings.contains("lastSeed");
 	}
 }
