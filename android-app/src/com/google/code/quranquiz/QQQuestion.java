@@ -70,7 +70,14 @@ public class QQQuestion {
 	                qLen   	= 3;	// -|-> Default Constants for level-1
 	                oLen	= 2;
 	                
-	            //} else if(level == 2) { //TODO: Implement Level-3
+	            } else if(level == 2) {
+	            	
+	            	// Motashabehat found,continue!
+	                srch_cond=q.sim2cnt(start_shadow) >1;
+	                validCount = 1;	// \
+	                qLen   	= 2;	// -|-> Default Constants for level-2
+	                oLen	= 1;
+	                	            	
 	            } else {
 	                // Search for a motashabehat near selected index
 	                // Specify # Words to display

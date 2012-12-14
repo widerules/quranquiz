@@ -2,9 +2,9 @@ package com.google.code.quranquiz;
 
 
 import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +12,7 @@ import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 
 import com.google.code.quranquiz.R;
 
@@ -149,12 +150,16 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	
 private void userAction(int selID) {
 	
-    if(QOptIdx >= 0 && correct_choice != selID){// Check if wrong choice
+    if(QOptIdx >= 0 && correct_choice != selID){//Wrong choice!!
     	String tmp = new String("");
+    	
+    	// Vibrate for 300 milliseconds
+    	Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE); 
+    	mVibrator.vibrate(300);
     	
         //Display Correct answer
     	tmp = "["+QQUtils.getSuraName(Quest.startIdx)+"] "+
-    				q.txt(Quest.startIdx,10*Quest.oLen+Quest.qLen)+" ...";
+    				q.txt(Quest.startIdx,12*Quest.oLen+Quest.qLen)+" ...";
 		showCorrectAnswer(tmp);
 		
         QOptIdx = -1; // trigger a new question
@@ -172,7 +177,7 @@ private void userAction(int selID) {
 			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
 
 		}else{ // A correct answer
-			myQQProfile.setCorrect(myQQProfile.getCorrect()+1);
+			myQQProfile.setCorrect(myQQProfile.getCorrect()+1); //TODO: Bug: +1 with every new ?
 			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
 		}
 		
@@ -207,12 +212,14 @@ private void userAction(int selID) {
 		btnArray[j].setText(strTemp);
 	}
 	
-    if(level==2){
-        //display(['    -- ',num2str(validCount),' correct options left!']); % TODO: Subtract done options
+    if(level==3){
+    	if(QOptIdx==1){
+            //display(" [-] No more valid Motashabehat!");
+        }else{
+        	//display(['    -- ',num2str(validCount),' correct options left!']); // TODO: Subtract done options
+        }
     }
-    else if(level==3 && QOptIdx==1){
-        //display('  [-] No more valid Motashabehat!');
-    }
+
 
 	// Start the timer
 	startTimer(5);
