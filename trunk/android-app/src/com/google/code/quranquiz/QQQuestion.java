@@ -28,13 +28,15 @@ public class QQQuestion {
 		// Keep Reference of Level, Q
 		level = prof.getLevel();
 		q = qdb;
-		createQ();
+		createQ(prof);
 	// stop tracing
 	//Debug.stopMethodTracing();
 	}
 	
-	private void createQ() {
-		lastSeed = rand.nextInt(QQUtils.QuranWords);
+	private void createQ(QQProfile prof) {
+		lastSeed = prof.getSparsePoint(
+						rand.nextInt(prof.getTotalStudyLength())
+						); // was: QQUtils.QuranWords
 		
 		// +1 to compensate the rand-gen integer [0-77796]
 		startIdx = getValidStartNear(lastSeed+1); 
