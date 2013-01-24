@@ -60,12 +60,15 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.Profile:     
-	        	Intent intent = new Intent(QuranQuizActivity.this,
-	        	QQPreferences.class);
-	        	startActivity(intent);
+	        	Intent intentStudyList = new Intent(QuranQuizActivity.this,
+	        	QQStudyList.class);
+	        	startActivity(intentStudyList);
                 break;
-	        case R.id.Settings:     Toast.makeText(this, "Edit Settings!", Toast.LENGTH_LONG).show();
-	                            break;
+	        case R.id.Settings:
+	        	Intent intentPreferences = new Intent(QuranQuizActivity.this,
+	        	QQPreferences.class);
+	        	startActivity(intentPreferences);
+	        	break;
 	    }
 	    return true;
 	}
