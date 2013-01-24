@@ -25,6 +25,10 @@
 	    	android:name=".QQPreferences"
 	    	android:theme="@android:style/Theme.Black.NoTitleBar" >
 	  	</activity>
-    </application>
+        <activity
+	    	android:name=".QQStudyList"
+	    	android:theme="@android:style/Theme.Black.NoTitleBar" >
+	  	</activity>
+	</application>
 
 </manifest>

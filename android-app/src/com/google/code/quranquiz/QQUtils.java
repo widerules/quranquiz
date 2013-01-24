@@ -36,6 +36,11 @@ public class QQUtils {
 			"الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
 			"المسد","الإخلاص","الفلق","الناس"};
 	
+	public static final String[] last5_juz_name = {"الأحقاف","الذاريات","قد سمع","تبارك","عم"};
+	/*Here the indexes point to "start-1" to "end" of each Juz'*/
+	public static final int[] last5_juz_idx = {sura_idx[44],sura_idx[49],sura_idx[56],sura_idx[65],sura_idx[76],QuranWords};
+	
+	
 	public static List<Integer> ListPlus(List<Integer> diffList, int i) {
 		List<Integer> plus = new ArrayList<Integer>();
 		plus = diffList;
