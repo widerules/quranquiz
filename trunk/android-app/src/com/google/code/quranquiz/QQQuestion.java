@@ -16,6 +16,7 @@ public class QQQuestion {
 	private int level;					// User Level, currently
 	private QQDataBaseHelper q;			// Reference to the DB
 	private Random rand;
+	public int CurrentPart;
 	
 	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb){
 	// start tracing to "/sdcard/calc.trace"
@@ -34,11 +35,15 @@ public class QQQuestion {
 	}
 	
 	private void createQ(QQProfile prof) {
-		lastSeed = prof.getSparsePoint(
+		QQSparseResult sparsed= prof.getSparsePoint(
 						rand.nextInt(prof.getTotalStudyLength())
 						); // was: QQUtils.QuranWords
 		
-		// +1 to compensate the rand-gen integer [0-77796]
+		lastSeed 	= sparsed.idx;
+		CurrentPart = sparsed.part;
+		
+		// +1 to compensate the rand-gen integer [0-QuranWords-1]
+		// TODO: Near Start does not regard QParts boundaries
 		startIdx = getValidStartNear(lastSeed+1); 
 		
 		fillCorrectOptions();

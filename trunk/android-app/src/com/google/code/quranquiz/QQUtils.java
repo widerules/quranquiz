@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class QQUtils {
 
-	public static int QuranWords = 77878;
+	public static int QuranWords = 77797; // TODO: Fix all indeces
 	public static final int[] sura_idx = {30,6170,9671,13434,16271,19327,22668,23910,26415,28254,
 			30200,31995,32848,33678,34335,36179,37737,39320,40291,41644,
 			42818,44097,45149,46468,47364,48684,49843,51281,52259,53076,

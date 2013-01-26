@@ -41,8 +41,9 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private int level = 1;
 	private int lastSeed = -1;
 	private int correct_choice=0;
+	private int CurrentPart = 0;
 	
-	private QQProfileHandler profileHandler;
+	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +63,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	        case R.id.Profile:     
 	        	Intent intentStudyList = new Intent(QuranQuizActivity.this,
 	        	QQStudyList.class);
+	        	intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 	        	startActivity(intentStudyList);
                 break;
 	        case R.id.Settings:
@@ -99,7 +101,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 
 
 		
-		profileHandler = new QQProfileHandler(this);
+		myQQProfileHandler = new QQProfileHandler(this);
         
 		q = new QQDataBaseHelper(this);
         try {
@@ -151,6 +153,11 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 		super.onDestroy();
 	}
 	
+	protected void onResume(){
+		myQQProfileHandler.reLoadCurrentProfile();
+		super.onResume();
+	}
+	
 private void userAction(int selID) {
 	
     if(QOptIdx >= 0 && correct_choice != selID){//Wrong choice!!
@@ -172,23 +179,26 @@ private void userAction(int selID) {
     }
 	
 	if(QOptIdx == -1 || QOptIdx == 10){
-		myQQProfile = profileHandler.getProfile();
-		showScore(myQQProfile.getCorrect(), myQQProfile.getQuesCount(), 30);
+		myQQProfile = myQQProfileHandler.getProfile();
 		Quest = new QQQuestion(myQQProfile,q);
+		CurrentPart = Quest.CurrentPart;
 		
 		if(QQinit == 0 && QOptIdx == -1){ // A wrong answer
-			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
+			myQQProfile.addIncorrect(CurrentPart);
 
 		}else{ // A correct answer
-			myQQProfile.setCorrect(myQQProfile.getCorrect()+1); //TODO: Bug: +1 with every new ?
-			myQQProfile.setQuesCount(myQQProfile.getQuesCount()+1);
+			//TODO: Bug: +1 with every new ?
+			myQQProfile.addCorrect(CurrentPart);
 		}
 		
 		//Update profile after a new Question!
 		lastSeed = Quest.getSeed();
 		myQQProfile.setLastSeed(lastSeed);
+
+		// Update the Score
+		tvScore.setText(String.valueOf(myQQProfile.getScore()));
 		
-		profileHandler.saveProfile(myQQProfile); //TODO: Do I need to save after each question? On exit only?
+		myQQProfileHandler.saveProfile(myQQProfile); //TODO: Do I need to save after each question? On exit only?
 		
 		// Show the Question!
 		tv.setText(q.txt(Quest.startIdx,Quest.qLen));
@@ -260,12 +270,6 @@ public void onClick(View v) {
 		return;
 	
 	userAction(SelID);	
-}
-
-private void showScore(int correct, int total, int juz){
-	tvScore.setText(String.valueOf((int)Math.ceil(
-			100*juz*0.5*(1+Math.tanh(5*(double)correct/total-2.5)))
-			));
 }
 
 private void startTimer(int fire){
