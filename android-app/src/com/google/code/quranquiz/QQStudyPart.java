@@ -1,6 +1,10 @@
 package com.google.code.quranquiz;
 
-public class QQStudyPart {
+import java.io.Serializable;
+
+public class QQStudyPart implements Serializable{
+
+	private static final long serialVersionUID = 34L;
 	private int start;
 	private int length;
 	private int numCorrect;
@@ -34,7 +38,10 @@ public class QQStudyPart {
 	}
 	
 	public int getLength(){
-		return length;
+		if(start>0)
+			return length;
+		else
+			return 0;
 	}
 	
 	public int getNumCorrect(){
