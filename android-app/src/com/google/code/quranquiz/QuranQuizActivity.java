@@ -14,18 +14,20 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.code.quranquiz.R;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuranQuizActivity extends Activity implements android.view.View.OnClickListener {
+public class QuranQuizActivity extends SherlockActivity implements android.view.View.OnClickListener {
 
 	private TextView tv;
 	private TextView tvScore;
@@ -33,6 +35,7 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private CountDownTimer cdt;
     private Button[] btnArray;
     private AlertDialog.Builder correctAnswer;
+    private ActionBar actionbar;
 	private QQDataBaseHelper q;
 	private QQQuestion Quest;
 	private int QOptIdx=-1;
@@ -47,8 +50,8 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	private QQProfile myQQProfile;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+		MenuInflater  inflater = getSupportMenuInflater();
+	    inflater.inflate(R.menu.menu, (Menu) menu);
 	    return true;
 	}
 	
@@ -78,7 +81,8 @@ public class QuranQuizActivity extends Activity implements android.view.View.OnC
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-	
+		actionbar = getSupportActionBar();
+		
 		btnArray = new Button[5];
 		btnArray[0] = (Button)findViewById(R.id.bOp1); 
 		btnArray[1] = (Button)findViewById(R.id.bOp2); 
