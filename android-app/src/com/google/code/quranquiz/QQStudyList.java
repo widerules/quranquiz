@@ -1,11 +1,12 @@
 package com.google.code.quranquiz;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 
-public class QQStudyList extends PreferenceActivity {
+public class QQStudyList extends SherlockPreferenceActivity {
  
 	private QQProfileHandler ProfileHandler;
 	
@@ -32,8 +33,10 @@ public class QQStudyList extends PreferenceActivity {
             checkBoxPreference.setTitle(" سورة " + QQUtils.sura_name[i]);
             checkBoxPreference.setSummary(String.valueOf(ProfileHandler.CurrentProfile.getCorrect(i))+" من "
             							  + String.valueOf(ProfileHandler.CurrentProfile.getQuesCount(i))); // TODO: Prev score            
-            if(i==0)
+            if(i==0){
             	checkBoxPreference.setEnabled(false);
+            	checkBoxPreference.setChecked(true);
+            }
             targetCategory.addPreference(checkBoxPreference);
         }
         for(int i=0;i<5;i++){
@@ -42,8 +45,10 @@ public class QQStudyList extends PreferenceActivity {
             checkBoxPreference.setTitle(" جزء " + QQUtils.last5_juz_name[i]);
             checkBoxPreference.setSummary(String.valueOf(ProfileHandler.CurrentProfile.getCorrect(45+i))+" من "
 					  + String.valueOf(ProfileHandler.CurrentProfile.getQuesCount(45+i))); // TODO: Prev score            
-            if(i==4)
+            if(i==4){
             	checkBoxPreference.setEnabled(false);
+            	checkBoxPreference.setChecked(true);
+            	}
             targetCategory.addPreference(checkBoxPreference);
         }
      }

@@ -2,7 +2,6 @@ package com.google.code.quranquiz;
 
 
 import java.io.IOException;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -52,9 +52,17 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater  inflater = getSupportMenuInflater();
 	    inflater.inflate(R.menu.menu, (Menu) menu);
-	    return true;
+	    
+	    return super.onCreateOptionsMenu(menu);
 	}
 	
+	@Override
+	public void onBackPressed() {
+	   Intent lastIntent = new Intent(QuranQuizActivity.this, QQLastScreen.class);
+	   lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
+	   startActivity(lastIntent);
+	   finish();
+	}
 	@Override
     protected void onStop(){
        super.onStop();
@@ -82,7 +90,7 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		actionbar = getSupportActionBar();
-		
+        
 		btnArray = new Button[5];
 		btnArray[0] = (Button)findViewById(R.id.bOp1); 
 		btnArray[1] = (Button)findViewById(R.id.bOp2); 
