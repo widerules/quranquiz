@@ -1,11 +1,12 @@
 package com.google.code.quranquiz;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 
-public class QQPreferences extends PreferenceActivity {
+public class QQPreferences extends SherlockPreferenceActivity {
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {

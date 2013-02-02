@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/Profile"
-        android:title="نطاق الحفظ" />
+        android:title="نطاق الحفظ" 
+        android:showAsAction="never" />
     <item android:id="@+id/Settings"
-        android:title="اعدادات" />
+        android:title="اعدادات"
+        android:showAsAction="never" />
 </menu>
