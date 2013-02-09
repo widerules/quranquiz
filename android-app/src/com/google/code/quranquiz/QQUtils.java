@@ -1,8 +1,14 @@
 package com.google.code.quranquiz;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 
 public class QQUtils {
 
@@ -82,6 +88,23 @@ public class QQUtils {
 				return sura_name[i];
 			}
 		return sura_name[112];
+	}
+	
+	public static String md5(String s) 
+	{
+	    MessageDigest digest;
+	    try 
+	    {
+	        digest = MessageDigest.getInstance("MD5");
+	        digest.update(s.getBytes(),0,s.length());
+	        String hash = new BigInteger(1, digest.digest()).toString(16);
+	        return hash;
+	    } 
+	    catch (NoSuchAlgorithmException e) 
+	    {
+	        //e.printStackTrace();
+	    }
+	    return s; // Same string better than an empty/null one :)
 	}
 	
 }
