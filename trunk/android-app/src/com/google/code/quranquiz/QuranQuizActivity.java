@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -19,9 +20,11 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.google.code.quranquiz.R;
 
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,7 +61,7 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	
 	@Override
 	public void onBackPressed() {
-	   Intent lastIntent = new Intent(QuranQuizActivity.this, QQLastScreen.class);
+	   Intent lastIntent = new Intent(QuranQuizActivity.this, QQLastScreenActivity.class);
 	   lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
 	   startActivity(lastIntent);
 	   finish();
@@ -73,7 +76,7 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	    switch (item.getItemId()) {
 	        case R.id.Profile:     
 	        	Intent intentStudyList = new Intent(QuranQuizActivity.this,
-	        	QQStudyList.class);
+	        	QQStudyListActivity.class);
 	        	intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 	        	startActivity(intentStudyList);
                 break;
@@ -88,6 +91,8 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        					 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
 		actionbar = getSupportActionBar();
         
@@ -130,18 +135,26 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	 	}
 	 	
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(), "fonts/me_quran.ttf");
+		Drawable shape = getResources().getDrawable(R.drawable.qqoptionbutton);
+
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
+		
 		tv = (TextView) findViewById(R.id.bOp1);
 		tv.setTypeface(othmanyFont);
+		tv.setBackgroundDrawable(shape);
 		tv = (TextView) findViewById(R.id.bOp2);
 		tv.setTypeface(othmanyFont);
+		tv.setBackgroundDrawable(shape);
 		tv = (TextView) findViewById(R.id.bOp3);
 		tv.setTypeface(othmanyFont);
+		tv.setBackgroundDrawable(shape);
 		tv = (TextView) findViewById(R.id.bOp4);
 		tv.setTypeface(othmanyFont);
+		tv.setBackgroundDrawable(shape);
 		tv = (TextView) findViewById(R.id.bOp5);
 		tv.setTypeface(othmanyFont);
+		tv.setBackgroundDrawable(shape);
 		
 		tv = (TextView) findViewById(R.id.textView1);
 			

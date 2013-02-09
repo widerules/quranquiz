@@ -3,9 +3,15 @@ package com.google.code.quranquiz;
 import java.io.Serializable;
 import java.util.Random;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 
 public class QQProfileHandler implements Serializable{
 
@@ -114,6 +120,36 @@ public class QQProfileHandler implements Serializable{
 
 	public void reLoadCurrentProfile() {
 		CurrentProfile = getLastProfile();
+	}
+	
+	public String getHashedUID(){
+		String uid;
+		/* Get Google account*/
+    	AccountManager manager = (AccountManager)myContext.getSystemService(android.content.Context.ACCOUNT_SERVICE);
+    	Account[] list = manager.getAccounts();
+    	if(list.length>0){
+    		uid = list[0].name;
+    	}else{
+    		/*If no account, get Phone ID*/
+    		uid = ((TelephonyManager)myContext.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+    		if(uid.length()<1){
+    			/*If not a phone, get Wifi MAC*/
+    			uid = ((WifiManager)myContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getMacAddress();
+    			if(uid.length()<1){
+        			/*If off-line, get collide-able string*/
+    				uid =  "35" + //we make this look like a valid IMEI
+    			            Build.BOARD.length()%10+ Build.BRAND.length()%10 +
+    			            Build.CPU_ABI.length()%10 + Build.DEVICE.length()%10 +
+    			            Build.DISPLAY.length()%10 + Build.HOST.length()%10 +
+    			            Build.ID.length()%10 + Build.MANUFACTURER.length()%10 +
+    			            Build.MODEL.length()%10 + Build.PRODUCT.length()%10 +
+    			            Build.TAGS.length()%10 + Build.TYPE.length()%10 +
+    			            Build.USER.length()%10 ; //13 digits
+    			}
+    		}
+    	}
+    	//return uid;
+    	return QQUtils.md5(uid);
 	}
 
 }

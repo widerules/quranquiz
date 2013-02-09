@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceCategory;
 
-public class QQStudyList extends SherlockPreferenceActivity {
+public class QQStudyListActivity extends SherlockPreferenceActivity {
  
 	private QQProfileHandler ProfileHandler;
 	

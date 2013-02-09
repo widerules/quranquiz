@@ -135,4 +135,12 @@ public class QQProfile implements Serializable{
 				3000*((double)studyCount/QQUtils.QuranWords)*
 				0.5*(1+Math.tanh(5*(double)correct/total-2.5)));
 	}
+	public String getuid() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	public double getAvgLevel() {
+		// TODO Auto-generated method stub
+		return 1.5;
+	}
 }
