@@ -6,6 +6,7 @@ import java.util.Vector;
 public class QQProfile implements Serializable{
 
 	private static final long serialVersionUID = 21L;
+	private String uid;
 	private int lastSeed;				// Seed for the Question
 	private int level;					// TODO: Encapsulate
 	private Vector<QQStudyPart> QParts;
@@ -14,11 +15,12 @@ public class QQProfile implements Serializable{
 		setLastSeed(lastSeed);
 		setLevel(level);
 	}
-	public QQProfile(int lastSeed, int level, String QPartsString ){
+	public QQProfile(String uid, int lastSeed, int level, String QPartsString ){
 		
 		setLastSeed(lastSeed);
 		setLevel(level);
 		setStudyParts(QPartsString);
+		setuid(uid);
 	}
 	public int getLastSeed() {
 		return lastSeed;
@@ -136,8 +138,10 @@ public class QQProfile implements Serializable{
 				0.5*(1+Math.tanh(5*(double)correct/total-2.5)));
 	}
 	public String getuid() {
-		// TODO Auto-generated method stub
-		return "";
+		return uid;
+	}
+	public void setuid(String id) {
+		uid = id;
 	}
 	public double getAvgLevel() {
 		// TODO Auto-generated method stub

@@ -23,6 +23,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.code.quranquiz.R;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,7 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuranQuizActivity extends SherlockActivity implements android.view.View.OnClickListener {
+public class QQQuestionaireActivity extends SherlockActivity implements android.view.View.OnClickListener {
 
 	private TextView tv;
 	private TextView tvScore;
@@ -60,12 +61,16 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	}
 	
 	@Override
-	public void onBackPressed() {
-	   Intent lastIntent = new Intent(QuranQuizActivity.this, QQLastScreenActivity.class);
-	   lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
-	   startActivity(lastIntent);
-	   finish();
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			Intent i = new Intent();
+			i.putExtra("ProfileHandler", myQQProfileHandler);
+			setResult(12345,i);
+	        finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
+	
 	@Override
     protected void onStop(){
        super.onStop();
@@ -75,13 +80,13 @@ public class QuranQuizActivity extends SherlockActivity implements android.view.
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.Profile:     
-	        	Intent intentStudyList = new Intent(QuranQuizActivity.this,
+	        	Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
 	        	QQStudyListActivity.class);
 	        	intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 	        	startActivity(intentStudyList);
                 break;
 	        case R.id.Settings:
-	        	Intent intentPreferences = new Intent(QuranQuizActivity.this,
+	        	Intent intentPreferences = new Intent(QQQuestionaireActivity.this,
 	        	QQPreferences.class);
 	        	startActivity(intentPreferences);
 	        	break;

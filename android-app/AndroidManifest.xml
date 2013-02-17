@@ -14,15 +14,21 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" 
-        android:theme="@style/Theme.qqstyle">
+         >
         <activity
             android:label="@string/app_name"
-            android:name=".QuranQuizActivity"
+            android:name="com.google.code.quranquiz.QQDashboardActivity"
             android:configChanges="keyboardHidden|orientation" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+       <activity
+            android:label="@string/app_name"
+            android:name=".QQQuestionaireActivity"
+            android:configChanges="keyboardHidden|orientation" 
+            android:theme="@style/Theme.qqstyle" >
         </activity>
         <activity
 	    	android:name=".QQPreferences"
