@@ -1,0 +1,30 @@
+<com.google.code.quranquiz.QQDashboardLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:background="#f8f9fe" >
+    
+    <Button
+        android:id="@+id/btnScoreHistory"
+        style="@style/DashboardButton"
+        android:drawableTop="@android:drawable/ic_menu_recent_history"
+        android:text="التقدم الزمني" />
+    
+    <Button
+        android:id="@+id/btnQQQuestionaire"
+        style="@style/DashboardButton"
+        android:drawableTop="@android:drawable/ic_menu_agenda"
+        android:text="إبدأ الاختبار" />
+        
+    <Button
+        android:id="@+id/btnSettings"
+        style="@style/DashboardButton"
+        android:drawableTop="@android:drawable/ic_menu_preferences"
+        android:text="اعدادات" />
+	
+    <!--  Add more Buttons -->
+
+
+
+</com.google.code.quranquiz.QQDashboardLayout>

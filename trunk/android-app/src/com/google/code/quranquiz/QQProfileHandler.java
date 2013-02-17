@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 
 public class QQProfileHandler implements Serializable{
@@ -32,6 +31,7 @@ public class QQProfileHandler implements Serializable{
 
     	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(myContext);
         SharedPreferences.Editor editor = settings.edit();
+        editor.putString("pref_uid", prof.getuid());        
         editor.putInt("lastSeed", prof.getLastSeed());
         editor.putString("pref_userLevel", Integer.toString(prof.getLevel()));
         //editor.putInt("score", prof.getCorrect());     
@@ -50,7 +50,11 @@ public class QQProfileHandler implements Serializable{
 			myQQProfile = getLastProfile();
 		}else{ // Create a new profile with a random start
 			//Toast.makeText(myContext, "Created a new profile!", Toast.LENGTH_LONG).show();
-			myQQProfile = new QQProfile(new Random().nextInt(QQUtils.QuranWords), 1, QQProfileHandler.DEFAULT_STUDY_PARTS );
+			myQQProfile = new QQProfile(
+								getHashedUID(),
+								new Random().nextInt(QQUtils.QuranWords),
+								1, 
+								QQProfileHandler.DEFAULT_STUDY_PARTS );
 			reLoadParts(myQQProfile);
 			saveProfile(myQQProfile);
 		}
@@ -64,7 +68,8 @@ public class QQProfileHandler implements Serializable{
 	    // Note: Pref entries from xml are strings!
 	    // manually inserted via editor are integers 
 	    
-		return new QQProfile(settings.getInt("lastSeed", 0),
+		return new QQProfile(settings.getString("pref_uid", ""),
+							 settings.getInt("lastSeed", 0),
 							 Integer.parseInt(settings.getString("pref_userLevel", "")),
 							 //settings.getInt("score", 0),
 							 //settings.getInt("quesCount", 0),

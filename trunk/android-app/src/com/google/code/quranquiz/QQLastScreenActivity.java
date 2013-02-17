@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class QQLastScreenActivity extends SherlockActivity {
     	
     	// Create a new HttpClient and Post Header
     	HttpClient httpclient = new DefaultHttpClient();
-    	HttpPost httppost = new HttpPost("http://www.yoururl.com/SaveData.php");
+    	HttpPost httppost = new HttpPost("http://quranquiz.net/updateUserData.php");
 
     	try {
     	// Add user data
@@ -68,7 +69,9 @@ public class QQLastScreenActivity extends SherlockActivity {
     	httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
     	// Execute HTTP Post Request
-    	httpclient.execute(httppost);
+    	HttpResponse res = httpclient.execute(httppost);
+    	tv.append(EntityUtils.toString(res.getEntity()));
+    	
     	} catch (ClientProtocolException e) {
     	// TODO Auto-generated catch block
     	} catch (IOException e) {

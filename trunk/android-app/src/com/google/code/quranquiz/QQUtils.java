@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-
 public class QQUtils {
 
 	public static int QuranWords = 77797; // TODO: Fix all indeces
@@ -92,19 +89,19 @@ public class QQUtils {
 	
 	public static String md5(String s) 
 	{
-	    MessageDigest digest;
+	    MessageDigest digest = null;
 	    try 
 	    {
 	        digest = MessageDigest.getInstance("MD5");
-	        digest.update(s.getBytes(),0,s.length());
-	        String hash = new BigInteger(1, digest.digest()).toString(16);
-	        return hash;
 	    } 
 	    catch (NoSuchAlgorithmException e) 
 	    {
 	        //e.printStackTrace();
+		    return s; // Same string better than an empty/null one :)
 	    }
-	    return s; // Same string better than an empty/null one :)
+	    digest.update(s.getBytes(),0,s.length());
+        String hash = new BigInteger(1, digest.digest()).toString(16);
+        return hash;
 	}
 	
 }
