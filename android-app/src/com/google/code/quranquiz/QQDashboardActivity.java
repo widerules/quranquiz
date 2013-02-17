@@ -40,7 +40,7 @@ public class QQDashboardActivity extends Activity {
         
         btnSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "TODO: Open Settings!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "تحت التطوير!", Toast.LENGTH_SHORT).show();
 			}
 		});
         
@@ -48,7 +48,7 @@ public class QQDashboardActivity extends Activity {
         btnScoreHistory.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "TODO: Open History!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "تحت التطوير!", Toast.LENGTH_SHORT).show();
 			}
 		});       
      }
