@@ -11,75 +11,79 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-public class QQDownloader extends AsyncTask<String, Integer, String>{
-    
-	//The Android's default system path of QQ database.
-    private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
-    private static String DB_NAME = "qq.sqlite";
+public class QQDownloader extends AsyncTask<String, Integer, String> {
+
+	// The Android's default system path of QQ database.
+	private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
+	private static String DB_NAME = "qq.sqlite";
 	/**
-	 * @uml.property  name="outFileName"
+	 * @uml.property name="outFileName"
 	 */
 	String outFileName = DB_PATH + DB_NAME;
 	private static int fileLength = 0;
 	/**
-	 * @uml.property  name="mProgressDialog"
-	 * @uml.associationEnd  
+	 * @uml.property name="mProgressDialog"
+	 * @uml.associationEnd
 	 */
 	private ProgressDialog mProgressDialog;
 
-	protected void onPreExecute(Context... contexts)
-    {
-    	mProgressDialog = new ProgressDialog(contexts[0]);
-    	mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
-    	mProgressDialog.setIndeterminate(false);
-    	mProgressDialog.setMax(100);
-    	mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);    }
-	
+	protected void onPreExecute(Context... contexts) {
+		mProgressDialog = new ProgressDialog(contexts[0]);
+		mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
+		mProgressDialog.setIndeterminate(false);
+		mProgressDialog.setMax(100);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	}
+
 	@Override
-    protected String doInBackground(String... url) {
-        int count;
-        try {
-            URL myUrl = new URL(url[0]);
-            URLConnection conexion = myUrl.openConnection();
-            conexion.connect();
-            // this will show a tipical 0-100% progress bar
-            fileLength = conexion.getContentLength();
+	protected String doInBackground(String... url) {
+		int count;
+		try {
+			URL myUrl = new URL(url[0]);
+			URLConnection conexion = myUrl.openConnection();
+			conexion.connect();
+			// this will show a tipical 0-100% progress bar
+			fileLength = conexion.getContentLength();
 
-            // download the file
-            InputStream input = new BufferedInputStream(myUrl.openStream());
-            OutputStream output = new FileOutputStream(outFileName);
+			// download the file
+			InputStream input = new BufferedInputStream(myUrl.openStream());
+			OutputStream output = new FileOutputStream(outFileName);
 
-            byte data[] = new byte[1024];
+			byte data[] = new byte[1024];
 
-            long total = 0;
+			long total = 0;
 
-            while ((count = input.read(data)) != -1) {
-                total += count;
-                // publishing the progress....
-                publishProgress((int)(total*100/fileLength));
-                output.write(data, 0, count);
-            }
+			while ((count = input.read(data)) != -1) {
+				total += count;
+				// publishing the progress....
+				publishProgress((int) (total * 100 / fileLength));
+				output.write(data, 0, count);
+			}
 
-            output.flush();
-            output.close();
-            input.close();
-            fileLength=-1;
-            
-            // TODO Create the index (performance 10X)
-        	//SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(outFileName, null, SQLiteDatabase.OPEN_READWRITE);
-        	//if(myDataBase != null){
-        	//	myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
-        	//	myDataBase.close(); // Close the READWRITE session. Other sessions are read-only
-        	//}  
-            
-        } catch (Exception e) { }
-        return null;
-    }
+			output.flush();
+			output.close();
+			input.close();
+			fileLength = -1;
 
-    public void onProgressUpdate(String... args){
-        // here you will have to update the progressbar
-        // with something like
-        mProgressDialog.setProgress(Integer.parseInt(args[0]));
-    }
+			// TODO Create the index (performance 10X)
+			// SQLiteDatabase myDataBase =
+			// SQLiteDatabase.openDatabase(outFileName, null,
+			// SQLiteDatabase.OPEN_READWRITE);
+			// if(myDataBase != null){
+			// myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
+			// myDataBase.close(); // Close the READWRITE session. Other
+			// sessions are read-only
+			// }
+
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	public void onProgressUpdate(String... args) {
+		// here you will have to update the progressbar
+		// with something like
+		mProgressDialog.setProgress(Integer.parseInt(args[0]));
+	}
 
 }
