@@ -20,7 +20,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.google.code.quranquiz.R;
 
 import android.view.KeyEvent;
 import android.view.View;

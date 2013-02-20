@@ -2,6 +2,7 @@ package com.google.code.quranquiz;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,5 +49,20 @@ public class QQScoreRecord implements Serializable {
 		return DateFormat.getDateTimeInstance().format(
 				Calendar.getInstance().getTime())
 				+ "|0";
+	}
+	
+	public Date getDate(){
+		DateFormat df = DateFormat.getDateInstance();
+		
+		try {
+			return  ((Date)df.parse(this.date));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+		}
+		return new Date();
+	}
+	
+	public int getScore(){
+		return this.score;
 	}
 }

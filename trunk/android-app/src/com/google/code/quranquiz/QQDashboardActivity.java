@@ -51,6 +51,12 @@ public class QQDashboardActivity extends Activity {
 			public void onClick(View view) {
 				Toast.makeText(getApplicationContext(), "تحت التطوير!",
 						Toast.LENGTH_SHORT).show();
+				if(myQQProfileHandler == null){
+					myQQProfileHandler = new QQProfileHandler(getApplicationContext());
+					myQQProfileHandler.getProfile();
+				}
+				startActivity((new QQScoreChart(myQQProfileHandler.CurrentProfile))
+						.execute(getApplicationContext()));
 			}
 		});
 	}
