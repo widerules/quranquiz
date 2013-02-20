@@ -42,6 +42,9 @@
 	    	android:name="com.google.code.quranquiz.QQLastScreenActivity"
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity>
+	  	<activity
+	    	android:name="org.achartengine.GraphicalActivity" >
+	  	</activity>
 	</application>
 
 </manifest>
