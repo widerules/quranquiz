@@ -1,10 +1,10 @@
 package com.google.code.quranquiz;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceCategory;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class QQStudyListActivity extends SherlockPreferenceActivity {
 

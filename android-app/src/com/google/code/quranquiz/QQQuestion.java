@@ -51,74 +51,6 @@ public class QQQuestion {
 
 	}
 
-	private int getValidStartNear(int start) {
-		// Search for a correct neighbor start according to level
-		int dir = 1; // search down = +1
-		int limitHit = 1, disp2, disp3;
-		int start_shadow;
-		boolean srch_cond;
-		while (limitHit > 0) {
-			start_shadow = start;
-			limitHit = 0;
-			srch_cond = true;
-			while (srch_cond) {
-				start_shadow = start_shadow + dir;
-				if (start_shadow == 0 || start_shadow == QQUtils.QuranWords - 1) {
-					limitHit = 1;
-					dir = -dir;
-					break;
-				}
-				if (level == 1) { // Get a non-motashabehat near selected index
-
-					// Motashabehat found,continue!
-					srch_cond = q.sim2cnt(start_shadow) > 1;
-					validCount = 1; // \
-					qLen = 3; // -|-> Default Constants for level-1
-					oLen = 2;
-
-				} else if (level == 2) {
-
-					// Motashabehat found,continue!
-					srch_cond = q.sim2cnt(start_shadow) > 1;
-					validCount = 1; // \
-					qLen = 2; // -|-> Default Constants for level-2
-					oLen = 1;
-
-				} else {
-					// Search for a motashabehat near selected index
-					// Specify # Words to display
-					disp2 = 0;
-					disp3 = 0;
-
-					if (q.sim3cnt(start_shadow) < 5
-							&& q.sim3cnt(start_shadow) > 0)
-						disp3 = q.sim3cnt(start_shadow);
-
-					if (q.sim2cnt(start_shadow) < 5
-							&& q.sim2cnt(start_shadow) > 0)
-						disp2 = q.sim2cnt(start_shadow);
-
-					// Motashabehat not found,continue!
-					srch_cond = (disp3 == 0 && disp2 == 0);
-
-					if (srch_cond == false) { // Found!
-						validCount = (disp2 > disp3) ? disp2 : disp3;// TODO:
-																		// Check,
-																		// +1
-																		// caused
-																		// bound
-																		// excep
-						qLen = (disp2 > disp3) ? 1 : 2;
-					}
-					oLen = 1;
-				}
-			}
-
-			start = start_shadow;
-		}
-		return start;
-	}
-
 	private void fillCorrectOptions() {
 		// fill Correct Option Words @indx=1 (2,3,..validCount for higher
 		// levels)
@@ -186,6 +118,74 @@ public class QQQuestion {
 
 	public int getSeed() {
 		return lastSeed;
+	}
+
+	private int getValidStartNear(int start) {
+		// Search for a correct neighbor start according to level
+		int dir = 1; // search down = +1
+		int limitHit = 1, disp2, disp3;
+		int start_shadow;
+		boolean srch_cond;
+		while (limitHit > 0) {
+			start_shadow = start;
+			limitHit = 0;
+			srch_cond = true;
+			while (srch_cond) {
+				start_shadow = start_shadow + dir;
+				if (start_shadow == 0 || start_shadow == QQUtils.QuranWords - 1) {
+					limitHit = 1;
+					dir = -dir;
+					break;
+				}
+				if (level == 1) { // Get a non-motashabehat near selected index
+
+					// Motashabehat found,continue!
+					srch_cond = q.sim2cnt(start_shadow) > 1;
+					validCount = 1; // \
+					qLen = 3; // -|-> Default Constants for level-1
+					oLen = 2;
+
+				} else if (level == 2) {
+
+					// Motashabehat found,continue!
+					srch_cond = q.sim2cnt(start_shadow) > 1;
+					validCount = 1; // \
+					qLen = 2; // -|-> Default Constants for level-2
+					oLen = 1;
+
+				} else {
+					// Search for a motashabehat near selected index
+					// Specify # Words to display
+					disp2 = 0;
+					disp3 = 0;
+
+					if (q.sim3cnt(start_shadow) < 5
+							&& q.sim3cnt(start_shadow) > 0)
+						disp3 = q.sim3cnt(start_shadow);
+
+					if (q.sim2cnt(start_shadow) < 5
+							&& q.sim2cnt(start_shadow) > 0)
+						disp2 = q.sim2cnt(start_shadow);
+
+					// Motashabehat not found,continue!
+					srch_cond = (disp3 == 0 && disp2 == 0);
+
+					if (srch_cond == false) { // Found!
+						validCount = (disp2 > disp3) ? disp2 : disp3;// TODO:
+																		// Check,
+																		// +1
+																		// caused
+																		// bound
+																		// excep
+						qLen = (disp2 > disp3) ? 1 : 2;
+					}
+					oLen = 1;
+				}
+			}
+
+			start = start_shadow;
+		}
+		return start;
 	}
 
 }

@@ -33,8 +33,8 @@ public class QQStudyPart implements Serializable {
 		numQuestions += 1;
 	}
 
-	public int getStart() {
-		return start;
+	public float getCorrectRatio() {
+		return numCorrect / (float) numQuestions;
 	}
 
 	public int getLength() {
@@ -52,8 +52,8 @@ public class QQStudyPart implements Serializable {
 		return numQuestions;
 	}
 
-	public float getCorrectRatio() {
-		return numCorrect / (float) numQuestions;
+	public int getStart() {
+		return start;
 	}
 
 }

@@ -27,62 +27,79 @@ public class QQProfile implements Serializable {
 		setuid(uid);
 	}
 
-	public int getLastSeed() {
-		return lastSeed;
+	public void addCorrect(int currentPart) {
+		if (currentPart < QParts.size()) {
+			QParts.get(currentPart).addCorrect();
+		}
 	}
 
-	public void setLastSeed(int lastSeed) {
-		this.lastSeed = lastSeed;
+	public void addIncorrect(int currentPart) {
+		if (currentPart < QParts.size()) {
+			QParts.get(currentPart).addIncorrect();
+		}
+	}
+
+	public double getAvgLevel() {
+		// TODO Auto-generated method stub
+		return 1.5;
+	}
+
+	public int getCorrect(int part) {
+		if (part < QParts.size()) {
+			return QParts.get(part).getNumCorrect();
+		} else {
+			return 0;
+		}
+	}
+
+	public int getLastSeed() {
+		return lastSeed;
 	}
 
 	public int getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getCorrect(int part) {
-		if (part < QParts.size()) {
-			return ((QQStudyPart) QParts.get(part)).getNumCorrect();
-		} else {
-			return 0;
-		}
-	}
-
 	public int getQuesCount(int part) {
 		if (part < QParts.size()) {
-			return ((QQStudyPart) QParts.get(part)).getNumQuestions();
+			return QParts.get(part).getNumQuestions();
 		} else {
 			return 0;
 		}
 	}
 
-	public int getTotalStudyLength() {
-		int Length = 0;
-		QQStudyPart QPart;
-		for (int i = 0; i < QParts.size(); i++) {
-			QPart = QParts.get(i);
-			if (QPart.getStart() > 0)
-				Length += QPart.getLength();
+	public int getScore() {
+		int studyCount = this.getTotalStudyLength();
+		int correct = this.getTotalCorrect();
+		int total = this.getTotalQuesCount();
+
+		return (int) Math.ceil(3000
+				* ((double) studyCount / QQUtils.QuranWords) * 0.5
+				* (1 + Math.tanh(5 * (double) correct / total - 2.5)));
+	}
+
+	public String getScores() {
+		String tokens = "";
+		for (int i = 0; i < QScores.size(); i++) {
+			tokens += QScores.get(i).packedString();
+			if (i < QScores.size() - 1)
+				tokens += ";"; // Skip ; after the last token
 		}
-		return Length;
+		return tokens;
 	}
 
 	public QQSparseResult getSparsePoint(int CntTot) {
 		int Length = 0, i, pLength;
 		for (i = 0; i < QParts.size(); i++) {
-			pLength = ((QQStudyPart) QParts.get(i)).getLength();
+			pLength = QParts.get(i).getLength();
 			if (CntTot < Length + pLength) {
-				return new QQSparseResult(
-						((QQStudyPart) QParts.get(i)).getStart() + CntTot
-								- Length, i);
+				return new QQSparseResult(QParts.get(i).getStart() + CntTot
+						- Length, i);
 			} else {
 				Length += pLength;
 			}
 		}
-		return new QQSparseResult(((QQStudyPart) QParts.get(i)).getStart(), i);
+		return new QQSparseResult(QParts.get(i).getStart(), i);
 	}
 
 	public String getStudyParts() {
@@ -98,31 +115,6 @@ public class QQProfile implements Serializable {
 				tokens += ";"; // Skip ; after the last token
 		}
 		return tokens;
-	}
-
-	public void addIncorrect(int currentPart) {
-		if (currentPart < QParts.size()) {
-			((QQStudyPart) QParts.get(currentPart)).addIncorrect();
-		}
-	}
-
-	public void addCorrect(int currentPart) {
-		if (currentPart < QParts.size()) {
-			((QQStudyPart) QParts.get(currentPart)).addCorrect();
-		}
-	}
-
-	public void setStudyParts(String QPartsString) {
-		String[] partElements;
-
-		QParts = new Vector<QQStudyPart>();
-		for (String token : QPartsString.split(";")) {
-			partElements = token.split(",");
-			QParts.add(new QQStudyPart(Integer.parseInt(partElements[0]),
-					Integer.parseInt(partElements[1]), Integer
-							.parseInt(partElements[2]), Integer
-							.parseInt(partElements[3])));
-		}
 	}
 
 	public int getTotalCorrect() {
@@ -147,27 +139,27 @@ public class QQProfile implements Serializable {
 		return Tot;
 	}
 
-	public int getScore() {
-		int studyCount = this.getTotalStudyLength();
-		int correct = this.getTotalCorrect();
-		int total = this.getTotalQuesCount();
-
-		return (int) Math.ceil(3000
-				* ((double) studyCount / QQUtils.QuranWords) * 0.5
-				* (1 + Math.tanh(5 * (double) correct / total - 2.5)));
+	public int getTotalStudyLength() {
+		int Length = 0;
+		QQStudyPart QPart;
+		for (int i = 0; i < QParts.size(); i++) {
+			QPart = QParts.get(i);
+			if (QPart.getStart() > 0)
+				Length += QPart.getLength();
+		}
+		return Length;
 	}
 
 	public String getuid() {
 		return uid;
 	}
 
-	public void setuid(String id) {
-		uid = id;
+	public void setLastSeed(int lastSeed) {
+		this.lastSeed = lastSeed;
 	}
 
-	public double getAvgLevel() {
-		// TODO Auto-generated method stub
-		return 1.5;
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	private void setScoreHistory(String QScoresString) {
@@ -177,14 +169,21 @@ public class QQProfile implements Serializable {
 		}
 	}
 
-	public String getScores() {
-		String tokens = "";
-		for (int i = 0; i < QScores.size(); i++) {
-			tokens += QScores.get(i).packedString();
-			if (i < QScores.size() - 1)
-				tokens += ";"; // Skip ; after the last token
+	public void setStudyParts(String QPartsString) {
+		String[] partElements;
+
+		QParts = new Vector<QQStudyPart>();
+		for (String token : QPartsString.split(";")) {
+			partElements = token.split(",");
+			QParts.add(new QQStudyPart(Integer.parseInt(partElements[0]),
+					Integer.parseInt(partElements[1]), Integer
+							.parseInt(partElements[2]), Integer
+							.parseInt(partElements[3])));
 		}
-		return tokens;
+	}
+
+	public void setuid(String id) {
+		uid = id;
 	}
 
 	public boolean updateScoreRecord() {

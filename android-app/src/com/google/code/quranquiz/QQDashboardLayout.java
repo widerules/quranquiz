@@ -29,52 +29,6 @@ public class QQDashboardLayout extends ViewGroup {
 	}
 
 	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		mMaxChildWidth = 0;
-		mMaxChildHeight = 0;
-
-		// Measure once to find the maximum child size.
-
-		int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-				MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
-		int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-				MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
-
-		final int count = getChildCount();
-		for (int i = 0; i < count; i++) {
-			final View child = getChildAt(i);
-			if (child.getVisibility() == GONE) {
-				continue;
-			}
-
-			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-
-			mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
-			mMaxChildHeight = Math.max(mMaxChildHeight,
-					child.getMeasuredHeight());
-		}
-
-		// Measure again for each child to be exactly the same size.
-
-		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth,
-				MeasureSpec.EXACTLY);
-		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight,
-				MeasureSpec.EXACTLY);
-
-		for (int i = 0; i < count; i++) {
-			final View child = getChildAt(i);
-			if (child.getVisibility() == GONE) {
-				continue;
-			}
-
-			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-		}
-
-		setMeasuredDimension(resolveSize(mMaxChildWidth, widthMeasureSpec),
-				resolveSize(mMaxChildHeight, heightMeasureSpec));
-	}
-
-	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int width = r - l;
 		int height = b - t;
@@ -175,5 +129,51 @@ public class QQDashboardLayout extends ViewGroup {
 					: (top + height));
 			++visibleIndex;
 		}
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		mMaxChildWidth = 0;
+		mMaxChildHeight = 0;
+
+		// Measure once to find the maximum child size.
+
+		int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+				MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
+		int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+				MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
+
+		final int count = getChildCount();
+		for (int i = 0; i < count; i++) {
+			final View child = getChildAt(i);
+			if (child.getVisibility() == GONE) {
+				continue;
+			}
+
+			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+
+			mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
+			mMaxChildHeight = Math.max(mMaxChildHeight,
+					child.getMeasuredHeight());
+		}
+
+		// Measure again for each child to be exactly the same size.
+
+		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth,
+				MeasureSpec.EXACTLY);
+		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight,
+				MeasureSpec.EXACTLY);
+
+		for (int i = 0; i < count; i++) {
+			final View child = getChildAt(i);
+			if (child.getVisibility() == GONE) {
+				continue;
+			}
+
+			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+		}
+
+		setMeasuredDimension(resolveSize(mMaxChildWidth, widthMeasureSpec),
+				resolveSize(mMaxChildHeight, heightMeasureSpec));
 	}
 }

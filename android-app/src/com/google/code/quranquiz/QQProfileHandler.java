@@ -29,22 +29,65 @@ public class QQProfileHandler implements Serializable {
 		myContext = context;
 	}
 
-	public void saveProfile(QQProfile prof) {
-
+	private boolean checkLastProfile() {
+		// Check if a profile exists
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(myContext);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("pref_uid", prof.getuid());
-		editor.putInt("lastSeed", prof.getLastSeed());
-		editor.putString("pref_userLevel", Integer.toString(prof.getLevel()));
-		// editor.putInt("score", prof.getCorrect());
-		// editor.putInt("quesCount", prof.getQuesCount());
-		editor.putString("studyParts", prof.getStudyParts());
-		editor.putString("pref_scores", prof.getScores());
+		return settings.contains("lastSeed");
+	}
 
-		editor.commit();
+	public String getHashedUID() {
+		String uid;
+		/* Get Google account */
+		AccountManager manager = (AccountManager) myContext
+				.getSystemService(android.content.Context.ACCOUNT_SERVICE);
+		Account[] list = manager.getAccounts();
+		if (list.length > 0) {
+			uid = list[0].name;
+		} else {
+			/* If no account, get Phone ID */
+			uid = ((TelephonyManager) myContext
+					.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+			if (uid.length() < 1) {
+				/* If not a phone, get Wifi MAC */
+				uid = ((WifiManager) myContext
+						.getSystemService(Context.WIFI_SERVICE))
+						.getConnectionInfo().getMacAddress();
+				if (uid.length() < 1) {
+					/* If off-line, get collide-able string */
+					uid = "35"
+							+ // we make this look like a valid IMEI
+							Build.BOARD.length() % 10 + Build.BRAND.length()
+							% 10 + Build.CPU_ABI.length() % 10
+							+ Build.DEVICE.length() % 10
+							+ Build.DISPLAY.length() % 10 + Build.HOST.length()
+							% 10 + Build.ID.length() % 10
+							+ Build.MANUFACTURER.length() % 10
+							+ Build.MODEL.length() % 10
+							+ Build.PRODUCT.length() % 10 + Build.TAGS.length()
+							% 10 + Build.TYPE.length() % 10
+							+ Build.USER.length() % 10; // 13 digits
+				}
+			}
+		}
+		// return uid;
+		return QQUtils.md5(uid);
+	}
 
-		CurrentProfile = prof;
+	private QQProfile getLastProfile() {
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(myContext);
+
+		// Note: Pref entries from xml are strings!
+		// manually inserted via editor are integers
+
+		return new QQProfile(settings.getString("pref_uid", ""),
+				settings.getInt("lastSeed", 0), Integer.parseInt(settings
+						.getString("pref_userLevel", "")),
+				// settings.getInt("score", 0),
+				// settings.getInt("quesCount", 0),
+				settings.getString("studyParts", ""), settings.getString(
+						"pref_scores", ""));
 	}
 
 	public QQProfile getProfile() {
@@ -66,27 +109,8 @@ public class QQProfileHandler implements Serializable {
 		return myQQProfile;
 	}
 
-	private QQProfile getLastProfile() {
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(myContext);
-
-		// Note: Pref entries from xml are strings!
-		// manually inserted via editor are integers
-
-		return new QQProfile(settings.getString("pref_uid", ""),
-				settings.getInt("lastSeed", 0), Integer.parseInt(settings
-						.getString("pref_userLevel", "")),
-				// settings.getInt("score", 0),
-				// settings.getInt("quesCount", 0),
-				settings.getString("studyParts", ""), settings.getString(
-						"pref_scores", ""));
-	}
-
-	private boolean checkLastProfile() {
-		// Check if a profile exists
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(myContext);
-		return settings.contains("lastSeed");
+	public void reLoadCurrentProfile() {
+		CurrentProfile = getLastProfile();
 	}
 
 	public void reLoadParts(QQProfile profile) {
@@ -131,46 +155,22 @@ public class QQProfileHandler implements Serializable {
 		saveProfile(profile);
 	}
 
-	public void reLoadCurrentProfile() {
-		CurrentProfile = getLastProfile();
-	}
+	public void saveProfile(QQProfile prof) {
 
-	public String getHashedUID() {
-		String uid;
-		/* Get Google account */
-		AccountManager manager = (AccountManager) myContext
-				.getSystemService(android.content.Context.ACCOUNT_SERVICE);
-		Account[] list = manager.getAccounts();
-		if (list.length > 0) {
-			uid = list[0].name;
-		} else {
-			/* If no account, get Phone ID */
-			uid = ((TelephonyManager) myContext
-					.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-			if (uid.length() < 1) {
-				/* If not a phone, get Wifi MAC */
-				uid = ((WifiManager) myContext
-						.getSystemService(Context.WIFI_SERVICE))
-						.getConnectionInfo().getMacAddress();
-				if (uid.length() < 1) {
-					/* If off-line, get collide-able string */
-					uid = "35"
-							+ // we make this look like a valid IMEI
-							Build.BOARD.length() % 10 + Build.BRAND.length()
-							% 10 + Build.CPU_ABI.length() % 10
-							+ Build.DEVICE.length() % 10
-							+ Build.DISPLAY.length() % 10 + Build.HOST.length()
-							% 10 + Build.ID.length() % 10
-							+ Build.MANUFACTURER.length() % 10
-							+ Build.MODEL.length() % 10
-							+ Build.PRODUCT.length() % 10 + Build.TAGS.length()
-							% 10 + Build.TYPE.length() % 10
-							+ Build.USER.length() % 10; // 13 digits
-				}
-			}
-		}
-		// return uid;
-		return QQUtils.md5(uid);
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(myContext);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("pref_uid", prof.getuid());
+		editor.putInt("lastSeed", prof.getLastSeed());
+		editor.putString("pref_userLevel", Integer.toString(prof.getLevel()));
+		// editor.putInt("score", prof.getCorrect());
+		// editor.putInt("quesCount", prof.getQuesCount());
+		editor.putString("studyParts", prof.getStudyParts());
+		editor.putString("pref_scores", prof.getScores());
+
+		editor.commit();
+
+		CurrentProfile = prof;
 	}
 
 }

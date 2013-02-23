@@ -32,6 +32,35 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * Check if the database already exist to avoid re-downloading the file each
+	 * time you open the application.
+	 * 
+	 * @return true if it exists, false if it doesn't
+	 */
+	private boolean checkDataBase() {
+
+		SQLiteDatabase checkDB = null;
+
+		try {
+			String myPath = DB_PATH + DB_NAME;
+			checkDB = SQLiteDatabase.openDatabase(myPath, null,
+					SQLiteDatabase.OPEN_READONLY);
+		} catch (SQLiteException e) {
+		}
+
+		if (checkDB != null) {
+			checkDB.close();
+		}
+
+		return checkDB != null ? true : false;
+	}
+
+	public void closeDatabase() {
+		myDataBase.close();
+
+	}
+
+	/**
 	 * Creates a empty database on the system and rewrites it with your own
 	 * database.
 	 * */
@@ -65,30 +94,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Check if the database already exist to avoid re-downloading the file each
-	 * time you open the application.
-	 * 
-	 * @return true if it exists, false if it doesn't
-	 */
-	private boolean checkDataBase() {
-
-		SQLiteDatabase checkDB = null;
-
-		try {
-			String myPath = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null,
-					SQLiteDatabase.OPEN_READONLY);
-		} catch (SQLiteException e) {
-		}
-
-		if (checkDB != null) {
-			checkDB.close();
-		}
-
-		return checkDB != null ? true : false;
-	}
-
-	/**
 	 * Downloads your database.
 	 * */
 	private void downloadDataBase(Context myContext) {
@@ -98,6 +103,16 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		downloadFile.execute(DB_DOWNLOAD);
 	}
 
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+	}
+
 	public void openDataBase() throws SQLException {
 
 		// Open the database
@@ -105,65 +120,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null,
 				SQLiteDatabase.OPEN_READONLY);
 
-	}
-
-	/* QQ Adaptors set */
-	public String txt(int idx) {
-		String s = new String("");
-
-		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txt from q where _id="
-					+ idx, null);
-			if (cur.moveToFirst()) {
-				s = cur.getString(0);
-				cur.close();
-			}
-		}
-		return s;
-	}
-
-	public String txt(int idx, int len) {
-		String s = new String("");
-
-		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txt from q where _id>"
-					+ (idx - 1) + " and _id<" + (idx + len), null);
-			if (cur.moveToFirst()) {
-				do {
-					s = s + "   " + cur.getString(0);
-				} while (cur.moveToNext());
-				cur.close();
-			}
-		}
-		return s;
-	}
-
-	public int sim2cnt(int idx) {
-		int s = 0;
-
-		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select sim2 from q where _id="
-					+ idx, null);
-			if (cur.moveToFirst()) {
-				s = cur.getInt(0);
-				cur.close();
-			}
-		}
-		return s;
-	}
-
-	public int sim3cnt(int idx) {
-		int s = 0;
-
-		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select sim3 from q where _id="
-					+ idx, null);
-			if (cur.moveToFirst()) {
-				s = cur.getInt(0);
-				cur.close();
-			}
-		}
-		return s;
 	}
 
 	public List<Integer> sim1idx(int idx) {
@@ -181,6 +137,20 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			}
 		}
 		return ids;
+	}
+
+	public int sim2cnt(int idx) {
+		int s = 0;
+
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery("select sim2 from q where _id="
+					+ idx, null);
+			if (cur.moveToFirst()) {
+				s = cur.getInt(0);
+				cur.close();
+			}
+		}
+		return s;
 	}
 
 	public List<Integer> sim2idx(int idx) {
@@ -208,6 +178,20 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			}
 		}
 		return ids;
+	}
+
+	public int sim3cnt(int idx) {
+		int s = 0;
+
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery("select sim3 from q where _id="
+					+ idx, null);
+			if (cur.moveToFirst()) {
+				s = cur.getInt(0);
+				cur.close();
+			}
+		}
+		return s;
 	}
 
 	public List<Integer> sim3idx(int idx) {
@@ -244,6 +228,37 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		return ids;
 	}
 
+	/* QQ Adaptors set */
+	public String txt(int idx) {
+		String s = new String("");
+
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery("select txt from q where _id="
+					+ idx, null);
+			if (cur.moveToFirst()) {
+				s = cur.getString(0);
+				cur.close();
+			}
+		}
+		return s;
+	}
+
+	public String txt(int idx, int len) {
+		String s = new String("");
+
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery("select txt from q where _id>"
+					+ (idx - 1) + " and _id<" + (idx + len), null);
+			if (cur.moveToFirst()) {
+				do {
+					s = s + "   " + cur.getString(0);
+				} while (cur.moveToNext());
+				cur.close();
+			}
+		}
+		return s;
+	}
+
 	public List<Integer> uniqueSim1Not2Plus1(int idx) {
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.clear();
@@ -274,21 +289,6 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			}
 		}
 		return ids;
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-	}
-
-	public void closeDatabase() {
-		myDataBase.close();
-
 	}
 
 }
