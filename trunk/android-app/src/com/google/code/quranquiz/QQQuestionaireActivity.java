@@ -1,6 +1,7 @@
 package com.google.code.quranquiz;
 
 import java.io.IOException;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,15 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +20,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class QQQuestionaireActivity extends SherlockActivity implements
 		android.view.View.OnClickListener {
@@ -52,47 +50,38 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.menu, (Menu) menu);
+	public void onClick(View v) {
+		int SelID = -2;
 
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Intent i = new Intent();
-			i.putExtra("ProfileHandler", myQQProfileHandler);
-			setResult(12345, i);
-			finish();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		// profileHandler.saveProfile(prof); // TODO:
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.Profile:
-			Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
-					QQStudyListActivity.class);
-			intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
-			startActivity(intentStudyList);
+		switch (v.getId()) {
+		case R.id.bOp1:
+			SelID = 0;
 			break;
-		case R.id.Settings:
-			Intent intentPreferences = new Intent(QQQuestionaireActivity.this,
-					QQPreferences.class);
-			startActivity(intentPreferences);
+		case R.id.bOp2:
+			SelID = 1;
+			break;
+		case R.id.bOp3:
+			SelID = 2;
+			break;
+		case R.id.bOp4:
+			SelID = 3;
+			break;
+		case R.id.bOp5:
+			SelID = 4;
 			break;
 		}
-		return true;
+		if (SelID < 0)
+			return;
+
+		userAction(SelID);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// setContentView(R.layout.main);
+
+		// some work that needs to be done on orientation change
 	}
 
 	@Override
@@ -179,15 +168,92 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
 	protected void onDestroy() {
 		if (q != null)
 			q.closeDatabase();
 		super.onDestroy();
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			Intent i = new Intent();
+			i.putExtra("ProfileHandler", myQQProfileHandler);
+			setResult(12345, i);
+			finish();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.Profile:
+			Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
+					QQStudyListActivity.class);
+			intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
+			startActivity(intentStudyList);
+			break;
+		case R.id.Settings:
+			Intent intentPreferences = new Intent(QQQuestionaireActivity.this,
+					QQPreferences.class);
+			startActivity(intentPreferences);
+			break;
+		}
+		return true;
+	}
+
+	@Override
 	protected void onResume() {
 		myQQProfileHandler.reLoadCurrentProfile();
 		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// profileHandler.saveProfile(prof); // TODO:
+	}
+
+	private void showCorrectAnswer(String tmp) {
+		correctAnswer.setMessage(tmp);
+		correctAnswer.create().show();
+	}
+
+	private void startTimer(int fire) {
+		bar = (ProgressBar) findViewById(R.id.progressBar1);
+		bar.setProgress(100);
+		bar.setVisibility(View.VISIBLE);
+
+		final int millis = fire * 1000; // milli seconds
+
+		/** CountDownTimer starts with fire seconds and every onTick is 1 second */
+		if (cdt != null)
+			cdt.cancel();
+		cdt = new CountDownTimer(millis, 1000) {
+			int cc = 1;
+
+			@Override
+			public void onFinish() {
+				// DO something when time is up
+				bar.setVisibility(View.INVISIBLE);
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+				bar.setProgress((1 - cc * 1000 / millis) * 100);
+				cc++;
+			}
+		}.start();
+
 	}
 
 	private void userAction(int selID) {
@@ -277,71 +343,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		QQinit = 0;
 
-	}
-
-	private void showCorrectAnswer(String tmp) {
-		correctAnswer.setMessage(tmp);
-		correctAnswer.create().show();
-	}
-
-	public void onClick(View v) {
-		int SelID = -2;
-
-		switch (v.getId()) {
-		case R.id.bOp1:
-			SelID = 0;
-			break;
-		case R.id.bOp2:
-			SelID = 1;
-			break;
-		case R.id.bOp3:
-			SelID = 2;
-			break;
-		case R.id.bOp4:
-			SelID = 3;
-			break;
-		case R.id.bOp5:
-			SelID = 4;
-			break;
-		}
-		if (SelID < 0)
-			return;
-
-		userAction(SelID);
-	}
-
-	private void startTimer(int fire) {
-		bar = (ProgressBar) findViewById(R.id.progressBar1);
-		bar.setProgress(100);
-		bar.setVisibility(View.VISIBLE);
-
-		final int millis = fire * 1000; // milli seconds
-
-		/** CountDownTimer starts with fire seconds and every onTick is 1 second */
-		if (cdt != null)
-			cdt.cancel();
-		cdt = new CountDownTimer(millis, 1000) {
-			int cc = 1;
-
-			public void onTick(long millisUntilFinished) {
-				bar.setProgress((1 - cc * 1000 / millis) * 100);
-				cc++;
-			}
-
-			public void onFinish() {
-				// DO something when time is up
-				bar.setVisibility(View.INVISIBLE);
-			}
-		}.start();
-
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// setContentView(R.layout.main);
-
-		// some work that needs to be done on orientation change
 	}
 
 }

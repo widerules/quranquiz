@@ -31,6 +31,22 @@ public class QQLastScreenActivity extends SherlockActivity {
 			+ "يمكنك مشاركة اصدقاءك عن طريق احد الطرق بالقائمة العلوية،"
 			+ " فالمشاركة تشجع التنافس في الطاعة كما انها تساعد على نشر البرنامج";
 
+	private Intent createShareIntent() {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, conclusionMessage
+				+ " quranquiz.net");
+		return shareIntent;
+	}
+
+	private String getMessageFromProfile(QQProfile currentProfile) {
+		String msg;
+		msg = "لقد حصلت على " + currentProfile.getScore()
+				+ "  نقطة في #اختبار_القران";
+		return msg;
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -47,6 +63,25 @@ public class QQLastScreenActivity extends SherlockActivity {
 			postAnonymousData(ProfileHandler.CurrentProfile);
 			ProfileHandler.saveProfile(ProfileHandler.CurrentProfile);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate your menu.
+		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
+
+		// Set file with share history to the provider and set the share intent.
+		MenuItem actionItem = menu
+				.findItem(R.id.menu_item_share_action_provider_action_bar);
+		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
+				.getActionProvider();
+		actionProvider
+				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		// Note that you can set/change the intent any time,
+		// say when the user has selected an image.
+		actionProvider.setShareIntent(createShareIntent());
+
+		return true;
 	}
 
 	private void postAnonymousData(QQProfile currentProfile) {
@@ -88,39 +123,5 @@ public class QQLastScreenActivity extends SherlockActivity {
 			// TODO Auto-generated catch block
 		}
 
-	}
-
-	private String getMessageFromProfile(QQProfile currentProfile) {
-		String msg;
-		msg = "لقد حصلت على " + currentProfile.getScore()
-				+ "  نقطة في #اختبار_القران";
-		return msg;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate your menu.
-		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
-
-		// Set file with share history to the provider and set the share intent.
-		MenuItem actionItem = menu
-				.findItem(R.id.menu_item_share_action_provider_action_bar);
-		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-				.getActionProvider();
-		actionProvider
-				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-		// Note that you can set/change the intent any time,
-		// say when the user has selected an image.
-		actionProvider.setShareIntent(createShareIntent());
-
-		return true;
-	}
-
-	private Intent createShareIntent() {
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("text/plain");
-		shareIntent.putExtra(Intent.EXTRA_TEXT, conclusionMessage
-				+ " quranquiz.net");
-		return shareIntent;
 	}
 }

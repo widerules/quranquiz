@@ -12,6 +12,28 @@ public class QQDashboardActivity extends Activity {
 
 	private QQProfileHandler myQQProfileHandler = null;
 
+	// Function to read the result from newly created activity
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == 12345) {
+			myQQProfileHandler = (QQProfileHandler) data.getExtras().get(
+					"ProfileHandler");
+		}
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (myQQProfileHandler != null) {
+			Intent lastIntent = new Intent(QQDashboardActivity.this,
+					QQLastScreenActivity.class);
+			lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
+			startActivity(lastIntent);
+		}
+		finish();
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,35 +73,15 @@ public class QQDashboardActivity extends Activity {
 			public void onClick(View view) {
 				Toast.makeText(getApplicationContext(), "تحت التطوير!",
 						Toast.LENGTH_SHORT).show();
-				if(myQQProfileHandler == null){
-					myQQProfileHandler = new QQProfileHandler(getApplicationContext());
+				if (myQQProfileHandler == null) {
+					myQQProfileHandler = new QQProfileHandler(
+							getApplicationContext());
 					myQQProfileHandler.getProfile();
 				}
-				startActivity((new QQScoreChart(myQQProfileHandler.CurrentProfile))
+				startActivity((new QQScoreChart(
+						myQQProfileHandler.CurrentProfile))
 						.execute(getApplicationContext()));
 			}
 		});
-	}
-
-	// Function to read the result from newly created activity
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == 12345) {
-			myQQProfileHandler = (QQProfileHandler) data.getExtras().get(
-					"ProfileHandler");
-		}
-
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (myQQProfileHandler != null) {
-			Intent lastIntent = new Intent(QQDashboardActivity.this,
-					QQLastScreenActivity.class);
-			lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
-			startActivity(lastIntent);
-		}
-		finish();
 	}
 }

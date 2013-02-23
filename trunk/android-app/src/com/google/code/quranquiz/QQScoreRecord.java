@@ -9,8 +9,22 @@ import java.util.Date;
 public class QQScoreRecord implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static String getInitScoreRecordPack() {
+		return DateFormat.getDateTimeInstance().format(
+				Calendar.getInstance().getTime())
+				+ "|0";
+	}
+
 	private String date = "";
+
 	private int score = 0;
+
+	public QQScoreRecord(int score) {
+		this.date = DateFormat.getDateTimeInstance().format(
+				Calendar.getInstance().getTime());
+		this.score = score;
+	}
 
 	public QQScoreRecord(String packed) {
 		String[] tokens;
@@ -19,16 +33,25 @@ public class QQScoreRecord implements Serializable {
 		this.score = Integer.valueOf(tokens[1]);
 	}
 
-	public QQScoreRecord(int score) {
-		this.date = DateFormat.getDateTimeInstance().format(
-				Calendar.getInstance().getTime());
-		this.score = score;
-	}
-
 	public QQScoreRecord(String date, int score) {
 		this.date = date;
 		this.score = score;
 
+	}
+
+	public Date getDate() {
+		DateFormat df = DateFormat.getDateInstance();
+
+		try {
+			return df.parse(this.date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+		}
+		return new Date();
+	}
+
+	public int getScore() {
+		return this.score;
 	}
 
 	public boolean isOlderThan1Day() {
@@ -43,26 +66,5 @@ public class QQScoreRecord implements Serializable {
 
 	public String packedString() {
 		return date + "|" + String.valueOf(score);
-	}
-
-	public static String getInitScoreRecordPack() {
-		return DateFormat.getDateTimeInstance().format(
-				Calendar.getInstance().getTime())
-				+ "|0";
-	}
-	
-	public Date getDate(){
-		DateFormat df = DateFormat.getDateInstance();
-		
-		try {
-			return  ((Date)df.parse(this.date));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-		}
-		return new Date();
-	}
-	
-	public int getScore(){
-		return this.score;
 	}
 }

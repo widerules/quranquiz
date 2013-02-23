@@ -49,12 +49,42 @@ public class QQUtils {
 	public static final int[] last5_juz_idx = { sura_idx[44], sura_idx[49],
 			sura_idx[56], sura_idx[65], sura_idx[76], QuranWords };
 
+	public static int findIdx(int[] scrambled, int i) {
+		for (int j = 0; j < scrambled.length; j++)
+			if (scrambled[j] == i)
+				return j;
+		return -1;
+	}
+
+	public static String getSuraName(int wordIdx) {
+
+		// TODO: Make a binary search, faster!
+		for (int i = 0; i < 113; i++)
+			if (wordIdx < sura_idx[i]) {
+				return sura_name[i];
+			}
+		return sura_name[112];
+	}
+
 	public static List<Integer> ListPlus(List<Integer> diffList, int i) {
 		List<Integer> plus = new ArrayList<Integer>();
 		plus = diffList;
 		for (int j = 0; j < plus.size(); j++)
 			plus.set(j, plus.get(j) + i);
 		return plus;
+	}
+
+	public static String md5(String s) {
+		MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// e.printStackTrace();
+			return s; // Same string better than an empty/null one :)
+		}
+		digest.update(s.getBytes(), 0, s.length());
+		String hash = new BigInteger(1, digest.digest()).toString(16);
+		return hash;
 	}
 
 	public static int[] randperm(int n) {
@@ -74,36 +104,6 @@ public class QQUtils {
 			perm[j] = temp;
 		}
 		return perm;
-	}
-
-	public static int findIdx(int[] scrambled, int i) {
-		for (int j = 0; j < scrambled.length; j++)
-			if (scrambled[j] == i)
-				return j;
-		return -1;
-	}
-
-	public static String getSuraName(int wordIdx) {
-
-		// TODO: Make a binary search, faster!
-		for (int i = 0; i < 113; i++)
-			if (wordIdx < sura_idx[i]) {
-				return sura_name[i];
-			}
-		return sura_name[112];
-	}
-
-	public static String md5(String s) {
-		MessageDigest digest = null;
-		try {
-			digest = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			// e.printStackTrace();
-			return s; // Same string better than an empty/null one :)
-		}
-		digest.update(s.getBytes(), 0, s.length());
-		String hash = new BigInteger(1, digest.digest()).toString(16);
-		return hash;
 	}
 
 }

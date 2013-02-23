@@ -27,14 +27,6 @@ public class QQDownloader extends AsyncTask<String, Integer, String> {
 	 */
 	private ProgressDialog mProgressDialog;
 
-	protected void onPreExecute(Context... contexts) {
-		mProgressDialog = new ProgressDialog(contexts[0]);
-		mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
-		mProgressDialog.setIndeterminate(false);
-		mProgressDialog.setMax(100);
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-	}
-
 	@Override
 	protected String doInBackground(String... url) {
 		int count;
@@ -78,6 +70,14 @@ public class QQDownloader extends AsyncTask<String, Integer, String> {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+	protected void onPreExecute(Context... contexts) {
+		mProgressDialog = new ProgressDialog(contexts[0]);
+		mProgressDialog.setMessage("جاري تنزيل الملف الابتدائي");
+		mProgressDialog.setIndeterminate(false);
+		mProgressDialog.setMax(100);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 	}
 
 	public void onProgressUpdate(String... args) {
