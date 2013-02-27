@@ -62,6 +62,15 @@ public class QQDashboardActivity extends Activity {
 
 		btnSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				if (myQQProfileHandler == null) {
+					myQQProfileHandler = new QQProfileHandler(
+							getApplicationContext());
+					myQQProfileHandler.getProfile();
+				}
+				Intent intentStudyList = new Intent(QQDashboardActivity.this,
+						QQStudyListActivity.class);
+				intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
+				startActivity(intentStudyList);
 				Toast.makeText(getApplicationContext(), "تحت التطوير!",
 						Toast.LENGTH_SHORT).show();
 			}

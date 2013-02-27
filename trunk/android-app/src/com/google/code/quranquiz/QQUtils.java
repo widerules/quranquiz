@@ -10,6 +10,11 @@ import java.util.Random;
 public class QQUtils {
 
 	public static int QuranWords = 77797; // TODO: Fix all indeces
+	public static int Juz2AvgWords = QuranWords/30;
+	
+	// Question Count after which the score starts to saturate per Juz2
+	public static int Juz2SaturationQCount = 10; 
+	
 	public static final int[] sura_idx = { 30, 6170, 9671, 13434, 16271, 19327,
 			22668, 23910, 26415, 28254, 30200, 31995, 32848, 33678, 34335,
 			36179, 37737, 39320, 40291, 41644, 42818, 44097, 45149, 46468,
@@ -104,6 +109,22 @@ public class QQUtils {
 			perm[j] = temp;
 		}
 		return perm;
+	}
+	
+	public static double sCurve(double ratio, double max){
+		double y[]={0.001, 0.11, 0.87, 0.98};
+		double yp;
+
+	    if (ratio<0.3*max)
+	            yp = y[0] + (y[1]-y[0])/(0.3*max-0)*(ratio-0);
+	    else if (ratio<0.7*max)
+	            yp = y[1] + (y[2]-y[1])/(0.7*max-0.3*max)*(ratio-0.3*max);
+	    else if (ratio<max)
+	            yp = y[2] + (y[3]-y[2])/(max-0.7*max)*(ratio-0.7*max);
+	    else  //(ratio>=max)
+	            yp = y[3] + 0.005*(ratio-max);
+
+		return yp;
 	}
 
 }
