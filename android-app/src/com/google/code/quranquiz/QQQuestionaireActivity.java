@@ -279,17 +279,18 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		if (QOptIdx == -1 || QOptIdx == 10) {
 			myQQProfile = myQQProfileHandler.getProfile();
-			Quest = new QQQuestion(myQQProfile, q);
-			CurrentPart = Quest.CurrentPart;
-
+			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong answer
 				myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
-						// TODO: Bug: +1 with every new ?
-				myQQProfile.addCorrect(CurrentPart);
+				if(QOptIdx == 10)
+					myQQProfile.addCorrect(CurrentPart);
 			}
 
+			Quest = new QQQuestion(myQQProfile, q);
+			CurrentPart = Quest.CurrentPart;
+			
 			// Update profile after a new Question!
 			lastSeed = Quest.getSeed();
 			myQQProfile.setLastSeed(lastSeed);

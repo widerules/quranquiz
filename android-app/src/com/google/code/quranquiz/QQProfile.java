@@ -8,7 +8,7 @@ public class QQProfile implements Serializable {
 	private static final long serialVersionUID = 21L;
 	private String uid;
 	private int lastSeed; // Seed for the Question
-	private int level; // TODO: Encapsulate
+	private int level;
 	private Vector<QQStudyPart> QParts;
 	private Vector<QQScoreRecord> QScores;
 
@@ -27,21 +27,24 @@ public class QQProfile implements Serializable {
 		setuid(uid);
 	}
 
-	public void addCorrect(int currentPart) { //TODO: Level adjust
+	public void addCorrect(int currentPart) {
 		if (currentPart < QParts.size()) {
-			QParts.get(currentPart).addCorrect();
+			QParts.get(currentPart).addCorrect(level);
 		}
 	}
 
-	public void addIncorrect(int currentPart) { //TODO: Level adjust
+	public void addIncorrect(int currentPart) {
 		if (currentPart < QParts.size()) {
 			QParts.get(currentPart).addIncorrect();
 		}
 	}
 
-	public double getAvgLevel() {
-		// TODO Auto-generated method stub
-		return 1.5;
+	public double getAvgLevel(int part) {
+		if (part < QParts.size()) {
+			return QParts.get(part).getAvgLevel();
+		} else {
+			return 1.0;
+		}	
 	}
 
 	public int getCorrect(int part) {
@@ -74,7 +77,7 @@ public class QQProfile implements Serializable {
 		double partWeight,scaledQCount,avgLevel,scaledCorrectRatio;
 		for(int i=0;i<QParts.size();i++){
 			partWeight   = QParts.get(i).getNonZeroLength();
-			partWeight  /=QQUtils.Juz2AvgWords;
+			partWeight	/= QQUtils.Juz2AvgWords;
 			avgLevel     = QParts.get(i).getAvgLevel();
 			scaledQCount = QQUtils.sCurve(QParts.get(i).getNumQuestions(),
 										  QQUtils.Juz2SaturationQCount*partWeight);
@@ -117,7 +120,8 @@ public class QQProfile implements Serializable {
 			tokens += String.valueOf(currentPart.getStart()) + ",";
 			tokens += String.valueOf(currentPart.getNonZeroLength()) + ",";
 			tokens += String.valueOf(currentPart.getNumCorrect()) + ",";
-			tokens += String.valueOf(currentPart.getNumQuestions());
+			tokens += String.valueOf(currentPart.getNumQuestions()) + ",";
+			tokens += String.valueOf(currentPart.getAvgLevel());
 			if (i < QParts.size() - 1)
 				tokens += ";"; // Skip ; after the last token
 		}
@@ -183,9 +187,10 @@ public class QQProfile implements Serializable {
 		for (String token : QPartsString.split(";")) {
 			partElements = token.split(",");
 			QParts.add(new QQStudyPart(Integer.parseInt(partElements[0]),
-					Integer.parseInt(partElements[1]), Integer
-							.parseInt(partElements[2]), Integer
-							.parseInt(partElements[3])));
+					Integer.parseInt(partElements[1]), 
+					Integer.parseInt(partElements[2]),
+					Integer.parseInt(partElements[3]),
+					Double.parseDouble(partElements[4])));
 		}
 	}
 
@@ -202,5 +207,19 @@ public class QQProfile implements Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	public double getTotAvgLevel() {
+		double avg=0.0,studyWeight=0.0;
+		double partWeight,avgLevel;
+		for(int i=0;i<QParts.size();i++){
+			partWeight   = QParts.get(i).getLength();
+			partWeight	/= QQUtils.Juz2AvgWords;
+			avgLevel     = QParts.get(i).getAvgLevel();
+			
+			studyWeight += partWeight;
+			avg += avgLevel*partWeight;
+		}
+		return avg/studyWeight;
 	}
 }
