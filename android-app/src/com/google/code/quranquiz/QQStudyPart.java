@@ -9,6 +9,7 @@ public class QQStudyPart implements Serializable {
 	private int length;
 	private int numCorrect;
 	private int numQuestions;
+	private double avgLevel=1.2; //TODO: Implement correctly
 
 	public QQStudyPart(int start, int length) {
 		this.start = start;
@@ -34,14 +35,23 @@ public class QQStudyPart implements Serializable {
 	}
 
 	public float getCorrectRatio() {
-		return numCorrect / (float) numQuestions;
+		
+		return (numCorrect==0)? 0: numCorrect / (float) numQuestions;
 	}
 
+	public double getAvgLevel(){
+		return avgLevel;
+	}
+	
 	public int getLength() {
 		if (start > 0)
 			return length;
 		else
 			return 0;
+	}
+
+	public int getNonZeroLength() {
+		return length;
 	}
 
 	public int getNumCorrect() {

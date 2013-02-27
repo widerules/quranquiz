@@ -27,13 +27,13 @@ public class QQProfile implements Serializable {
 		setuid(uid);
 	}
 
-	public void addCorrect(int currentPart) {
+	public void addCorrect(int currentPart) { //TODO: Level adjust
 		if (currentPart < QParts.size()) {
 			QParts.get(currentPart).addCorrect();
 		}
 	}
 
-	public void addIncorrect(int currentPart) {
+	public void addIncorrect(int currentPart) { //TODO: Level adjust
 		if (currentPart < QParts.size()) {
 			QParts.get(currentPart).addIncorrect();
 		}
@@ -69,13 +69,20 @@ public class QQProfile implements Serializable {
 	}
 
 	public int getScore() {
-		int studyCount = this.getTotalStudyLength();
-		int correct = this.getTotalCorrect();
-		int total = this.getTotalQuesCount();
-
-		return (int) Math.ceil(3000
-				* ((double) studyCount / QQUtils.QuranWords) * 0.5
-				* (1 + Math.tanh(5 * (double) correct / total - 2.5)));
+		
+		double score=0.0;
+		double partWeight,scaledQCount,avgLevel,scaledCorrectRatio;
+		for(int i=0;i<QParts.size();i++){
+			partWeight   = QParts.get(i).getNonZeroLength();
+			partWeight  /=QQUtils.Juz2AvgWords;
+			avgLevel     = QParts.get(i).getAvgLevel();
+			scaledQCount = QQUtils.sCurve(QParts.get(i).getNumQuestions(),
+										  QQUtils.Juz2SaturationQCount*partWeight);
+			scaledCorrectRatio = QQUtils.sCurve(QParts.get(i).getCorrectRatio(),1);
+			
+			score += 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
+		}
+		return (int) Math.ceil(score);
 	}
 
 	public String getScores() {
@@ -108,7 +115,7 @@ public class QQProfile implements Serializable {
 		for (int i = 0; i < QParts.size(); i++) {
 			currentPart = QParts.get(i);
 			tokens += String.valueOf(currentPart.getStart()) + ",";
-			tokens += String.valueOf(currentPart.getLength()) + ",";
+			tokens += String.valueOf(currentPart.getNonZeroLength()) + ",";
 			tokens += String.valueOf(currentPart.getNumCorrect()) + ",";
 			tokens += String.valueOf(currentPart.getNumQuestions());
 			if (i < QParts.size() - 1)
