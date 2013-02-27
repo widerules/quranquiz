@@ -92,7 +92,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 		juz2 = String
 				.valueOf((double) (currentProfile.getTotalStudyLength() * 300 / QQUtils.QuranWords) / 10);
 		qcount = String.valueOf(currentProfile.getTotalQuesCount());
-		avglevel = String.valueOf(currentProfile.getAvgLevel());
+		avglevel = String.valueOf(currentProfile.getTotAvgLevel());
 		md5 = QQUtils.md5("QQ-" + uid + "-" + score + "-" + juz2 + "-" + qcount
 				+ "-" + avglevel);
 

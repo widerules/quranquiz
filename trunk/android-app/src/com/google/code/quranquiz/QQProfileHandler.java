@@ -18,10 +18,10 @@ public class QQProfileHandler implements Serializable {
 	public static final String MY_PROFILE = "MyQQProfile";
 	private transient static Context myContext;
 	public static final String DEFAULT_STUDY_PARTS = "1,"
-			+ String.valueOf(QQUtils.sura_idx[0]) + ",0,0;"
+			+ String.valueOf(QQUtils.sura_idx[0]) + ",0,0,1.0;"
 			+ String.valueOf(QQUtils.sura_idx[0] + 1) + ","
 			+ String.valueOf(QQUtils.sura_idx[1] - QQUtils.sura_idx[0])
-			+ ",0,0;";
+			+ ",0,0,1.0;";
 
 	public QQProfile CurrentProfile;
 
@@ -122,7 +122,8 @@ public class QQProfileHandler implements Serializable {
 		// Al-Fatiha is always enabled
 		newParts = "1," + String.valueOf(QQUtils.sura_idx[0] - 1) + ","
 				+ String.valueOf(profile.getCorrect(0)) + ","
-				+ String.valueOf(profile.getQuesCount(0)) + ";";
+				+ String.valueOf(profile.getQuesCount(0)) + ","
+				+ String.valueOf(profile.getAvgLevel(0)) + ";";
 
 		for (int i = 1; i < 45; i++) {
 			checked = (settings.getBoolean("QPart_s" + String.valueOf(i + 1),
@@ -132,7 +133,8 @@ public class QQProfileHandler implements Serializable {
 			newParts += String.valueOf(start * checked) + ","
 					+ String.valueOf(end - start) + ","
 					+ String.valueOf(profile.getCorrect(i)) + ","
-					+ String.valueOf(profile.getQuesCount(i)) + ";";
+					+ String.valueOf(profile.getQuesCount(i)) + ","
+					+ String.valueOf(profile.getAvgLevel(i)) + ";";
 		}
 		for (int i = 0; i < 4; i++) {
 			checked = (settings.getBoolean("QPart_j" + String.valueOf(i + 26),
@@ -142,14 +144,16 @@ public class QQProfileHandler implements Serializable {
 			newParts += String.valueOf(start * checked) + ","
 					+ String.valueOf(end - start) + ","
 					+ String.valueOf(profile.getCorrect(i + 45)) + ","
-					+ String.valueOf(profile.getQuesCount(i + 45)) + ";";
+					+ String.valueOf(profile.getQuesCount(i + 45)) + ","
+					+ String.valueOf(profile.getAvgLevel(i + 45)) + ";";
 		}
 		start = QQUtils.last5_juz_idx[4];
 		end = QQUtils.last5_juz_idx[5] - 1;
 		// Juz' 3amma is always enabled
 		newParts += String.valueOf(start) + "," + String.valueOf(end - start)
 				+ "," + String.valueOf(profile.getCorrect(49)) + ","
-				+ String.valueOf(profile.getQuesCount(49));
+				+ String.valueOf(profile.getQuesCount(49)) + ","
+				+ String.valueOf(profile.getAvgLevel(49))+ ";";
 
 		profile.setStudyParts(newParts);
 		saveProfile(profile);
