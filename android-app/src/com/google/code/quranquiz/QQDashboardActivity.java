@@ -1,17 +1,29 @@
 package com.google.code.quranquiz;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 public class QQDashboardActivity extends Activity {
 
 	private QQProfileHandler myQQProfileHandler = null;
-
+	
 	// Function to read the result from newly created activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -20,7 +32,6 @@ public class QQDashboardActivity extends Activity {
 			myQQProfileHandler = (QQProfileHandler) data.getExtras().get(
 					"ProfileHandler");
 		}
-
 	}
 
 	@Override
@@ -50,7 +61,6 @@ public class QQDashboardActivity extends Activity {
 		/**
 		 * Handling all button click events
 		 * */
-
 		btnQQQuestionaire.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
@@ -71,8 +81,6 @@ public class QQDashboardActivity extends Activity {
 						QQStudyListActivity.class);
 				intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 				startActivity(intentStudyList);
-				Toast.makeText(getApplicationContext(), "تحت التطوير!",
-						Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -80,8 +88,6 @@ public class QQDashboardActivity extends Activity {
 		btnScoreHistory.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "تحت التطوير!",
-						Toast.LENGTH_SHORT).show();
 				if (myQQProfileHandler == null) {
 					myQQProfileHandler = new QQProfileHandler(
 							getApplicationContext());

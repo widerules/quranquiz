@@ -13,6 +13,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.widget.Toast;
 
 public class QQScoreChart extends AbstractDemoChart {
 
@@ -43,6 +44,9 @@ public class QQScoreChart extends AbstractDemoChart {
 			maxScore = (tmp > maxScore) ? tmp : maxScore;
 		}
 
+		if(QScores.size()<4)
+			Toast.makeText(context, "عدد النقاط لازالت قليلة، يمكن اضافة نقطة يوميا على الاكثر",
+					Toast.LENGTH_LONG).show();
 		dates.add(DateArr);
 		values.add(ScoreArr);
 
