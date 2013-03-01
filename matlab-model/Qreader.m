@@ -1,6 +1,6 @@
 % Parses the Quran Words ..
 
-words_cnt = 77797;
+words_cnt = 77878;
 fid=fopen('quran-uthmani-words.txt');
 
 

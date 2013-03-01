@@ -8,15 +8,20 @@ SA,
 - Matlab> Qreader, saves QWords.mat and dumps idx-data.csv
 - Matlab> QQ, begin the questionaire game!
 
-- Using sqliteman: create table q:
-            -- Describe Q
-            CREATE TABLE "q" (
-                "_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                "txt" TEXT NOT NULL,
-                "sim1" INTEGER NOT NULL DEFAULT (1),
-                "sim2" INTEGER NOT NULL DEFAULT (0),
-                "sim3" INTEGER NOT NULL DEFAULT (0)
-            )
-  then import Table Data from: idx-data.csv
+- Using sqliteman: create tables:
+	CREATE TABLE "q" (
+			"_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+			"txt" TEXT NOT NULL,
+			"sim1" INTEGER NOT NULL DEFAULT (1),
+			"sim2" INTEGER NOT NULL DEFAULT (0),
+			"sim3" INTEGER NOT NULL DEFAULT (0)
+		    );
+	CREATE TABLE "android_metadata" ("locale" TEXT DEFAULT 'en_US');
+	INSERT INTO "android_metadata" VALUES('en_US');
+	CREATE INDEX "Q_TXT_INDEX" on q (txt ASC);
 
-grep -n "بسم الله الرحمٰن الرحيم" quran-uthmani-min.nosym.txt | awk -F: '{print $1}'
+-- import Table Data from: idx-data.csv (Comma separated)
+-- Reindex Q_TXT_INDEX
+
+To track Sura Starting point, use:
+pcregrep -Mn "بسم\nالله\nالرحمٰن\nالرحيم" quran-uthmani-words.txt | grep ":" | awk -F: '{print $1}' 
