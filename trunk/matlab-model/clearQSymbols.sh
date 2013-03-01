@@ -21,7 +21,7 @@ LAMALEFMAD=$(python -c 'print u"\u0644\u0622".encode("utf8")')
 sed 's/'"$LAMHAMZAALEF"'/'"$LAMALEFMAD"'/g' < quran-uthmani-min.t2.txt > quran-uthmani-min.t3.txt
 
 #File cleanup
-mv  quran-uthmani-min.t2.txt quran-uthmani-min.nosym.txt # Skipped LamAlef-mad replacement, used me_quran font
+mv  quran-uthmani-min.t3.txt quran-uthmani-min.nosym.txt 
 rm -f quran-uthmani-min.t*.txt
 
 #Single word per line
