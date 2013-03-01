@@ -1,16 +1,16 @@
 =Release-1: TO DO =
   # User profile
-    * Select studied Suras (save format? Keep generic)
+    * ~~Select studied Suras (save format? Keep generic)~~
   # Gui
     * Change colors
     * Score up/down effect
     * Check screen size/orientation
   # Score
-    * Check equation? ratio/offset?
+    * ~~Check equation? ratio/offset?~~
 
 ==What we have (To Test)==
   # ~~Level 1 and 2~~
-  # Scoring equation
+  # ~~Scoring equation~~
   # ~~Too simple profile~~
 
 ==Issues we have (To fix)==
@@ -23,9 +23,9 @@
   # User profile
     * Select Rob3, Aya?
   # Welcome screen
-    * display statistics curve, score
-    * Can update profile before starting new Questions
-    * Option to share score (FB, twitter)
+    * ~~display~~ statistics ~~curve, score~~
+    * ~~Can update profile before starting new Questions~~
+    * ~~Option to share score (FB, twitter)~~
 
 =Add your wishes here:=
   * Post score on facebook: http://stackoverflow.com/questions/4641680/android-facebook-graph-api-to-update-status
