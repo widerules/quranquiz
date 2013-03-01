@@ -1,6 +1,13 @@
 package com.google.code.quranquiz;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +22,11 @@ import android.widget.Toast;
 public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	// The Android's default system path of your application database.
-	private static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
-	private static String DB_NAME = "qq.sqlite";
-	private static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-v1.sqlite";
-
+	public static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
+	public static String DB_NAME = "qq.sqlite";
+	public static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-b20130301.sqlite";
+	public static int    DB_BYTES = 3473408;
+	
 	private SQLiteDatabase myDataBase;
 
 	private final Context myContext;
@@ -40,31 +48,35 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	private boolean checkDataBase() {
 
 		SQLiteDatabase checkDB = null;
+		String myDBFile = DB_PATH + DB_NAME;
+		
+		if(	QQDataBaseHelper.DB_BYTES == (new File(myDBFile)).length()){
+			try {
+				checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
+						SQLiteDatabase.OPEN_READONLY);
+			} catch (SQLiteException e) {
+			}
 
-		try {
-			String myPath = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null,
-					SQLiteDatabase.OPEN_READONLY);
-		} catch (SQLiteException e) {
+			if (checkDB != null) {
+				checkDB.close();
+			}
 		}
-
-		if (checkDB != null) {
-			checkDB.close();
-		}
-
+		
 		return checkDB != null ? true : false;
 	}
 
 	public void closeDatabase() {
-		myDataBase.close();
-
+		if (myDataBase!=null)
+			if( myDataBase.isOpen())
+				myDataBase.close();
 	}
 
 	/**
 	 * Creates a empty database on the system and rewrites it with your own
 	 * database.
+	 * @throws Exception 
 	 * */
-	public void createDataBase() throws IOException {
+	public void createDataBase() throws Exception {
 
 		boolean dbExist = checkDataBase();
 
@@ -81,11 +93,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			try {
 				this.getReadableDatabase();
 				downloadDataBase(myContext);
-			} catch (Error e) {
+			} catch (Exception e) {
 				Toast.makeText(
 						this.myContext,
 						"Failed to create/download database. Please check your internet connection and try again!",
 						Toast.LENGTH_LONG).show();
+				throw e;
 			}
 			Toast.makeText(this.myContext, "Database Downloaded!",
 					Toast.LENGTH_LONG).show();
@@ -95,12 +108,50 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Downloads your database.
+	 * @throws Exception 
 	 * */
-	private void downloadDataBase(Context myContext) {
+	private void downloadDataBase(Context myContext) throws Exception {
+		//TODO: Show some progress ...
+		//WARNING: THIS IMPLEMENTATION IS VERY BAD!
+		int count;
+		try {
+			URL myUrl = new URL(QQDataBaseHelper.DB_DOWNLOAD);
+			URLConnection conexion = myUrl.openConnection();
+			conexion.connect();
 
-		QQDownloader downloadFile = new QQDownloader();
-		// mProgressDialog.show();
-		downloadFile.execute(DB_DOWNLOAD);
+			fileLength = conexion.getContentLength();
+
+			// download the file
+			InputStream input = new BufferedInputStream(myUrl.openStream());
+			OutputStream output = new FileOutputStream(QQDataBaseHelper.DB_PATH+QQDataBaseHelper.DB_NAME);
+
+			byte data[] = new byte[1024];
+
+			long total = 0;
+			while ((count = input.read(data)) != -1) {
+				total += count;
+				//Update progress here!
+				output.write(data, 0, count);
+			}
+
+			output.flush();
+			output.close();
+			input.close();
+			fileLength = -1;
+
+			// TODO Create the index on phone
+			// SQLiteDatabase myDataBase =
+			// SQLiteDatabase.openDatabase(outFileName, null,
+			// SQLiteDatabase.OPEN_READWRITE);
+			// if(myDataBase != null){
+			// myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
+			// myDataBase.close(); // Close the READWRITE session. Other
+			// sessions are read-only
+			// }
+
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

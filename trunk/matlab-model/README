@@ -23,5 +23,6 @@ SA,
 -- import Table Data from: idx-data.csv (Comma separated)
 -- Reindex Q_TXT_INDEX
 
-To track Sura Starting point, use:
-pcregrep -Mn "بسم\nالله\nالرحمٰن\nالرحيم" quran-uthmani-words.txt | grep ":" | awk -F: '{print $1}' 
+- To track Sura Starting point, use:
+-- pcregrep -Mn "بسم\nالله\nالرحمٰن\nالرحيم" quran-uthmani-words.txt | grep ":" | awk -F: '{print $1}' 
+-- manually find start of "Bara2a" and add it(23809), find Soliman Basmala and remove it(48888).

@@ -117,16 +117,18 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		q = new QQDataBaseHelper(this);
 		try {
 			q.createDataBase();
+			
+			try {
+				q.openDataBase();
+			} catch (SQLException sqle) {
+			}
 
-		} catch (IOException ioe) {
-			throw new Error("Unable to create database");
+		} catch (Exception ioe) {
+			finish(); //Cannot download DB, destroy Questionaire.
+			return;
 		}
 
-		try {
-			q.openDataBase();
-		} catch (SQLException sqle) {
-			throw sqle;
-		}
+
 
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(),
 				"fonts/me_quran.ttf");
