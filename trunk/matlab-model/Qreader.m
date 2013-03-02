@@ -1,14 +1,18 @@
 % Parses the Quran Words ..
 
 words_cnt = 77878;
-fid=fopen('quran-uthmani-words.txt');
+txt_sym=1;
+fid=fopen('quran-uthmani-min.nosym.txt');
+fid2=fopen('quran-uthmani-min.sym.txt');
 
 
 display('Loading Quran txt ..');
 for i=1:words_cnt
     q.txt(i) = {fgetl(fid)};
+    q.txt_sym(i) = {fgetl(fid2)};
 end
 fclose(fid);
+fclose(fid2);
 
 display('Parsing .. (%)');
 last_p = -1;
@@ -43,11 +47,20 @@ end
 save QWords.mat q;
 
  fido=fopen('idx-data.csv','w');
- for i=1:words_cnt-2
-     fprintf(fido,'%d,%s,%d,%d,%d\n', i, char(q.txt(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt);
+ 
+ if(txt_sym==0)
+    for i=1:words_cnt-2
+        fprintf(fido,'%d,%s,%d,%d,%d\n', i, char(q.txt(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt);
+    end
+    fprintf(fido,'%d,%s,%d,%d,0\n', words_cnt-1, char(q.txt(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
+    fprintf(fido,'%d,%s,%d,0,0\n', words_cnt, char(q.txt(words_cnt)),q.sim1(words_cnt).cnt);
+ else
+    for i=1:words_cnt-2
+        fprintf(fido,'%d,%s,%d,%d,%d\n', i, char(q.txt_sym(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt);
+    end
+    fprintf(fido,'%d,%s,%d,%d,0\n', words_cnt-1, char(q.txt_sym(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
+    fprintf(fido,'%d,%s,%d,0,0\n', words_cnt, char(q.txt_sym(words_cnt)),q.sim1(words_cnt).cnt);
  end
- fprintf(fido,'%d,%s,%d,%d,0\n', words_cnt-1, char(q.txt(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
- fprintf(fido,'%d,%s,%d,0,0\n', words_cnt, char(q.txt(words_cnt)),q.sim1(words_cnt).cnt);
  
  fclose(fido);
 display('Done!');

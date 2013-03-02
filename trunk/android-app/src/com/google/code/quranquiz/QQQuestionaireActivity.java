@@ -131,7 +131,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(),
-				"fonts/me_quran.ttf");
+				"fonts/amiri-quran.ttf");
 		Drawable shape = getResources().getDrawable(R.drawable.qqoptionbutton);
 
 		tv = (TextView) findViewById(R.id.textView1);
@@ -316,9 +316,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			tv.setText(tv
 					.getText()
 					.toString()
-					.concat("   "
+					.concat(""//"   "
 							+ q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
-									* Quest.oLen, Quest.oLen) + "   "));
+									* Quest.oLen, Quest.oLen)// + "   "
+							));
 
 		// Scramble options
 		int[] scrambled = new int[5];
@@ -333,6 +334,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 
 		if (level == 3) {
+			// Start the timer
+			startTimer(5);
 			if (QOptIdx == 1) {
 				// display(" [-] No more valid Motashabehat!");
 			} else {
@@ -340,9 +343,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 				// left!']); // TODO: Subtract done options
 			}
 		}
-
-		// Start the timer
-		startTimer(5);
 
 		QQinit = 0;
 
