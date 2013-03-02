@@ -6,16 +6,16 @@
     android:background="#f8f9fe" >
     
     <Button
-        android:id="@+id/btnScoreHistory"
-        style="@style/DashboardButton"
-        android:drawableTop="@android:drawable/ic_menu_recent_history"
-        android:text="التقدم الزمني" />
-    
-    <Button
         android:id="@+id/btnQQQuestionaire"
         style="@style/DashboardButton"
         android:drawableTop="@android:drawable/ic_menu_agenda"
         android:text="إبدأ الاختبار" />
+        
+    <Button
+        android:id="@+id/btnScoreHistory"
+        style="@style/DashboardButton"
+        android:drawableTop="@android:drawable/ic_menu_recent_history"
+        android:text="التقدم الزمني" />
         
     <Button
         android:id="@+id/btnSettings"

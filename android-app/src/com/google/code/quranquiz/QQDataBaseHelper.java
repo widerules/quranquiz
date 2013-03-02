@@ -1,6 +1,7 @@
 package com.google.code.quranquiz;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -25,7 +28,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	public static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
 	public static String DB_NAME = "qq.sqlite";
 	public static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-b20130301.sqlite";
-	public static int    DB_BYTES = 3473408;
+	public static int    DB_BYTES = 4329472;
 	
 	private SQLiteDatabase myDataBase;
 
@@ -92,7 +95,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			// database with our database.
 			try {
 				this.getReadableDatabase();
-				downloadDataBase(myContext);
+				//downloadDataBase(myContext);
+				prepareDataBase();
 			} catch (Exception e) {
 				Toast.makeText(
 						this.myContext,
@@ -104,6 +108,42 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					Toast.LENGTH_LONG).show();
 		}
 
+	}
+
+	private void prepareDataBase() throws Exception {
+		Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
+	     new File(DB_PATH).mkdirs();
+	     File db = new File(DB_PATH, DB_NAME);
+	     if(!db.exists())
+	    	 db.createNewFile();
+	     
+		 InputStream is = myContext.getResources().openRawResource(R.raw.qq_noidx_sqlite);
+	      //Open the empty db as the output stream
+	     OutputStream myOutput = new FileOutputStream(db.getAbsolutePath());
+	     ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+	      try {
+	          while ((zis.getNextEntry()) != null) {
+	              ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	              byte[] buffer = new byte[1024];
+	              int count;
+	              while ((count = zis.read(buffer)) != -1) {
+	                  baos.write(buffer, 0, count);
+	              }
+	              baos.writeTo(myOutput);	 
+	          }
+	      } finally {
+	          zis.close();
+	          myOutput.flush();
+	          myOutput.close();
+	          is.close();
+	      }
+	      
+		 SQLiteDatabase myDataBase =
+		 SQLiteDatabase.openDatabase(DB_PATH+DB_NAME, null,SQLiteDatabase.OPEN_READWRITE);
+		 if(myDataBase != null){
+			 myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
+			 myDataBase.close(); // Close the READWRITE session.
+		 }
 	}
 
 	/**
@@ -302,7 +342,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					+ (idx - 1) + " and _id<" + (idx + len), null);
 			if (cur.moveToFirst()) {
 				do {
-					s = s + "   " + cur.getString(0);
+					s = s + " "+ // "   " + 
+							cur.getString(0);
 				} while (cur.moveToNext());
 				cur.close();
 			}
