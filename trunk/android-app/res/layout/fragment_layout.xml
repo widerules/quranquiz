@@ -8,20 +8,20 @@
     <Button
         android:id="@+id/btnQQQuestionaire"
         style="@style/DashboardButton"
-        android:drawableTop="@android:drawable/ic_menu_agenda"
+        android:drawableTop="@drawable/qqstart"
         android:text="إبدأ الاختبار" />
         
     <Button
         android:id="@+id/btnScoreHistory"
         style="@style/DashboardButton"
-        android:drawableTop="@android:drawable/ic_menu_recent_history"
+        android:drawableTop="@drawable/qqstat"
         android:text="التقدم الزمني" />
         
     <Button
         android:id="@+id/btnSettings"
         style="@style/DashboardButton"
-        android:drawableTop="@android:drawable/ic_menu_preferences"
-        android:text="اعدادات" />
+        android:drawableTop="@drawable/qqrange"
+        android:text="نطاق الحفظ" />
 	
     <!--  Add more Buttons -->
 
