@@ -85,8 +85,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 		if (dbExist) {
 			// do nothing - database already exist
-			Toast.makeText(this.myContext, "Database found!", Toast.LENGTH_LONG)
-					.show();
+			//Toast.makeText(this.myContext, "Database found!", Toast.LENGTH_LONG).show();
 		} else {
 
 			// By calling this method an empty database will be created into the
@@ -96,6 +95,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			try {
 				this.getReadableDatabase();
 				//downloadDataBase(myContext);
+				
+				Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
 				prepareDataBase();
 			} catch (Exception e) {
 				Toast.makeText(
@@ -104,14 +105,13 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 						Toast.LENGTH_LONG).show();
 				throw e;
 			}
-			Toast.makeText(this.myContext, "Database Downloaded!",
-					Toast.LENGTH_LONG).show();
+			//Toast.makeText(this.myContext, "Database Downloaded!",
+				//	Toast.LENGTH_LONG).show();
 		}
 
 	}
 
 	private void prepareDataBase() throws Exception {
-		Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
 	     new File(DB_PATH).mkdirs();
 	     File db = new File(DB_PATH, DB_NAME);
 	     if(!db.exists())

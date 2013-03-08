@@ -20,16 +20,20 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.tekle.oss.android.animation.AnimationFactory;
+import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 
 public class QQQuestionaireActivity extends SherlockActivity implements
 		android.view.View.OnClickListener {
-
+	
+    private ViewAnimator viewAnimator;
 	private TextView tv;
 	private TextView tvScore;
 	private ProgressBar bar;
@@ -89,8 +93,9 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.main);
+		setContentView(R.layout.questionaire_layout);
 		actionbar = getSupportActionBar();
+	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
 
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
@@ -128,44 +133,18 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			return;
 		}
 
-
-
 		Typeface othmanyFont = Typeface.createFromAsset(getAssets(),
 				"fonts/amiri-quran.ttf");
-		Drawable shape = getResources().getDrawable(R.drawable.qqoptionbutton);
-
+		
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
-
-		tv = (TextView) findViewById(R.id.bOp1);
-		tv.setTypeface(othmanyFont);
-		tv.setBackgroundDrawable(shape);
-		tv = (TextView) findViewById(R.id.bOp2);
-		tv.setTypeface(othmanyFont);
-		tv.setBackgroundDrawable(shape);
-		tv = (TextView) findViewById(R.id.bOp3);
-		tv.setTypeface(othmanyFont);
-		tv.setBackgroundDrawable(shape);
-		tv = (TextView) findViewById(R.id.bOp4);
-		tv.setTypeface(othmanyFont);
-		tv.setBackgroundDrawable(shape);
-		tv = (TextView) findViewById(R.id.bOp5);
-		tv.setTypeface(othmanyFont);
-		tv.setBackgroundDrawable(shape);
-
-		tv = (TextView) findViewById(R.id.textView1);
-
-		Toast.makeText(this, "", Toast.LENGTH_LONG);
-
+		
+		for(int i=0;i<5;i++){
+			btnArray[i].setTypeface(othmanyFont);
+			btnArray[i].setOnClickListener(this);
+		}
 		// Make the first Question
 		userAction(-1);
-
-		// Set action Listener
-		((Button) findViewById(R.id.bOp1)).setOnClickListener(this);
-		((Button) findViewById(R.id.bOp2)).setOnClickListener(this);
-		((Button) findViewById(R.id.bOp3)).setOnClickListener(this);
-		((Button) findViewById(R.id.bOp4)).setOnClickListener(this);
-		((Button) findViewById(R.id.bOp5)).setOnClickListener(this);
 
 	}
 
@@ -230,6 +209,14 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		correctAnswer.create().show();
 	}
 
+	private void updateOptionButtonsColor(int CorrectIdx){
+		for(int i=0;i<5;i++){
+			if(i==CorrectIdx)
+				((Button)btnArray[i]).setBackgroundResource(R.drawable.qqoptionbutton_correct);
+			else
+				((Button)btnArray[i]).setBackgroundResource(R.drawable.qqoptionbutton_wrong);
+		}
+	}
 	private void startTimer(int fire) {
 		bar = (ProgressBar) findViewById(R.id.progressBar1);
 		bar.setProgress(100);
@@ -305,6 +292,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// question? On exit
 															// only?
 
+            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);
+
 			// Show the Question!
 			tv.setText(q.txt(Quest.startIdx, Quest.qLen));
 			QOptIdx = 0;
@@ -332,7 +321,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen);
 			btnArray[j].setText(strTemp);
 		}
-
+		updateOptionButtonsColor(correct_choice); //Update background Color
+		
 		if (level == 3) {
 			// Start the timer
 			startTimer(5);
