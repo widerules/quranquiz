@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"> 
-  <ViewFlipper
-          android:id="@+id/view_flipper" 
-          android:layout_width="300dp"
-          android:layout_height="450dp" 
-  		  android:gravity="center"
-          android:layout_gravity="center"
-          android:addStatesFromChildren="true"
-          android:layout_centerInParent="true">
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/view_flipper"
+      android:layout_width="300dp"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_gravity="center"
+      android:addStatesFromChildren="true"
+      android:gravity="center" >
 	          
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/ab_solid_qqstyle"
 	    android:gravity="right"
 	    android:orientation="vertical" >
 	
@@ -22,11 +20,13 @@
 	        android:id="@+id/textView1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:ellipsize="start"
+	        android:ellipsize="none"
+	        android:fadingEdge="horizontal"
 	        android:gravity="right"
 	        android:paddingBottom="2dp"
-	        android:paddingRight="10dp"
-	        android:paddingTop="2dp"
+	        android:paddingTop="0dp"
+	        android:scrollHorizontally="true"
+	        android:scrollbars="horizontal"
 	        android:singleLine="true"
 	        android:text="@string/txt_start"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -123,8 +123,22 @@
 	    </LinearLayout>
 	
 	</LinearLayout>
+
+<!-- 	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/pressed_qqstyle"
+	    android:orientation="vertical" >
+
+		<TextView
+		    android:id="@+id/tvBack"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Medium Text"
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	</LinearLayout> -->
 	
-  </ViewFlipper>
-        
-</RelativeLayout>
+</ViewFlipper>
+
 	
