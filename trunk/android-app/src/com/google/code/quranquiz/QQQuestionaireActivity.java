@@ -1,7 +1,5 @@
 package com.google.code.quranquiz;
 
-import java.io.IOException;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,17 +7,16 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -129,7 +126,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			}
 
 		} catch (Exception ioe) {
-			finish(); //Cannot download DB, destroy Questionaire.
+			finish(); //Cannot download DB, destroy Questionnaire.
 			return;
 		}
 
@@ -138,6 +135,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
+		tv.setMovementMethod(new ScrollingMovementMethod()); 
 		
 		for(int i=0;i<5;i++){
 			btnArray[i].setTypeface(othmanyFont);
