@@ -22,7 +22,12 @@
         style="@style/DashboardButton"
         android:drawableTop="@drawable/qqrange"
         android:text="نطاق الحفظ" />
-	
+
+    <Button
+        android:id="@+id/btnInfo"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/qqinfo"
+        android:text="عن البرنامج" />	
     <!--  Add more Buttons -->
 
 

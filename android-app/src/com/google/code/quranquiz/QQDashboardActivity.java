@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class QQDashboardActivity extends Activity {
 
@@ -57,7 +58,8 @@ public class QQDashboardActivity extends Activity {
 		Button btnQQQuestionaire = (Button) findViewById(R.id.btnQQQuestionaire);
 		Button btnSettings = (Button) findViewById(R.id.btnSettings);
 		Button btnScoreHistory = (Button) findViewById(R.id.btnScoreHistory);
-
+		Button btnInfo = (Button) findViewById(R.id.btnInfo);
+		
 		/**
 		 * Handling all button click events
 		 * */
@@ -96,6 +98,12 @@ public class QQDashboardActivity extends Activity {
 				startActivity((new QQScoreChart(
 						myQQProfileHandler.CurrentProfile))
 						.execute(getApplicationContext()));
+			}
+		});
+		
+		btnInfo.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Toast.makeText(getApplicationContext(), "تحت التطوير", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

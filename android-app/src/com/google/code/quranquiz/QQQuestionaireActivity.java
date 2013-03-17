@@ -136,6 +136,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		tv = (TextView) findViewById(R.id.textView1);
 		tv.setTypeface(othmanyFont);
 		tv.setMovementMethod(new ScrollingMovementMethod()); 
+		tv.setSelected(true);
 		
 		for(int i=0;i<5;i++){
 			btnArray[i].setTypeface(othmanyFont);
@@ -290,6 +291,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// question? On exit
 															// only?
 
+            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);
             AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);
 
 			// Show the Question!
