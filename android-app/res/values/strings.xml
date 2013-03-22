@@ -9,7 +9,7 @@
     <string name="pref_userLevel_title">اختر مستوى الأسئلة</string>
     <string name="pref_userLevel_sum">المستوي</string>
     <string name="pref_studyListTitle">قم بتحديد نطاق الحفظ</string>
-
+	<string name="pref_studyListToggle">إختر الجميع أو لاشيء</string>
 
 	<string name="add_values">Add values to the chart</string>    
 	<string name="x">X</string>    
