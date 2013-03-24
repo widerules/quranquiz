@@ -86,26 +86,34 @@ public class QQLastScreenActivity extends SherlockActivity {
 
 	private void postAnonymousData(QQProfile currentProfile) {
 		String uid, score, juz2, qcount, avglevel, md5;
-
+		String[] ids;
+		
 		uid = currentProfile.getuid();
+		ids = uid.split("+");
+		
 		score = String.valueOf(currentProfile.getScore());
 		juz2 = String
 				.valueOf((double) (currentProfile.getTotalStudyLength() * 300 / QQUtils.QuranWords) / 10);
 		qcount = String.valueOf(currentProfile.getTotalQuesCount());
 		avglevel = String.valueOf(currentProfile.getTotAvgLevel());
-		md5 = QQUtils.md5("QQ-" + uid + "-" + score + "-" + juz2 + "-" + qcount
-				+ "-" + avglevel);
+		md5 = QQUtils.md5("QQ-" + ids[0] + "-" + ids[1] + "-" + ids[2] + "-"
+							+ ids[3] + "-" + ids[4]
+							+ "-" + score + "-" + juz2 + "-" + qcount
+							+ "-" + avglevel);
 
 		// Create a new HttpClient and Post Header
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(
-				"http://quranquiz.net/updateUserData.php");
+				"http://post.quranquiz.net/updateUserData.php");
 
 		try {
 			// Add user data
-			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(
-					6);
-			nameValuePairs.add(new BasicNameValuePair("u", uid));
+			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(10);
+			nameValuePairs.add(new BasicNameValuePair("uid_gl", ids[0]));
+			nameValuePairs.add(new BasicNameValuePair("uid_fb", ids[1]));
+			nameValuePairs.add(new BasicNameValuePair("uid_tw", ids[2]));
+			nameValuePairs.add(new BasicNameValuePair("uid_ap", ids[3]));
+			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
 			nameValuePairs.add(new BasicNameValuePair("s", score));
 			nameValuePairs.add(new BasicNameValuePair("j", juz2));
 			nameValuePairs.add(new BasicNameValuePair("q", qcount));
@@ -115,7 +123,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 
 			// Execute HTTP Post Request
 			HttpResponse res = httpclient.execute(httppost);
-			tv.append(EntityUtils.toString(res.getEntity()));
+			//tv.append(EntityUtils.toString(res.getEntity()));
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block

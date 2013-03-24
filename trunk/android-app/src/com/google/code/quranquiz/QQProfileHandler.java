@@ -37,25 +37,37 @@ public class QQProfileHandler implements Serializable {
 	}
 
 	public String getHashedUID() {
-		String uid;
+		String[] uid = new String[]{"0","0","0","0","0"};
 		/* Get Google account */
 		AccountManager manager = (AccountManager) myContext
 				.getSystemService(android.content.Context.ACCOUNT_SERVICE);
 		Account[] list = manager.getAccounts();
 		if (list.length > 0) {
-			uid = list[0].name;
+			for(int i=0;i<list.length;i++){ //Gl-Fb-Tw-Ap
+				if(list[i].type.toLowerCase().contains("google"))
+					uid[0] = list[i].name;
+				else if(list[i].type.toLowerCase().contains("facebook"))
+					uid[1] = list[i].name;
+				else if(list[i].type.toLowerCase().contains("twitter"))
+					uid[2] = list[i].name;
+				else if(list[i].type.toLowerCase().contains("itunes"))
+					uid[3] = list[i].name;
+				else
+					uid[4] = list[i].type+":"+list[i].name;
+			}
+			
 		} else {
 			/* If no account, get Phone ID */
-			uid = ((TelephonyManager) myContext
+			uid[4] = ((TelephonyManager) myContext
 					.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-			if (uid.length() < 1) {
+			if (uid[4].length() < 1) {
 				/* If not a phone, get Wifi MAC */
-				uid = ((WifiManager) myContext
+				uid[4] = ((WifiManager) myContext
 						.getSystemService(Context.WIFI_SERVICE))
 						.getConnectionInfo().getMacAddress();
-				if (uid.length() < 1) {
+				if (uid[4].length() < 1) {
 					/* If off-line, get collide-able string */
-					uid = "35"
+					uid[4] = "35"
 							+ // we make this look like a valid IMEI
 							Build.BOARD.length() % 10 + Build.BRAND.length()
 							% 10 + Build.CPU_ABI.length() % 10
@@ -70,8 +82,10 @@ public class QQProfileHandler implements Serializable {
 				}
 			}
 		}
-		// return uid;
-		return QQUtils.md5(uid);
+		for(int i=0;i<5;i++)
+			if (uid[i] != "0")
+				uid[i] = QQUtils.md5(uid[i]);
+		return uid[0]+"+"+uid[1]+"+"+uid[2]+"+"+uid[3]+"+"+uid[4];
 	}
 
 	private QQProfile getLastProfile() {
