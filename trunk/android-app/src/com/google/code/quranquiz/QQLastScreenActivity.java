@@ -89,7 +89,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 		String[] ids;
 		
 		uid = currentProfile.getuid();
-		ids = uid.split("+");
+		ids = uid.split("\\+");
 		
 		score = String.valueOf(currentProfile.getScore());
 		juz2 = String
