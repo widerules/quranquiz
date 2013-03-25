@@ -13,6 +13,7 @@ import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -33,6 +34,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
     private ViewAnimator viewAnimator;
 	private TextView tv;
 	private TextView tvScore;
+	private TextView tvBack;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
@@ -102,7 +104,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		btnArray[4] = (Button) findViewById(R.id.bOp5);
 
 		tvScore = (TextView) findViewById(R.id.Score);
-
+		tvBack  = (TextView) findViewById(R.id.tvBack);
+		
 		correctAnswer = new AlertDialog.Builder(this);
 
 		correctAnswer.setTitle("الاية المرادة هي");
@@ -138,13 +141,20 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		tv.setMovementMethod(new ScrollingMovementMethod()); 
 		tv.setSelected(true);
 		
+		((Button) findViewById(R.id.btnBack)).setOnClickListener(
+				new OnClickListener(){
+					public void onClick(View arg0) {
+			            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);						
+					}
+		});
+		
+		
 		for(int i=0;i<5;i++){
 			btnArray[i].setTypeface(othmanyFont);
 			btnArray[i].setOnClickListener(this);
 		}
 		// Make the first Question
 		userAction(-1);
-
 	}
 
 	@Override
@@ -245,9 +255,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	}
 
 	private void userAction(int selID) {
-
+		String tmp;
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
-			String tmp = new String("");
 
 			// Vibrate for 300 milliseconds
 			Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -257,8 +266,9 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
 					+ q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen)
 					+ " ...";
-			showCorrectAnswer(tmp);
-
+			//showCorrectAnswer(tmp); /*Old Dialog*/
+			tvBack.setText(tmp);
+			
 			QOptIdx = -1; // trigger a new question
 		} else {
 			QOptIdx = (QOptIdx == -1) ? -1 : QOptIdx + 1; // Keep -1, or Proceed
@@ -272,10 +282,17 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 				myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
-				if(QOptIdx == 10)
+				if(QOptIdx == 10){
 					myQQProfile.addCorrect(CurrentPart);
+					tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "]";
+					tvBack.setText(tmp);
+				}
 			}
 
+			if(QQinit==0){
+				AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);				
+			}
+			
 			Quest = new QQQuestion(myQQProfile, q);
 			CurrentPart = Quest.CurrentPart;
 			
@@ -290,9 +307,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// save after each
 															// question? On exit
 															// only?
-
-            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);
-            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);
 
 			// Show the Question!
 			tv.setText(q.txt(Quest.startIdx, Quest.qLen));
