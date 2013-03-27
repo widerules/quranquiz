@@ -15,12 +15,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -29,7 +31,7 @@ import com.tekle.oss.android.animation.AnimationFactory;
 import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 
 public class QQQuestionaireActivity extends SherlockActivity implements
-		android.view.View.OnClickListener {
+		android.view.View.OnClickListener, OnNavigationListener {
 	
     private ViewAnimator viewAnimator;
 	private TextView tv;
@@ -37,6 +39,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	private TextView tvBack;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
+    private String[] lstLevels;
 	private Button[] btnArray;
 	private AlertDialog.Builder correctAnswer;
 	private ActionBar actionbar;
@@ -95,7 +98,16 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		setContentView(R.layout.questionaire_layout);
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
-
+	    
+	    lstLevels = getResources().getStringArray(R.array.userLevels);
+        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
+        									(getSupportActionBar().getThemedContext(),
+        									 R.array.userLevels, 
+        									 R.layout.sherlock_spinner_item);
+        list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSupportActionBar().setListNavigationCallbacks(list, this);
+        
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
 		btnArray[1] = (Button) findViewById(R.id.bOp2);
@@ -350,6 +362,12 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		QQinit = 0;
 
+	}
+
+	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+		myQQProfile.setLevel(itemPosition+1);
+		myQQProfileHandler.saveProfile(myQQProfile);
+		return true;
 	}
 
 }
