@@ -1,8 +1,6 @@
 package com.google.code.quranquiz;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
@@ -24,8 +22,6 @@ import android.widget.ViewAnimator;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.tekle.oss.android.animation.AnimationFactory;
 import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
@@ -39,9 +35,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	private TextView tvBack;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
-    private String[] lstLevels;
 	private Button[] btnArray;
-	private AlertDialog.Builder correctAnswer;
 	private ActionBar actionbar;
 	private QQDataBaseHelper q;
 	private QQQuestion Quest;
@@ -98,16 +92,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		setContentView(R.layout.questionaire_layout);
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
-	    
-	    lstLevels = getResources().getStringArray(R.array.userLevels);
-        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
-        									(getSupportActionBar().getThemedContext(),
-        									 R.array.userLevels, 
-        									 R.layout.sherlock_spinner_item);
-        list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getSupportActionBar().setListNavigationCallbacks(list, this);
-        
+		bar = (ProgressBar) findViewById(R.id.progressBar1);
+
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
 		btnArray[1] = (Button) findViewById(R.id.bOp2);
@@ -117,19 +103,9 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		tvScore = (TextView) findViewById(R.id.Score);
 		tvBack  = (TextView) findViewById(R.id.tvBack);
-		
-		correctAnswer = new AlertDialog.Builder(this);
-
-		correctAnswer.setTitle("الاية المرادة هي");
-		correctAnswer.setPositiveButton("حسنا",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						// dismiss the dialog
-					}
-				});
-		correctAnswer.setCancelable(true);
 
 		myQQProfileHandler = new QQProfileHandler(this);
+		myQQProfile = myQQProfileHandler.getProfile();
 
 		q = new QQDataBaseHelper(this);
 		try {
@@ -160,6 +136,15 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 					}
 		});
 		
+        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
+				(actionbar.getThemedContext(),
+				 R.array.userLevels, 
+				 R.layout.sherlock_spinner_item);
+		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionbar.setListNavigationCallbacks(list, this);
+		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
+		
 		
 		for(int i=0;i<5;i++){
 			btnArray[i].setTypeface(othmanyFont);
@@ -168,15 +153,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		// Make the first Question
 		userAction(-1);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
+	
 	@Override
 	protected void onDestroy() {
 		if (q != null)
@@ -221,13 +198,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 	@Override
 	protected void onStop() {
+		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
 		super.onStop();
-		// profileHandler.saveProfile(prof); // TODO:
-	}
-
-	private void showCorrectAnswer(String tmp) {
-		correctAnswer.setMessage(tmp);
-		correctAnswer.create().show();
 	}
 
 	private void updateOptionButtonsColor(int CorrectIdx){
@@ -239,7 +211,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 	}
 	private void startTimer(int fire) {
-		bar = (ProgressBar) findViewById(R.id.progressBar1);
 		bar.setProgress(100);
 		bar.setVisibility(View.VISIBLE);
 
@@ -288,7 +259,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 
 		if (QOptIdx == -1 || QOptIdx == 10) {
-			myQQProfile = myQQProfileHandler.getProfile();
+			myQQProfile = myQQProfileHandler.CurrentProfile;
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong answer
 				myQQProfile.addIncorrect(CurrentPart);
@@ -358,6 +329,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 				// display([' -- ',num2str(validCount),' correct options
 				// left!']); // TODO: Subtract done options
 			}
+		}else{ // Not level 3, Remove the timer
+			bar.setVisibility(View.INVISIBLE);
 		}
 
 		QQinit = 0;
