@@ -1,30 +1,19 @@
 package com.google.code.quranquiz;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
+import com.suredigit.inappfeedback.FeedbackDialog;
+import com.suredigit.inappfeedback.Settings;
 
 public class QQDashboardActivity extends Activity {
 
 	private QQProfileHandler myQQProfileHandler = null;
-	
+	private FeedbackDialog feedBackDialog;
 	// Function to read the result from newly created activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -36,7 +25,14 @@ public class QQDashboardActivity extends Activity {
 	}
 
 	@Override
+	protected void onPause() {
+	    super.onPause();
+	    feedBackDialog.dismiss();
+	} 
+	
+	@Override
 	public void onBackPressed() {
+	    feedBackDialog.dismiss();
 		if (myQQProfileHandler != null) {
 			Intent lastIntent = new Intent(QQDashboardActivity.this,
 					QQLastScreenActivity.class);
@@ -59,6 +55,14 @@ public class QQDashboardActivity extends Activity {
 		Button btnSettings = (Button) findViewById(R.id.btnSettings);
 		Button btnScoreHistory = (Button) findViewById(R.id.btnScoreHistory);
 		Button btnInfo = (Button) findViewById(R.id.btnInfo);
+		
+		Settings feedbackSettings = new Settings();
+		feedbackSettings.setCancelButtonText("إلغاء");
+		feedbackSettings.setSendButtonText("ارسال");
+		feedbackSettings.setText("هل واجهتك متاعب مع اختبار القران؟ تريد توصيل رسالة او اقتراح؟");
+		feedbackSettings.setTitle("شاركنا برأيك");
+		feedbackSettings.setToast("شكرا جزيلا!");
+		feedBackDialog = new FeedbackDialog(this,"AF-DD5CF5DB9887-43",feedbackSettings);
 		
 		/**
 		 * Handling all button click events
@@ -104,6 +108,7 @@ public class QQDashboardActivity extends Activity {
 		btnInfo.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Toast.makeText(getApplicationContext(), "تحت التطوير", Toast.LENGTH_SHORT).show();
+				feedBackDialog.show();
 			}
 		});
 	}

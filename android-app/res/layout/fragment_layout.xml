@@ -28,7 +28,7 @@
         android:id="@+id/btnInfo"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/qqinfo"
-        android:text="عن البرنامج" />	
+        android:text="شاركنا" />	
     <!--  Add more Buttons -->
 
 

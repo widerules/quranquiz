@@ -198,8 +198,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 	@Override
 	protected void onStop() {
-		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
 		super.onStop();
+		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
 	}
 
 	private void updateOptionButtonsColor(int CorrectIdx){
