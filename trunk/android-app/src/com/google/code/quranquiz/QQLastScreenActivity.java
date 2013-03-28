@@ -123,7 +123,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 
 			// Execute HTTP Post Request
 			HttpResponse res = httpclient.execute(httppost);
-			//tv.append(EntityUtils.toString(res.getEntity()));
+			tv.append(EntityUtils.toString(res.getEntity()));
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
