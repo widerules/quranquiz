@@ -30,9 +30,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		android.view.View.OnClickListener, OnNavigationListener {
 	
     private ViewAnimator viewAnimator;
-	private TextView tv;
+	private TextView tvQ;
 	private TextView tvScore;
 	private TextView tvBack;
+	private Button btnBack;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
@@ -103,6 +104,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		tvScore = (TextView) findViewById(R.id.Score);
 		tvBack  = (TextView) findViewById(R.id.tvBack);
+		btnBack = (Button) findViewById(R.id.btnBack); 
 
 		myQQProfileHandler = new QQProfileHandler(this);
 		myQQProfile = myQQProfileHandler.getProfile();
@@ -121,15 +123,16 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			return;
 		}
 
-		Typeface othmanyFont = Typeface.createFromAsset(getAssets(),
+		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
 				"fonts/amiri-quran.ttf");
-		
-		tv = (TextView) findViewById(R.id.textView1);
-		tv.setTypeface(othmanyFont);
-		tv.setMovementMethod(new ScrollingMovementMethod()); 
-		tv.setSelected(true);
-		
-		((Button) findViewById(R.id.btnBack)).setOnClickListener(
+		tvBack.setTypeface(tfQQFont);
+		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
+		tvQ = (TextView) findViewById(R.id.textView1);
+		tvQ.setTypeface(tfQQFont);
+		tvQ.setMovementMethod(new ScrollingMovementMethod()); 
+		tvQ.setSelected(true);
+
+		btnBack.setOnClickListener(
 				new OnClickListener(){
 					public void onClick(View arg0) {
 			            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);						
@@ -147,7 +150,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		
 		
 		for(int i=0;i<5;i++){
-			btnArray[i].setTypeface(othmanyFont);
+			btnArray[i].setTypeface(tfQQFont);
 			btnArray[i].setOnClickListener(this);
 		}
 		// Make the first Question
@@ -292,14 +295,14 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// only?
 
 			// Show the Question!
-			tv.setText(q.txt(Quest.startIdx, Quest.qLen));
+			tvQ.setText(q.txt(Quest.startIdx, Quest.qLen));
 			QOptIdx = 0;
 		}
 
 		// Concat correct options to the Question!
 		if (QOptIdx > 0)
 			// I use 3 spaces with quran_me font, or a single space elsewhere
-			tv.setText(tv
+			tvQ.setText(tvQ
 					.getText()
 					.toString()
 					.concat(""//"   "
