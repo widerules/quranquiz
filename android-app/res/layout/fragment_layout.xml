@@ -3,32 +3,32 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_weight="1"
-    android:layoutDirection="inherit"
+    android:layoutDirection="rtl"
     android:background="#f8f9fe" >
     
     <Button
         android:id="@+id/btnQQQuestionaire"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/qqstart"
-        android:text="إبدأ الاختبار" />
+        android:text="@string/_dashboard_start_QQ" />
+     
+    <Button
+        android:id="@+id/btnSettings"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/qqrange"
+        android:text="@string/_dashboard_study_list" />
         
     <Button
         android:id="@+id/btnScoreHistory"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/qqstat"
-        android:text="التقدم الزمني" />
-        
-    <Button
-        android:id="@+id/btnSettings"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/qqrange"
-        android:text="نطاق الحفظ" />
+        android:text="@string/_dashboard_show_chart" />
 
     <Button
         android:id="@+id/btnInfo"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/qqinfo"
-        android:text="شاركنا" />	
+        android:text="@string/_dashboard_us" />	
     <!--  Add more Buttons -->
 
 

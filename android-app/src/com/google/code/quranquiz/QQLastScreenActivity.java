@@ -24,7 +24,7 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 
 public class QQLastScreenActivity extends SherlockActivity {
 
-	private TextView tv;
+	private TextView tvScore, tvShare;
 	private QQProfileHandler ProfileHandler;
 	private String conclusionMessage;
 	private String ExtraInfo = "\n\n"
@@ -42,22 +42,25 @@ public class QQLastScreenActivity extends SherlockActivity {
 	private String getMessageFromProfile(QQProfile currentProfile) {
 		String msg;
 		msg = "لقد حصلت على " + currentProfile.getScore()
-				+ "  نقطة في #اختبار_القران";
+				+ "  نقطة في #اختبار_القران، من ينافسنى؟";
 		return msg;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.lastscreen_layout);
 
 		// Get the passed QQProfile
 		ProfileHandler = (QQProfileHandler) getIntent().getSerializableExtra(
 				"ProfileHandler");
 		conclusionMessage = getMessageFromProfile(ProfileHandler.CurrentProfile);
-		tv = new TextView(this);
-		tv.setText(conclusionMessage + ExtraInfo);
-		setContentView(tv);
+		tvScore = (TextView) findViewById(R.id.textViewScore);
+		tvShare = (TextView) findViewById(R.id.textViewShare);
 
+		tvScore.setText(conclusionMessage);
+		tvShare.setText(ExtraInfo);
+		
 		// If score history needs update, do so then save and post it
 		if (ProfileHandler.CurrentProfile.updateScoreRecord()) {
 			postAnonymousData(ProfileHandler.CurrentProfile);
@@ -123,7 +126,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 
 			// Execute HTTP Post Request
 			HttpResponse res = httpclient.execute(httppost);
-			tv.append(EntityUtils.toString(res.getEntity()));
+			tvShare.append(EntityUtils.toString(res.getEntity()));
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
