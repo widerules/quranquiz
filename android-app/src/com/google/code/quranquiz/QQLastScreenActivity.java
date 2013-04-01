@@ -63,8 +63,17 @@ public class QQLastScreenActivity extends SherlockActivity {
 		
 		// If score history needs update, do so then save and post it
 		if (ProfileHandler.CurrentProfile.updateScoreRecord()) {
-			postAnonymousData(ProfileHandler.CurrentProfile);
-			ProfileHandler.saveProfile(ProfileHandler.CurrentProfile);
+			new Thread(new Runnable(){
+			    @Override
+			    public void run() {
+			        try {
+						postAnonymousData(ProfileHandler.CurrentProfile);
+						ProfileHandler.saveProfile(ProfileHandler.CurrentProfile);
+			        } catch (Exception e) {
+			            //e.printStackTrace();
+			        }
+			    }
+			}).start(); 
 		}
 	}
 

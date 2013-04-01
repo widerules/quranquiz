@@ -82,6 +82,7 @@ public class QQProfileHandler implements Serializable {
 				}
 			}
 		}
+
 		for(int i=0;i<5;i++)
 			if (uid[i] != "0")
 				uid[i] = QQUtils.md5(uid[i]);

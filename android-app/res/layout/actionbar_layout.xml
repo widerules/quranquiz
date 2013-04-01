@@ -1,6 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-    style="@style/ActionBarCompat" 
-    android:layoutDirection="rtl" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ActionBarCompat"
+    android:layoutDirection="rtl"
+    android:orientation="horizontal" >
 
     <ImageView
         android:layout_width="wrap_content"
@@ -10,5 +11,14 @@
         android:scaleType="center"
         android:contentDescription="@string/_dashboard_title"
         android:src="@drawable/ic_launcher" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical"
+    android:padding="8dp"
+    android:text="@string/_dashboard_title"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textColor="#000" />
 
 </LinearLayout>

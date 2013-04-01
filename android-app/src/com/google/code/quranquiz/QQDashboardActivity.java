@@ -8,7 +8,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 import com.suredigit.inappfeedback.FeedbackDialog;
-import com.suredigit.inappfeedback.Settings;
+import com.suredigit.inappfeedback.FeedbackSettings;
 
 public class QQDashboardActivity extends Activity {
 
@@ -56,10 +56,14 @@ public class QQDashboardActivity extends Activity {
 		Button btnScoreHistory = (Button) findViewById(R.id.btnScoreHistory);
 		Button btnInfo = (Button) findViewById(R.id.btnInfo);
 		
-		Settings feedbackSettings = new Settings();
+		FeedbackSettings feedbackSettings = new FeedbackSettings();
+		feedbackSettings.setBugLabel("مشكلة");
+		feedbackSettings.setIdeaLabel("فكرة");
+		feedbackSettings.setQuestionLabel("سؤال");
+		feedbackSettings.setYourComments("اكتب رسالتك");
 		feedbackSettings.setCancelButtonText("إلغاء");
 		feedbackSettings.setSendButtonText("ارسال");
-		feedbackSettings.setText("هل واجهتك متاعب مع اختبار القران؟ تريد توصيل رسالة او اقتراح؟");
+		feedbackSettings.setText("هل واجهتك متاعب مع اختبار القران؟ تريد توصيل سؤال أو فكرة؟");
 		feedbackSettings.setTitle("شاركنا برأيك");
 		feedbackSettings.setToast("شكرا جزيلا!");
 		feedBackDialog = new FeedbackDialog(this,"AF-DD5CF5DB9887-43",feedbackSettings);
