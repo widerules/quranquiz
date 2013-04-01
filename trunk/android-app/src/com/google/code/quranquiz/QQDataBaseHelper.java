@@ -53,7 +53,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase checkDB = null;
 		String myDBFile = DB_PATH + DB_NAME;
 		
-		if(	QQDataBaseHelper.DB_BYTES == (new File(myDBFile)).length()){
+		//if(	QQDataBaseHelper.DB_BYTES == (new File(myDBFile)).length()){
 			try {
 				checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
 						SQLiteDatabase.OPEN_READONLY);
@@ -63,7 +63,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			if (checkDB != null) {
 				checkDB.close();
 			}
-		}
+		//} //TODO: Check index!
 		
 		return checkDB != null ? true : false;
 	}
