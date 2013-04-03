@@ -80,7 +80,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// setContentView(R.layout.main);
+		//setContentView(R.layout.questionaire_layout);
 
 		// some work that needs to be done on orientation change
 	}
@@ -124,14 +124,14 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 
 		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
-				"fonts/amiri-quran.ttf");
+				"fonts/roboto-regular.ttf"); //amiri-quran
 		tvBack.setTypeface(tfQQFont);
 		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
 		tvQ = (TextView) findViewById(R.id.textView1);
 		tvQ.setTypeface(tfQQFont);
 		tvQ.setMovementMethod(new ScrollingMovementMethod()); 
 		tvQ.setSelected(true);
-
+		//tvQ.setPadding(0, 15, 0,25); //Roboto font adjustment
 		btnBack.setOnClickListener(
 				new OnClickListener(){
 					public void onClick(View arg0) {
