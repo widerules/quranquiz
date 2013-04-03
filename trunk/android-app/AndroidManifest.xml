@@ -18,7 +18,7 @@
         <activity
             android:label="@string/app_name"
             android:name="com.google.code.quranquiz.QQDashboardActivity"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,7 +27,7 @@
        <activity
             android:label="@string/app_name"
             android:name=".QQQuestionaireActivity"
-            android:configChanges="keyboardHidden|orientation" 
+            android:configChanges="keyboardHidden|orientation|screenSize" 
             android:theme="@style/Theme.qqstyle" >
         </activity>
         <activity

@@ -14,6 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -60,20 +61,11 @@ public class QQLastScreenActivity extends SherlockActivity {
 
 		tvScore.setText(conclusionMessage);
 		tvShare.setText(ExtraInfo);
-		
+
 		// If score history needs update, do so then save and post it
-		if (ProfileHandler.CurrentProfile.updateScoreRecord()) {
-			new Thread(new Runnable(){
-			    @Override
-			    public void run() {
-			        try {
-						postAnonymousData(ProfileHandler.CurrentProfile);
-						ProfileHandler.saveProfile(ProfileHandler.CurrentProfile);
-			        } catch (Exception e) {
-			            //e.printStackTrace();
-			        }
-			    }
-			}).start(); 
+		if (QQUtils.QQDebug==1 ||
+				ProfileHandler.CurrentProfile.updateScoreRecord()) {
+			new UserPostAnonymous().execute(ProfileHandler);	
 		}
 	}
 
@@ -96,52 +88,73 @@ public class QQLastScreenActivity extends SherlockActivity {
 		return true;
 	}
 
-	private void postAnonymousData(QQProfile currentProfile) {
-		String uid, score, juz2, qcount, avglevel, md5;
-		String[] ids;
-		
-		uid = currentProfile.getuid();
-		ids = uid.split("\\+");
-		
-		score = String.valueOf(currentProfile.getScore());
-		juz2 = String
-				.valueOf((double) (currentProfile.getTotalStudyLength() * 300 / QQUtils.QuranWords) / 10);
-		qcount = String.valueOf(currentProfile.getTotalQuesCount());
-		avglevel = String.valueOf(currentProfile.getTotAvgLevel());
-		md5 = QQUtils.md5("QQ-" + ids[0] + "-" + ids[1] + "-" + ids[2] + "-"
-							+ ids[3] + "-" + ids[4]
-							+ "-" + score + "-" + juz2 + "-" + qcount
-							+ "-" + avglevel);
+    private class UserPostAnonymous extends AsyncTask<QQProfileHandler, Void, String> {
 
-		// Create a new HttpClient and Post Header
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(
-				"http://post.quranquiz.net/updateUserData.php");
+        @Override
+        protected String doInBackground(QQProfileHandler... params) {
+    		String uid, score, juz2, qcount, avglevel, md5;
+    		String[] ids;
+    		String response="";
+    		QQProfile currentProfile = params[0].CurrentProfile;
+    		
+    		/******************* 1- Save profile *****************/
+			ProfileHandler.saveProfile(currentProfile);
+			
+    		/******************* 2- Post User Data ***************/
+    		uid = currentProfile.getuid();
+    		ids = uid.split("\\+");
+    		
+    		score = String.valueOf(currentProfile.getScore());
+    		juz2 = String
+    				.valueOf((double) (currentProfile.getTotalStudyLength() * 300 / QQUtils.QuranWords) / 10);
+    		qcount = String.valueOf(currentProfile.getTotalQuesCount());
+    		avglevel = String.valueOf(currentProfile.getTotAvgLevel());
+    		md5 = QQUtils.md5("QQ-" + ids[0] + "-" + ids[1] + "-" + ids[2] + "-"
+    							+ ids[3] + "-" + ids[4]
+    							+ "-" + score + "-" + juz2 + "-" + qcount
+    							+ "-" + avglevel);
 
-		try {
-			// Add user data
-			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(10);
-			nameValuePairs.add(new BasicNameValuePair("uid_gl", ids[0]));
-			nameValuePairs.add(new BasicNameValuePair("uid_fb", ids[1]));
-			nameValuePairs.add(new BasicNameValuePair("uid_tw", ids[2]));
-			nameValuePairs.add(new BasicNameValuePair("uid_ap", ids[3]));
-			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
-			nameValuePairs.add(new BasicNameValuePair("s", score));
-			nameValuePairs.add(new BasicNameValuePair("j", juz2));
-			nameValuePairs.add(new BasicNameValuePair("q", qcount));
-			nameValuePairs.add(new BasicNameValuePair("l", avglevel));
-			nameValuePairs.add(new BasicNameValuePair("m", md5));
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+    		// Create a new HttpClient and Post Header
+    		HttpClient httpclient = new DefaultHttpClient();
+    		HttpPost httppost = new HttpPost(
+    				"http://post.quranquiz.net/updateUserData.php");
 
-			// Execute HTTP Post Request
-			HttpResponse res = httpclient.execute(httppost);
-			tvShare.append(EntityUtils.toString(res.getEntity()));
+    		try {
+    			// Add user data
+    			List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(10);
+    			nameValuePairs.add(new BasicNameValuePair("uid_gl", ids[0]));
+    			nameValuePairs.add(new BasicNameValuePair("uid_fb", ids[1]));
+    			nameValuePairs.add(new BasicNameValuePair("uid_tw", ids[2]));
+    			nameValuePairs.add(new BasicNameValuePair("uid_ap", ids[3]));
+    			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
+    			nameValuePairs.add(new BasicNameValuePair("s", score));
+    			nameValuePairs.add(new BasicNameValuePair("j", juz2));
+    			nameValuePairs.add(new BasicNameValuePair("q", qcount));
+    			nameValuePairs.add(new BasicNameValuePair("l", avglevel));
+    			nameValuePairs.add(new BasicNameValuePair("m", md5));
+    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}
+    			// Execute HTTP Post Request
+    			HttpResponse res = httpclient.execute(httppost);
+    			response += EntityUtils.toString(res.getEntity()); 
+    		} catch (ClientProtocolException e) {
+    		} catch (IOException e) {
+    		}
+    		return response;
+        }      
 
-	}
+        @Override
+        protected void onPostExecute(String result) {
+    		TextView tvShare = (TextView) findViewById(R.id.textViewShare);
+			tvShare.append(result);
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+  } 
 }
