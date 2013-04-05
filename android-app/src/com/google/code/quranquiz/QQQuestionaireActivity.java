@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.tekle.oss.android.animation.AnimationFactory;
 import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 
@@ -124,7 +125,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 
 		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
-				"fonts/roboto-regular.ttf"); //amiri-quran
+				"fonts/roboto-regular.ttf"); //amiri-quran | roboto-regular
 		tvBack.setTypeface(tfQQFont);
 		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
 		tvQ = (TextView) findViewById(R.id.textView1);
@@ -200,9 +201,16 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	}
 
 	@Override
+	public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance().activityStart(this); // Add this method.
+	}
+
+	@Override
 	protected void onStop() {
 		super.onStop();
 		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
+	    EasyTracker.getInstance().activityStop(this); // Add this method.
 	}
 
 	private void updateOptionButtonsColor(int CorrectIdx){

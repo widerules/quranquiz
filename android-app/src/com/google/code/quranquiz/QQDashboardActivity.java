@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
 import com.suredigit.inappfeedback.FeedbackDialog;
 import com.suredigit.inappfeedback.FeedbackSettings;
 
@@ -41,6 +43,18 @@ public class QQDashboardActivity extends Activity {
 		}
 		finish();
 	}
+
+	  @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance().activityStart(this);
+	  }
+
+	  @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance().activityStop(this);
+	  }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
