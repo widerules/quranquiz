@@ -22,6 +22,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class QQLastScreenActivity extends SherlockActivity {
 
@@ -47,6 +48,17 @@ public class QQLastScreenActivity extends SherlockActivity {
 		return msg;
 	}
 
+	  @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance().activityStart(this); // Add this method.
+	  }
+
+	  @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance().activityStop(this); // Add this method.
+	  }
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

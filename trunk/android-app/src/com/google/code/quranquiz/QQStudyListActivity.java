@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class QQStudyListActivity extends SherlockPreferenceActivity{
 
@@ -92,6 +93,18 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
     	}
 	}
 
+	  @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance().activityStart(this); // Add this method.
+	  }
+
+	  @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance().activityStop(this); // Add this method.
+	  }
+	  
 	@Override
 	protected void onDestroy() {
 		ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
