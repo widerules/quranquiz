@@ -37,8 +37,8 @@
 	        android:ellipsize="none"
 	        android:fadingEdge="horizontal"
 	        android:text="@string/txt_start"
-	        android:paddingTop="8dip"
-	        android:paddingBottom="15dip"
+	        android:paddingTop="0dip"
+	        android:paddingBottom="3dip"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	    <LinearLayout
