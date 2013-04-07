@@ -130,8 +130,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
 		tvQ = (TextView) findViewById(R.id.textView1);
 		tvQ.setTypeface(tfQQFont);
-		tvQ.setMovementMethod(new ScrollingMovementMethod()); 
-		tvQ.setSelected(true);
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD_MR1){
+			tvQ.setMovementMethod(new ScrollingMovementMethod()); 
+			tvQ.setSelected(true);	
+		}
 		btnBack.setOnClickListener(
 				new OnClickListener(){
 					public void onClick(View arg0) {
