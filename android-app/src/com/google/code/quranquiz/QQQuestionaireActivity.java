@@ -134,6 +134,11 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			tvQ.setMovementMethod(new ScrollingMovementMethod()); 
 			tvQ.setSelected(true);	
 		}
+		
+		//TODO: Check version!
+		if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1){
+			QQUtils.disableFixQ();	
+		}
 		btnBack.setOnClickListener(
 				new OnClickListener(){
 					public void onClick(View arg0) {
@@ -259,7 +264,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 			// Display Correct answer
 			tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
-					+ q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen)
+					+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen))
 					+ " ...";
 			//showCorrectAnswer(tmp); /*Old Dialog*/
 			tvBack.setText(tmp);
@@ -304,20 +309,20 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// only?
 
 			// Show the Question!
-			tvQ.setText(q.txt(Quest.startIdx, Quest.qLen));
+			tvQ.setText(QQUtils.fixQ(q.txt(Quest.startIdx, Quest.qLen)));
 			QOptIdx = 0;
 		}
 
 		// Concat correct options to the Question!
 		if (QOptIdx > 0)
 			// I use 3 spaces with quran_me font, or a single space elsewhere
-			tvQ.setText(tvQ
+			tvQ.setText(QQUtils.fixQ(tvQ
 					.getText()
 					.toString()
-					.concat(""//"   "
+					.concat("   "
 							+ q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
-									* Quest.oLen, Quest.oLen)// + "   "
-							));
+									* Quest.oLen, Quest.oLen) + "   "
+							)));
 
 		// Scramble options
 		int[] scrambled = new int[5];
@@ -328,7 +333,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		String strTemp = new String();
 		for (int j = 0; j < 5; j++) {
 			strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen);
-			btnArray[j].setText(strTemp);
+			btnArray[j].setText(QQUtils.fixQ(strTemp));
 		}
 		updateOptionButtonsColor(correct_choice); //Update background Color
 		
