@@ -13,6 +13,8 @@ public class QQUtils {
 	public static int QuranWords = 77878; 
 	public static int Juz2AvgWords = QuranWords/30;
 	
+	private static boolean blFixQ = true;
+	
 	// Question Count after which the score starts to saturate per Juz2
 	public static int Juz2SaturationQCount = 10; 
 	
@@ -128,4 +130,22 @@ public class QQUtils {
 		return yp;
 	}
 
+	public static void disableFixQ(){
+		blFixQ = false;
+	}
+	public static void enableFixQ(){
+		blFixQ = true;
+	}
+	
+	/**
+	 * Removes tashkeel from Quran text
+	 * @param text: Quran text with tashkeel
+	 * @return same text with no tashkeel
+	 */
+	public static String fixQ(String text){
+		if (blFixQ)
+			return text.replaceAll("[\u064B\u064C\u064D\u064E\u064F\u0650\u0651\u0652\u06E6]", "");
+		else
+			return text;
+	}
 }

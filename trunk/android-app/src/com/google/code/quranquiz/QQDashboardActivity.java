@@ -80,7 +80,7 @@ public class QQDashboardActivity extends Activity {
 		feedbackSettings.setText("هل واجهتك متاعب مع اختبار القران؟ تريد توصيل سؤال أو فكرة؟");
 		feedbackSettings.setTitle("شاركنا برأيك");
 		feedbackSettings.setToast("شكرا جزيلا!");
-		feedBackDialog = new FeedbackDialog(this,"AF-DD5CF5DB9887-43",feedbackSettings);
+		feedBackDialog = new FeedbackDialog(this,"AF-F8C9921F6163-17",feedbackSettings);
 		
 		/**
 		 * Handling all button click events

@@ -342,7 +342,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					+ (idx - 1) + " and _id<" + (idx + len), null);
 			if (cur.moveToFirst()) {
 				do {
-					s = s + " "+ // "   " + 
+					s = s + "   " + 
 							cur.getString(0);
 				} while (cur.moveToNext());
 				cur.close();
