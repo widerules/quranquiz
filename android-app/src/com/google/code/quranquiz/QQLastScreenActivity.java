@@ -36,8 +36,9 @@ public class QQLastScreenActivity extends SherlockActivity {
 	private Intent createShareIntent() {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
+		//shareIntent.putExtra(Intent.EXTRA_SUBJECT, "نقاط جديدة في اختبار القران");
 		shareIntent.putExtra(Intent.EXTRA_TEXT, conclusionMessage
-				+ " quranquiz.net");
+				+ " http://quranquiz.net");
 		return shareIntent;
 	}
 
