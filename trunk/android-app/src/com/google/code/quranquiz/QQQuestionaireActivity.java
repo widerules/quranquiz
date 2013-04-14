@@ -24,6 +24,10 @@ import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.code.microlog4android.Level;
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.FileAppender;
 import com.tekle.oss.android.animation.AnimationFactory;
 import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 
@@ -51,6 +55,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
+
+	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
 	public void onClick(View v) {
 		int SelID = -2;
@@ -91,6 +97,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		FileAppender appender = new FileAppender();
+        qqLogger.addAppender(appender);
+        qqLogger.setLevel(Level.DEBUG);
+        qqLogger.error("Testing to log error message with Microlog.");
 		setContentView(R.layout.questionaire_layout);
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
