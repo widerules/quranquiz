@@ -1,6 +1,11 @@
 package com.google.code.quranquiz;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
@@ -97,10 +102,25 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		/*------ Start QQ Logger -------*/
 		FileAppender appender = new FileAppender();
+		/*
+		String strQQLogFile = getFilesDir()+"/qq-logger.txt";
+		File fhQQLogFile = new File(strQQLogFile);
+		if(!fhQQLogFile.exists()){
+			try {
+				fhQQLogFile.createNewFile();
+			} catch (IOException e) {}
+		}
+		appender.setFileName(strQQLogFile);
+		*/
+		appender.setAppend(true);
         qqLogger.addAppender(appender);
         qqLogger.setLevel(Level.DEBUG);
-        qqLogger.error("Testing to log error message with Microlog.");
+        qqLogger.warn("Logger session started!");
+		/*------ End QQ Logger -------*/
+
 		setContentView(R.layout.questionaire_layout);
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
@@ -304,6 +324,14 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			
 			Quest = new QQQuestion(myQQProfile, q);
 			CurrentPart = Quest.CurrentPart;
+			
+			qqLogger.debug("------" +Calendar.getInstance().getTimeInMillis()+"------");
+			qqLogger.debug("@"+Quest.startIdx+" v="+Quest.validCount);
+			qqLogger.debug(Quest.op[0][0]+"-"+Quest.op[0][1]+"-"+Quest.op[0][2]+"-"+Quest.op[0][3]+"-"+Quest.op[0][4]);
+			qqLogger.debug(Quest.op[1][0]+"-"+Quest.op[1][1]+"-"+Quest.op[1][2]+"-"+Quest.op[1][3]+"-"+Quest.op[1][4]);
+			qqLogger.debug(Quest.op[2][0]+"-"+Quest.op[2][1]+"-"+Quest.op[2][2]+"-"+Quest.op[2][3]+"-"+Quest.op[2][4]);
+			qqLogger.debug(Quest.op[3][0]+"-"+Quest.op[3][1]+"-"+Quest.op[3][2]+"-"+Quest.op[3][3]+"-"+Quest.op[3][4]);
+			qqLogger.debug(Quest.op[4][0]+"-"+Quest.op[4][1]+"-"+Quest.op[4][2]+"-"+Quest.op[4][3]+"-"+Quest.op[4][4]);
 			
 			// Update profile after a new Question!
 			lastSeed = Quest.getSeed();
