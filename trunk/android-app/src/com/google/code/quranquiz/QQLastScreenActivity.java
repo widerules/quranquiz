@@ -76,9 +76,9 @@ public class QQLastScreenActivity extends SherlockActivity {
 		tvShare.setText(ExtraInfo);
 
 		// If score history needs update, do so then save and post it
-		if (QQUtils.QQDebug==1 ||
-				ProfileHandler.CurrentProfile.updateScoreRecord()) {
-			new UserPostAnonymous().execute(ProfileHandler);	
+		if (ProfileHandler.CurrentProfile.updateScoreRecord() ||
+			QQUtils.QQDebug==1) {
+			new UserPostAnonymous().execute(ProfileHandler);
 		}
 	}
 
