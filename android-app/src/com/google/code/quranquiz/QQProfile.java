@@ -79,7 +79,7 @@ public class QQProfile implements Serializable {
 			partWeight   = QParts.get(i).getNonZeroLength();
 			partWeight	/= QQUtils.Juz2AvgWords;
 			avgLevel     = QParts.get(i).getAvgLevel();
-			scaledQCount = QQUtils.sCurve(QParts.get(i).getNumQuestions(),
+			scaledQCount = QQUtils.sCurve(QParts.get(i).getNumCorrect(),
 										  QQUtils.Juz2SaturationQCount*partWeight);
 			scaledCorrectRatio = QQUtils.sCurve(QParts.get(i).getCorrectRatio(),1);
 			
