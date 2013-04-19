@@ -1,4 +1,4 @@
-package com.google.code.quranquiz;
+package net.quranquiz;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package com.google.code.quranquiz;
+package net.quranquiz;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
