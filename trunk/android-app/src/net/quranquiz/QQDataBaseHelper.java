@@ -1,4 +1,4 @@
-package com.google.code.quranquiz;
+package net.quranquiz;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	// The Android's default system path of your application database.
-	public static String DB_PATH = "/data/data/com.google.code.quranquiz/databases/";
+	public static String DB_PATH = "/data/data/net.quranquiz/databases/";
 	public static String DB_NAME = "qq.sqlite";
 	public static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-b20130301.sqlite";
 	public static int    DB_BYTES = 4329472;

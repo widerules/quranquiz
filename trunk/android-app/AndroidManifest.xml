@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.code.quranquiz"
+    package="net.quranquiz"
     android:versionCode="1"
     android:versionName="Beta-1" >
 
@@ -18,7 +18,7 @@
         android:allowBackup="true" >
         <activity
             android:label="@string/app_name"
-            android:name="com.google.code.quranquiz.QQDashboardActivity"
+            android:name=".QQDashboardActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -36,11 +36,11 @@
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity>
         <activity
-	    	android:name="com.google.code.quranquiz.QQStudyListActivity"
+	    	android:name=".QQStudyListActivity"
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity> 
         <activity
-	    	android:name="com.google.code.quranquiz.QQLastScreenActivity"
+	    	android:name=".QQLastScreenActivity"
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity>
 	  	<activity
