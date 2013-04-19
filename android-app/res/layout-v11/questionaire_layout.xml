@@ -54,22 +54,49 @@
 	            android:layout_weight="1"
 	            android:gravity="center"
 	            android:orientation="vertical" >
-
+	            
+	            <TextView
+	                android:id="@+id/tvInstruction"
+	                android:layout_width="match_parent"
+	                android:layout_height="75dp"
+	                android:layout_marginBottom="15dp"
+	                android:layout_marginRight="5dp"
+	                android:layout_marginLeft="2dp"
+	                android:layout_marginTop="1dp"
+	                android:background="@drawable/tv_instruction_background"
+	                android:gravity="center"
+	                android:paddingBottom="10dip"
+	                android:paddingLeft="10dp"
+	                android:paddingRight="10dp"
+	                android:paddingTop="10dp"
+	                android:text="@string/txt_instruction" />
+	            
 	            <TextView
 	                android:id="@+id/tvScore"
-	                android:layout_width="wrap_content"
+	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	                android:paddingBottom="30dp"
+	                android:layout_marginRight="5dp"
+	                android:layout_marginLeft="3dp"
+	                android:layout_marginTop="5dp"
+	                android:background="@drawable/tv_instruction_background"
+	                android:gravity="center"
+	                android:paddingBottom="10dip"
 	                android:paddingLeft="10dp"
+	                android:paddingRight="10dp"
+	                android:paddingTop="10dp"
 	                android:text="@string/txt_score"
 	                android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	            <TextView
 	                android:id="@+id/Score"
-	                android:layout_width="wrap_content"
+	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	                android:paddingBottom="30dp"
+	                android:layout_marginRight="5dp"
+	                android:layout_marginLeft="3dp"
+	                android:gravity="center"
+	                android:paddingBottom="10dip"
 	                android:paddingLeft="10dp"
+	                android:paddingRight="10dp"
 	                android:text="0"
 	                android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -78,7 +105,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:paddingLeft="10dp"
-	                android:paddingTop="30dp" />
+	                android:paddingTop="10dp" />
 	        </LinearLayout>
 
 	        <LinearLayout
