@@ -39,6 +39,7 @@ import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 public class QQQuestionaireActivity extends SherlockActivity implements
 		android.view.View.OnClickListener, OnNavigationListener {
 	
+	private SherlockActivity activity;
     private ViewAnimator viewAnimator;
 	private TextView tvQ;
 	private TextView tvScore;
@@ -126,6 +127,27 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
 		bar = (ProgressBar) findViewById(R.id.progressBar1);
 
+		
+		/*HACK*/
+		//http://stackoverflow.com/questions/7085313/is-there-a-way-to-show-splashscreen-during-oncreate
+		
+		Thread splashTread = new Thread() {
+            public void run() {
+                try {
+            		Intent instructionIntent = new Intent(QQQuestionaireActivity.this,
+            				QQInstructionsActivity.class);
+            		startActivity(instructionIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        };
+        splashTread.start();
+       
+		/*HACK*/
+		
+		
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
 		btnArray[1] = (Button) findViewById(R.id.bOp2);
@@ -356,8 +378,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			tvQ.setText(QQUtils.fixQ(tvQ
 					.getText()
 					.toString()
-					.concat("   "
-							+ q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
+					.concat(q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
 									* Quest.oLen, Quest.oLen) + "   "
 							)));
 
