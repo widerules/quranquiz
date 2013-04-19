@@ -64,8 +64,8 @@
 	                android:background="@drawable/tv_instruction_background"
 	                android:gravity="center"
 	                android:paddingBottom="10dip"
-	                android:paddingLeft="10dp"
-	                android:paddingRight="10dp"
+	                android:paddingLeft="5dp"
+	                android:paddingRight="5dp"
 	                android:paddingTop="10dp"
 	                android:text="@string/txt_instruction" />
 	            

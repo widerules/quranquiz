@@ -40,6 +40,12 @@
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity> 
         <activity
+	    	android:name=".QQInstructionsActivity"
+	    	android:theme="@style/Theme.qqstyle" 
+	    	android:screenOrientation="portrait" 
+	    	android:configChanges="keyboardHidden|orientation|screenSize" >
+	  	</activity>        
+	  	<activity
 	    	android:name=".QQLastScreenActivity"
 	    	android:theme="@style/Theme.qqstyle" >
 	  	</activity>
