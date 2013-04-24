@@ -90,6 +90,23 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		userAction(SelID);
 	}
 
+	private void showUsage(){
+
+		//http://stackoverflow.com/questions/7085313/is-there-a-way-to-show-splashscreen-during-oncreate		
+		Thread splashTread = new Thread() {
+            public void run() {
+                try {
+            		Intent instructionIntent = new Intent(QQQuestionaireActivity.this,
+            				QQInstructionsActivity.class);
+            		startActivity(instructionIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        };
+        splashTread.start();
+	}
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -107,6 +124,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		/*----------Start DB Handle-------------*/
 		q = new QQDataBaseHelper(this);
 		if (!q.checkDataBase()){
+			showUsage();
 			try {
 				q.createDataBase(); //slow!
 			} catch (Exception sqle) {
@@ -144,28 +162,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
 		bar = (ProgressBar) findViewById(R.id.progressBar1);
-
-		
-		/*HACK*/
-		//http://stackoverflow.com/questions/7085313/is-there-a-way-to-show-splashscreen-during-oncreate
-		
-		Thread splashTread = new Thread() {
-            public void run() {
-                try {
-            		Intent instructionIntent = new Intent(QQQuestionaireActivity.this,
-            				QQInstructionsActivity.class);
-            		startActivity(instructionIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        };
-        splashTread.start();
-       
-		/*HACK*/
-		
-		
+				
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
 		btnArray[1] = (Button) findViewById(R.id.bOp2);

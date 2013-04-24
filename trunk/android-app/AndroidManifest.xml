@@ -41,8 +41,8 @@
 	  	</activity> 
         <activity
 	    	android:name=".QQInstructionsActivity"
-	    	android:theme="@style/Theme.qqstyle" 
 	    	android:screenOrientation="portrait" 
+	    	android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 	    	android:configChanges="keyboardHidden|orientation|screenSize" >
 	  	</activity>        
 	  	<activity
