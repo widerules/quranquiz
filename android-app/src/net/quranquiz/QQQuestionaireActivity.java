@@ -104,6 +104,24 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
+		/*----------Start DB Handle-------------*/
+		q = new QQDataBaseHelper(this);
+		if (!q.checkDataBase()){
+			try {
+				q.createDataBase(); //slow!
+			} catch (Exception sqle) {
+			}
+		}
+		try {
+			q.openDataBase();
+			} 
+		catch (SQLException sqle) {	}
+		catch (Exception ioe) {
+				finish(); //destroy Questionnaire.
+				return;
+			}
+		/*----------End DB Handle-------------*/
+		
 		/*------ Start QQ Logger -------*/
 		FileAppender appender = new FileAppender();
 		/*
@@ -158,24 +176,12 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		tvScore = (TextView) findViewById(R.id.Score);
 		tvBack  = (TextView) findViewById(R.id.tvBack);
 		btnBack = (Button) findViewById(R.id.btnBack); 
-
+		
+		/*----------Start Profile Handle-------------*/
 		myQQProfileHandler = new QQProfileHandler(this);
 		myQQProfile = myQQProfileHandler.getProfile();
-
-		q = new QQDataBaseHelper(this);
-		try {
-			q.createDataBase();
-			
-			try {
-				q.openDataBase();
-			} catch (SQLException sqle) {
-			}
-
-		} catch (Exception ioe) {
-			finish(); //Cannot download DB, destroy Questionnaire.
-			return;
-		}
-
+		/*----------End Profile Handle-------------*/
+		
 		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
 				"fonts/me_quran.ttf"); //amiri-quran | roboto-regular
 		tvBack.setTypeface(tfQQFont);
