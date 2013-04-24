@@ -48,7 +48,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	 * 
 	 * @return true if it exists, false if it doesn't
 	 */
-	private boolean checkDataBase() {
+	public boolean checkDataBase() {
 
 		SQLiteDatabase checkDB = null;
 		String myDBFile = DB_PATH + DB_NAME;
@@ -80,33 +80,22 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	 * @throws Exception 
 	 * */
 	public void createDataBase() throws Exception {
-
-		boolean dbExist = checkDataBase();
-
-		if (dbExist) {
-			// do nothing - database already exist
-			//Toast.makeText(this.myContext, "Database found!", Toast.LENGTH_LONG).show();
-		} else {
-
-			// By calling this method an empty database will be created into the
-			// default system path
-			// of the application so we are gonna be able to overwrite that
-			// database with our database.
-			try {
-				this.getReadableDatabase();
-				//downloadDataBase(myContext);
-				
-				Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
-				prepareDataBase();
-			} catch (Exception e) {
-				Toast.makeText(
-						this.myContext,
-						"Failed to create/download database. Please check your internet connection and try again!",
-						Toast.LENGTH_LONG).show();
-				throw e;
-			}
-			//Toast.makeText(this.myContext, "Database Downloaded!",
-				//	Toast.LENGTH_LONG).show();
+		// By calling this method an empty database will be created into the
+		// default system path
+		// of the application so we are gonna be able to overwrite that
+		// database with our database.
+		try {
+			this.getReadableDatabase();
+			//downloadDataBase(myContext);
+			
+			Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
+			prepareDataBase();
+		} catch (Exception e) {
+			Toast.makeText(
+					this.myContext,
+					"Failed to create/download database. Please check your internet connection and try again!",
+					Toast.LENGTH_LONG).show();
+			throw e;
 		}
 
 	}
