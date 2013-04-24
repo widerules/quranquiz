@@ -12,7 +12,7 @@ HARAKAT=$(python -c 'print u"\u064B\u064C\u064D\u064E\u064F\u0650\u0651\u0652\u0
 
 #Define: Optional Hamza, as in: al2akhera, anbia2. The first causes char disconnection
 #HAMZA=$(python -c 'print u"\u0621".encode("utf8")')
-#SMALLALEF=$(python -c 'print u"\u0670".encode("utf8")')
+SMALLALEF=$(python -c 'print u"\u0670".encode("utf8")')
 sed 's/['"$HARAKAT"'|'"$SMALLALEF"']//g' < quran-uthmani-min.sym.txt > quran-uthmani-min.t2.txt
 
 #Replace hamza with a LamAlef with LamAlef-mad

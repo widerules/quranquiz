@@ -18,10 +18,11 @@ SA,
 		    );
 	CREATE TABLE "android_metadata" ("locale" TEXT DEFAULT 'en_US');
 	INSERT INTO "android_metadata" VALUES('en_US');
-	CREATE INDEX "Q_TXT_INDEX" on q (txt ASC);
+	//CREATE INDEX "Q_TXT_INDEX" on q (txt ASC);
 
 -- import Table Data from: idx-data.csv (Comma separated)
--- Reindex Q_TXT_INDEX
+-- //Reindex Q_TXT_INDEX
+-- save as qq-noIdx.sqlite, then zip to qq_noidx_sqlite.zip (into res/raw/)
 
 - To track Sura Starting point, use:
 -- pcregrep -Mn "بسم\nالله\nالرحمٰن\nالرحيم" quran-uthmani-words.txt | grep ":" | awk -F: '{print $1}' 
