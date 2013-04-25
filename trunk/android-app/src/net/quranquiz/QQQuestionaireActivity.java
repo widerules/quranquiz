@@ -92,7 +92,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 	private void showUsage(){
 
-		//http://stackoverflow.com/questions/7085313/is-there-a-way-to-show-splashscreen-during-oncreate		
 		Thread splashTread = new Thread() {
             public void run() {
                 try {
@@ -110,8 +109,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		//setContentView(R.layout.questionaire_layout);
-
 		// some work that needs to be done on orientation change
 	}
 
@@ -141,21 +138,23 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		/*----------End DB Handle-------------*/
 		
 		/*------ Start QQ Logger -------*/
-		FileAppender appender = new FileAppender();
-		/*
-		String strQQLogFile = getFilesDir()+"/qq-logger.txt";
-		File fhQQLogFile = new File(strQQLogFile);
-		if(!fhQQLogFile.exists()){
-			try {
-				fhQQLogFile.createNewFile();
-			} catch (IOException e) {}
+		if(QQUtils.QQDebug>0){
+			FileAppender appender = new FileAppender();
+			/*
+			String strQQLogFile = getFilesDir()+"/qq-logger.txt";
+			File fhQQLogFile = new File(strQQLogFile);
+			if(!fhQQLogFile.exists()){
+				try {
+					fhQQLogFile.createNewFile();
+				} catch (IOException e) {}
+			}
+			appender.setFileName(strQQLogFile);
+			*/
+			appender.setAppend(true);
+	        qqLogger.addAppender(appender);
+	        qqLogger.setLevel(Level.DEBUG);
+	        qqLogger.warn("Logger session started!");
 		}
-		appender.setFileName(strQQLogFile);
-		*/
-		appender.setAppend(true);
-        qqLogger.addAppender(appender);
-        qqLogger.setLevel(Level.DEBUG);
-        qqLogger.warn("Logger session started!");
 		/*------ End QQ Logger -------*/
 
 		setContentView(R.layout.questionaire_layout);
@@ -350,14 +349,13 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			Quest = new QQQuestion(myQQProfile, q);
 			CurrentPart = Quest.CurrentPart;
 			
-			qqLogger.debug("------" +Calendar.getInstance().getTimeInMillis()+"------");
-			qqLogger.debug("@"+Quest.startIdx+" v="+Quest.validCount);
-			qqLogger.debug(Quest.op[0][0]+"-"+Quest.op[0][1]+"-"+Quest.op[0][2]+"-"+Quest.op[0][3]+"-"+Quest.op[0][4]);
-			qqLogger.debug(Quest.op[1][0]+"-"+Quest.op[1][1]+"-"+Quest.op[1][2]+"-"+Quest.op[1][3]+"-"+Quest.op[1][4]);
-			qqLogger.debug(Quest.op[2][0]+"-"+Quest.op[2][1]+"-"+Quest.op[2][2]+"-"+Quest.op[2][3]+"-"+Quest.op[2][4]);
-			qqLogger.debug(Quest.op[3][0]+"-"+Quest.op[3][1]+"-"+Quest.op[3][2]+"-"+Quest.op[3][3]+"-"+Quest.op[3][4]);
-			qqLogger.debug(Quest.op[4][0]+"-"+Quest.op[4][1]+"-"+Quest.op[4][2]+"-"+Quest.op[4][3]+"-"+Quest.op[4][4]);
-			
+			if(QQUtils.QQDebug>0){
+				qqLogger.debug("------" +Calendar.getInstance().getTimeInMillis()+"------");
+				qqLogger.debug("@"+Quest.startIdx+" v="+Quest.validCount);
+				for(int dd=0;dd<10;dd++){
+					qqLogger.debug(Quest.op[dd][0]+"-"+Quest.op[dd][1]+"-"+Quest.op[dd][2]+"-"+Quest.op[dd][3]+"-"+Quest.op[dd][4]);					
+				}
+			}
 			// Update profile after a new Question!
 			lastSeed = Quest.getSeed();
 			myQQProfile.setLastSeed(lastSeed);
