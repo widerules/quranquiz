@@ -4,14 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import android.content.Context;
@@ -27,9 +23,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	// The Android's default system path of your application database.
 	public static String DB_PATH = "/data/data/net.quranquiz/databases/";
 	public static String DB_NAME = "qq.sqlite";
-	public static String DB_DOWNLOAD = "http://quranquiz.googlecode.com/files/qq-b20130301.sqlite";
-	public static int    DB_BYTES = 4329472;
 	
+    // 1 -> 2 add q.txtsym column
+    private static final int DB_VERSION = 2;	
 	private SQLiteDatabase myDataBase;
 
 	private final Context myContext;
@@ -38,7 +34,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	public QQDataBaseHelper(Context context) {
 
-		super(context, DB_NAME, null, 1);
+		super(context, DB_NAME, null, DB_VERSION);
 		this.myContext = context;
 	}
 
@@ -49,29 +45,39 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	 * @return true if it exists, false if it doesn't
 	 */
 	public boolean checkDataBase() {
-
+		
 		SQLiteDatabase checkDB = null;
 		String myDBFile = DB_PATH + DB_NAME;
+		int v = -1;
 		
-		//if(	QQDataBaseHelper.DB_BYTES == (new File(myDBFile)).length()){
-			try {
-				checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
-						SQLiteDatabase.OPEN_READONLY);
-			} catch (SQLiteException e) {
-			}
+		try {
+			checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
+					SQLiteDatabase.OPEN_READONLY);
+			v = checkDB.getVersion();
+		} catch (SQLiteException e) {
+		}
 
-			if (checkDB != null) {
-				checkDB.close();
-			}
-		//} //TODO: Check index!
-		
-		return checkDB != null ? true : false;
+		if (checkDB != null) {
+			checkDB.close();
+		}
+		if(v>-1 && v< DB_VERSION){
+			File f = new File(DB_PATH+DB_NAME);
+			if(f.exists())
+				f.delete();
+			f = new File(DB_PATH+DB_NAME+"-journal");
+			if(f.exists())
+				f.delete();
+			return false;
+		}else{
+			return checkDB != null ? true : false;
+		}
 	}
 
 	public void closeDatabase() {
 		if (myDataBase!=null)
 			if( myDataBase.isOpen())
 				myDataBase.close();
+        super.close();
 	}
 
 	/**
@@ -80,24 +86,22 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	 * @throws Exception 
 	 * */
 	public void createDataBase() throws Exception {
-		// By calling this method an empty database will be created into the
-		// default system path
-		// of the application so we are gonna be able to overwrite that
-		// database with our database.
+
 		try {
+			// By calling this method an empty database will be created into the
+			// default system path
+			// of the application so we are gonna be able to overwrite that
+			// database with our database.
 			this.getReadableDatabase();
-			//downloadDataBase(myContext);
-			
 			Toast.makeText(myContext, "جاري فتح قاعدة البيانات للمرة الاولى", Toast.LENGTH_LONG).show();
 			prepareDataBase();
 		} catch (Exception e) {
 			Toast.makeText(
 					this.myContext,
-					"Failed to create/download database. Please check your internet connection and try again!",
+					"مساحة التخزين غير كافية لفك قاعدة البيانات. ازل بعض الملفات وحاول لاحقا",
 					Toast.LENGTH_LONG).show();
 			throw e;
 		}
-
 	}
 
 	private void prepareDataBase() throws Exception {
@@ -131,56 +135,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		 SQLiteDatabase.openDatabase(DB_PATH+DB_NAME, null,SQLiteDatabase.OPEN_READWRITE);
 		 if(myDataBase != null){
 			 myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
+			 myDataBase.setVersion(DB_VERSION);
 			 myDataBase.close(); // Close the READWRITE session.
 		 }
-	}
-
-	/**
-	 * Downloads your database.
-	 * @throws Exception 
-	 * */
-	private void downloadDataBase(Context myContext) throws Exception {
-		//TODO: Show some progress ...
-		//WARNING: THIS IMPLEMENTATION IS VERY BAD!
-		int count;
-		try {
-			URL myUrl = new URL(QQDataBaseHelper.DB_DOWNLOAD);
-			URLConnection conexion = myUrl.openConnection();
-			conexion.connect();
-
-			fileLength = conexion.getContentLength();
-
-			// download the file
-			InputStream input = new BufferedInputStream(myUrl.openStream());
-			OutputStream output = new FileOutputStream(QQDataBaseHelper.DB_PATH+QQDataBaseHelper.DB_NAME);
-
-			byte data[] = new byte[1024];
-
-			long total = 0;
-			while ((count = input.read(data)) != -1) {
-				total += count;
-				//Update progress here!
-				output.write(data, 0, count);
-			}
-
-			output.flush();
-			output.close();
-			input.close();
-			fileLength = -1;
-
-			// TODO Create the index on phone
-			// SQLiteDatabase myDataBase =
-			// SQLiteDatabase.openDatabase(outFileName, null,
-			// SQLiteDatabase.OPEN_READWRITE);
-			// if(myDataBase != null){
-			// myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
-			// myDataBase.close(); // Close the READWRITE session. Other
-			// sessions are read-only
-			// }
-
-		} catch (Exception e) {
-			throw e;
-		}
 	}
 
 	@Override
@@ -313,7 +270,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		String s = new String("");
 
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txt from q where _id="
+			Cursor cur = myDataBase.rawQuery("select txtsym from q where _id="
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getString(0);
@@ -327,7 +284,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		String s = new String("");
 
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txt from q where _id>"
+			Cursor cur = myDataBase.rawQuery("select txtsym from q where _id>"
 					+ (idx - 1) + " and _id<" + (idx + len), null);
 			if (cur.moveToFirst()) {
 				do {
