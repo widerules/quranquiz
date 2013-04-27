@@ -1,7 +1,7 @@
 % Parses the Quran Words ..
 
 words_cnt = 77878;
-txt_sym=1;
+txt_sym=2;
 fid=fopen('quran-uthmani-min.nosym.txt');
 fid2=fopen('quran-uthmani-min.sym.txt');
 
@@ -54,12 +54,18 @@ save QWords.mat q;
     end
     fprintf(fido,'%d,%s,%d,%d,0\n', words_cnt-1, char(q.txt(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
     fprintf(fido,'%d,%s,%d,0,0\n', words_cnt, char(q.txt(words_cnt)),q.sim1(words_cnt).cnt);
- else
+ elseif(txt_sym==1)
     for i=1:words_cnt-2
         fprintf(fido,'%d,%s,%d,%d,%d\n', i, char(q.txt_sym(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt);
     end
     fprintf(fido,'%d,%s,%d,%d,0\n', words_cnt-1, char(q.txt_sym(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
     fprintf(fido,'%d,%s,%d,0,0\n', words_cnt, char(q.txt_sym(words_cnt)),q.sim1(words_cnt).cnt);
+ else %Print both sym and noSym
+    for i=1:words_cnt-2
+        fprintf(fido,'%d,%s,%s,%d,%d,%d\n', i, char(q.txt(i)),char(q.txt_sym(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt);
+    end
+    fprintf(fido,'%d,%s,%s,%d,%d,0\n', words_cnt-1, char(q.txt(words_cnt-1)),char(q.txt_sym(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt);
+    fprintf(fido,'%d,%s,%s,%d,0,0\n', words_cnt, char(q.txt(words_cnt)),char(q.txt_sym(words_cnt)),q.sim1(words_cnt).cnt);     
  end
  
  fclose(fido);
