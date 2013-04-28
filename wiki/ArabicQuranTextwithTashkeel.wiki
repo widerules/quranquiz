@@ -1,4 +1,4 @@
-#labels quran,textField
+#labels Quran,textField,Phase-Implementation
 This page shows how quran text with tashkeel is displayed on different android versions.
 
 = Introduction =
