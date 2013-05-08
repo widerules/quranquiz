@@ -329,4 +329,25 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		return ids;
 	}
 
+	public List<Integer> randomUnique4NotMatching(int idx) {
+
+		List<Integer> ids = new ArrayList<Integer>();
+		if (myDataBase != null) {
+			//TODO: Slow table creation: Any optimization?
+			myDataBase.execSQL("CREATE TEMP TABLE IF NOT EXISTS xy as select _id,txt from q order by random() limit 200");
+			Cursor cur = myDataBase.rawQuery(
+					"select q1._id from xy q1 inner join xy q2 on q2.txt = q1.txt "+
+					"group by q1._id,q1.txt having q1._id = min(q2._id) "+
+					"and q1.txt !=(select txt from q where _id="+idx+") order by random() limit 4",
+					null);
+			if (cur.moveToFirst()) {
+				do {
+					ids.add(cur.getInt(0));
+				} while (cur.moveToNext());
+				cur.close();
+			}
+		}
+		return ids;
+	}
+
 }
