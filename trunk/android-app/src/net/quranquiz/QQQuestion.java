@@ -82,6 +82,7 @@ public class QQQuestion {
 		// Get unique options
 		int last_correct, uniq_cnt;
 		List<Integer> diffList;
+		List<Integer> randList;
 
 		for (int i = 0; i < 10; i++) {
 			last_correct = op[i][0] - 1;
@@ -94,24 +95,26 @@ public class QQQuestion {
 			uniq_cnt = diffList.size();
 
 			int[] rnd_idx = new int[uniq_cnt];
-			Random randg = new Random();
 
 			if (uniq_cnt > 3) {
 				rnd_idx = QQUtils.randperm(uniq_cnt);
 				for (int j = 1; j < 5; j++) {
 					op[i][j] = diffList.get(rnd_idx[j - 1]);
 				}
-			} else if (uniq_cnt > 0) {
-				rnd_idx = QQUtils.randperm(uniq_cnt);
-				for (int j = 1; j < uniq_cnt + 1; j++) {
-					op[i][j] = diffList.get(rnd_idx[j - 1]);
-				}
-				for (int j = uniq_cnt + 1; j < 5; j++) {
-					op[i][j] = randg.nextInt(QQUtils.QuranWords);
-				}
-			} else { // uniq_cnt=0, all random options!
-				for (int j = 1; j < 5; j++)
-					op[i][j] = randg.nextInt(QQUtils.QuranWords);
+			} else{
+				// We need Random unique and does not match correct
+				randList = q.randomUnique4NotMatching(op[i][0]);			
+				if (uniq_cnt > 0) {
+					rnd_idx = QQUtils.randperm(uniq_cnt);
+					for (int j = 1; j < uniq_cnt + 1; j++) {
+						op[i][j] = diffList.get(rnd_idx[j - 1]);
+					}
+					for (int j = uniq_cnt + 1; j < 5; j++) {
+						op[i][j] = randList.get(j-uniq_cnt-1);
+					}
+				} else { // uniq_cnt=0, all random options!
+					for (int j = 1; j < 5; j++)
+						op[i][j] = randList.get(j-uniq_cnt-1);				}
 			}
 		}
 	}
