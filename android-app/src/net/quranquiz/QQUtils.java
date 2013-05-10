@@ -65,16 +65,6 @@ public class QQUtils {
 		return -1;
 	}
 
-	public static String getSuraName(int wordIdx) {
-
-		// TODO: Make a binary search, faster!
-		for (int i = 0; i < 113; i++)
-			if (wordIdx < sura_idx[i]) {
-				return sura_name[i];
-			}
-		return sura_name[112];
-	}
-
 	public static List<Integer> ListPlus(List<Integer> diffList, int i) {
 		List<Integer> plus = new ArrayList<Integer>();
 		plus = diffList;
@@ -148,5 +138,22 @@ public class QQUtils {
 			return text.replaceAll("[\u064B\u064C\u064D\u064E\u064F\u0650\u0651\u0652\u06E6]", "");
 		else
 			return text;
+	}
+
+	public static String getSuraName(int wordIdx) {
+		return sura_name[getSuraIdx(wordIdx)];
+	}
+
+	public static String getSuraNameFromIdx(int suraIdx) {
+		return sura_name[suraIdx];
+	}
+	
+	public static int getSuraIdx(int wordIdx) {
+		// TODO: Make a binary search, faster!
+		for (int i = 0; i < 113; i++)
+			if (wordIdx < sura_idx[i]) {
+				return i;
+			}
+		return 113;
 	}
 }

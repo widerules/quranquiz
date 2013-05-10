@@ -5,12 +5,15 @@ import java.util.Random;
 
 public class QQQuestion {
 
-	public int[][] op = new int[10][5]; // Holds all options for the current
-										// Question
+	/******** Questions parameters to be set: Start **********/
+	public int rounds; // How many rounds a question has: 10 for normal, 1 for special
+	public int validCount; //Number of correct options at the first round
+	public int[][] op = new int[10][5]; // Holds all 5 options x 10 rounds
 	public int startIdx; // Precise Position near seed, valid options
-	public int validCount;
-	public int qLen; // Length of the Question
-	public int oLen; // Length of each option
+	public int qLen; // Number of words to display to start the Question
+	public int oLen; // Number of words of each option
+	public QType qType; // Question Type: NOTSPECIAL or <Special Type>
+	/******** Questions parameters to be set: End **********/
 
 	private int lastSeed; // Seed for the Question
 	private int level; // User Level, currently
@@ -18,6 +21,34 @@ public class QQQuestion {
 	private Random rand;
 	public int CurrentPart;
 
+	public enum QType { 
+		NOTSPECIAL, SURANAME, SURAAYACOUNT, MAKKI, AYANUMBER;
+		public int getScore(){
+			switch(this){
+				case SURANAME: 		return 2;
+				case SURAAYACOUNT: 	return 4;
+				case MAKKI: 		return 2;
+				case AYANUMBER:		return 7;
+				default:			return 0;
+			}
+		}	
+	
+		public String getInstructions(){
+			switch(this){
+				case SURANAME: 		
+					return App.getContext().getResources().getString(R.string.txt_instruction_SURANAME);
+				case SURAAYACOUNT: 	
+					return App.getContext().getResources().getString(R.string.txt_instruction_SURAAYACOUNT);
+				case MAKKI: 		
+					return App.getContext().getResources().getString(R.string.txt_instruction_MAKKI);
+				case AYANUMBER:		
+					return App.getContext().getResources().getString(R.string.txt_instruction_AYANUMBER);
+				default:			
+					return App.getContext().getResources().getString(R.string.txt_instruction);
+			}
+		}
+	};
+		
 	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb) {
 		// start tracing to "/sdcard/calc.trace"
 		// Debug.startMethodTracing("QQ.trace");
@@ -29,15 +60,85 @@ public class QQQuestion {
 		// Keep Reference of Level, Q
 		level = prof.getLevel();
 		q = qdb;
-		createQ(prof);
+		if(prof.isSpecialEnabled() && selectSpecial()){
+			createSpecialQ(prof);
+		}else {
+			createQ(prof);
+		}
 		// stop tracing
 		// Debug.stopMethodTracing();
 	}
 
-	private void createQ(QQProfile prof) {
+	private boolean selectSpecial() {
+		if(Math.random()>0.2) 
+			return false;
+		else
+			return true;
+	}
+	
+	private void createSpecialQ(QQProfile prof) {
+		rounds = 1;
 		QQSparseResult sparsed = prof.getSparsePoint(rand.nextInt(prof
-				.getTotalStudyLength())); // was: QQUtils.QuranWords
+				.getTotalStudyLength()));
+		lastSeed = sparsed.idx;
+		CurrentPart = sparsed.part;
 
+		qType = QType.SURANAME; //TODO: Implement others
+
+		switch(qType){
+			case SURANAME: 
+				createQSuraName();
+				break;
+			//TODO: Implement others	
+			default:
+				qType = QType.SURANAME;
+				createQSuraName();
+				break;	
+		}
+	}
+	
+	private void createQSuraName() {
+		// +1 to compensate the rand-gen integer [0-QuranWords-1]
+		startIdx = getValidUniqueStartNear(lastSeed + 1);
+		validCount=1; //Number of correct options at the first round
+		qLen=(level==1)?3:2;
+		oLen=1;
+		//Correct Answer:
+		op[0][0] = QQUtils.getSuraIdx(startIdx);
+		//Incorrect Answers		
+		fillIncorrectRandomIdx(op[0][0]);
+	}
+
+	private int getValidUniqueStartNear(int start) {
+		// Search for a correct neighbor unique start
+		int dir = 1; // search down = +1
+		int limitHit = 1;
+		int start_shadow;
+		boolean srch_cond;
+		while (limitHit > 0) {
+			start_shadow = start;
+			limitHit = 0;
+			srch_cond = true;
+			while (srch_cond) {
+				start_shadow = start_shadow + dir;
+				if (start_shadow == 0 || start_shadow == QQUtils.QuranWords - 1) {
+					limitHit = 1;
+					dir = -dir;
+					break;
+				}
+				srch_cond = q.sim2cnt(start_shadow) == 1;
+			}
+
+			start = start_shadow;
+		}
+		return start;
+	}
+
+	private void createQ(QQProfile prof) {
+		rounds = 10;
+		qType = QType.NOTSPECIAL;
+		QQSparseResult sparsed = prof.getSparsePoint(rand.nextInt(prof
+				.getTotalStudyLength()));
 		lastSeed = sparsed.idx;
 		CurrentPart = sparsed.part;
 
@@ -117,6 +218,20 @@ public class QQQuestion {
 						op[i][j] = randList.get(j-uniq_cnt-1);				}
 			}
 		}
+	}
+	
+	private void fillIncorrectRandomIdx(int correctIdx){
+		int[] perm = new int[5];
+		int[] rndIdx = {-1,1,0,5,-4};
+
+		perm = QQUtils.randperm(5);
+		// Adding QuranWords does not affect the %QuranWords, but eliminates -ve values
+		int correctIdxPerm = QQUtils.QuranWords + correctIdx - rndIdx[perm[0]];
+		
+		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%QQUtils.QuranWords;
+		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%QQUtils.QuranWords;
+		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%QQUtils.QuranWords;
+		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%QQUtils.QuranWords;
 	}
 
 	public int getSeed() {

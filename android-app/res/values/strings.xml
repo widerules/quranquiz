@@ -5,6 +5,11 @@
     <string name="txt_end">اختر الاجابة الصحيحة</string>
     <string name="txt_score">نقاط</string>
     <string name="txt_instruction">اختر التكملة الصحيحة</string>
+    <string name="txt_instruction_SURANAME">اختر اسم السورة</string>
+    <string name="txt_instruction_SURAAYACOUNT">اختر عدد ايات السورة</string>
+    <string name="txt_instruction_MAKKI">اختر بيان السورة</string>
+    <string name="txt_instruction_AYANUMBER">اختر رقم الاية</string>
+            
     <string name="pref_fixedLevel_sum">إيقاف خاصية المستوى المتغير العشوائي واختيار مستوى ثابت</string>
     <string name="pref_fixedLevel_title">تثبيت مستوى الأسئلة</string>
     <string name="pref_userLevel_title">اختر مستوى الأسئلة</string>

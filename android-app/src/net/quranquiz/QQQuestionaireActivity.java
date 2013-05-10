@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
+import net.quranquiz.QQQuestion.QType;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -22,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.ViewAnimator;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -44,6 +49,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	private TextView tvQ;
 	private TextView tvScore;
 	private TextView tvBack;
+	private TextView tvInstructions;
 	private Button btnBack;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
@@ -169,6 +175,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		btnArray[3] = (Button) findViewById(R.id.bOp4);
 		btnArray[4] = (Button) findViewById(R.id.bOp5);
 
+		tvInstructions = (TextView) findViewById(R.id.tvInstruction);
 		tvScore = (TextView) findViewById(R.id.Score);
 		tvBack  = (TextView) findViewById(R.id.tvBack);
 		btnBack = (Button) findViewById(R.id.btnBack); 
@@ -208,6 +215,18 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		actionbar.setListNavigationCallbacks(list, this);
 		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
 		
+        //Inflate the view containing the Toggler
+        View vwToggler = LayoutInflater.from(this).inflate(R.layout.special_toggle_view, null);
+        final ToggleButton tbSpecialQ = (ToggleButton)vwToggler.findViewById(R.id.SpecialQToggler);
+        tbSpecialQ.setChecked(true); // Default true, not from profile!
+        tbSpecialQ.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	myQQProfile.setSpecialEnabled(tbSpecialQ.isChecked());
+            }
+        });
+        //Attach to the action bar
+        getSupportActionBar().setCustomView(vwToggler);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
 		
 		for(int i=0;i<5;i++){
 			btnArray[i].setTypeface(tfQQFont);
@@ -319,7 +338,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
 					+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen))
 					+ " ...";
-			//showCorrectAnswer(tmp); /*Old Dialog*/
 			tvBack.setText(tmp);
 			
 			QOptIdx = -1; // trigger a new question
@@ -328,16 +346,24 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// with options ..
 		}
 
-		if (QOptIdx == -1 || QOptIdx == 10) {
+		if (QOptIdx == -1 || QOptIdx == Quest.rounds) {
 			myQQProfile = myQQProfileHandler.CurrentProfile;
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong answer
-				myQQProfile.addIncorrect(CurrentPart);
+				if(Quest.qType == QType.NOTSPECIAL)
+					myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
-				if(QOptIdx == 10){
-					myQQProfile.addCorrect(CurrentPart);
-					tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "]";
+				if(QQinit == 0 && QOptIdx == Quest.rounds){
+					if(Quest.qType == QType.NOTSPECIAL)
+						myQQProfile.addCorrect(CurrentPart);
+					else
+						myQQProfile.addSpecial(Quest.qType.getScore());
+					
+					// Display Correct answer
+					tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
+							+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen))
+							+ " ...";
 					tvBack.setText(tmp);
 				}
 			}
@@ -380,7 +406,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 					.getText()
 					.toString()
 					.concat(q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
-									* Quest.oLen, Quest.oLen) + "   "
+									* Quest.oLen, Quest.oLen) + "  "
 							)));
 
 		// Scramble options
@@ -388,10 +414,24 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		scrambled = QQUtils.randperm(5);
 		correct_choice = QQUtils.findIdx(scrambled, 0); // idx=1
 
+		//Display Instructions
+		tvInstructions.setText(Quest.qType.getInstructions());
+		
 		// Display Options:
 		String strTemp = new String();
 		for (int j = 0; j < 5; j++) {
-			strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen);
+			if(Quest.qType==QType.NOTSPECIAL)
+				strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen);
+			else{
+				switch(Quest.qType){
+				case SURANAME:
+					strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.op[QOptIdx][scrambled[j]]);
+					break;
+				default: 
+					strTemp = "-";
+					break;
+				}
+			}
 			btnArray[j].setText(QQUtils.fixQ(strTemp));
 		}
 		updateOptionButtonsColor(correct_choice); //Update background Color
