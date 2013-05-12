@@ -226,12 +226,12 @@ public class QQQuestion {
 
 		perm = QQUtils.randperm(5);
 		// Adding QuranWords does not affect the %QuranWords, but eliminates -ve values
-		int correctIdxPerm = QQUtils.QuranWords + correctIdx - rndIdx[perm[0]];
+		int correctIdxPerm = 114 + correctIdx - rndIdx[perm[0]];
 		
-		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%QQUtils.QuranWords;
-		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%QQUtils.QuranWords;
-		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%QQUtils.QuranWords;
-		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%QQUtils.QuranWords;
+		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%114;
+		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%114;
+		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%114;
+		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%114;
 	}
 
 	public int getSeed() {
