@@ -416,6 +416,11 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		//Display Instructions
 		tvInstructions.setText(Quest.qType.getInstructions());
+		if(Quest.qType == QType.NOTSPECIAL)
+			QQUtils.tvSetBackgroundFromDrawable(tvInstructions, R.drawable.tv_instruction_background);
+		else
+			QQUtils.tvSetBackgroundFromDrawable(tvInstructions, R.drawable.tv_instruction_special_background);
+
 		
 		// Display Options:
 		String strTemp = new String();
