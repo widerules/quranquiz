@@ -101,8 +101,9 @@ public class QQProfileHandler implements Serializable {
 						.getString("pref_userLevel", "")),
 				// settings.getInt("score", 0),
 				// settings.getInt("quesCount", 0),
-				settings.getString("studyParts", ""), settings.getString(
-						"pref_scores", ""));
+				settings.getString("studyParts", ""),
+				settings.getString("pref_scores", ""),
+				settings.getInt("specialScore", 0));
 	}
 
 	public QQProfile getProfile() {
@@ -116,7 +117,8 @@ public class QQProfileHandler implements Serializable {
 			myQQProfile = new QQProfile(getHashedUID(),
 					new Random().nextInt(QQUtils.QuranWords), 1,
 					QQProfileHandler.DEFAULT_STUDY_PARTS,
-					QQScoreRecord.getInitScoreRecordPack());
+					QQScoreRecord.getInitScoreRecordPack(),
+					0);
 			reLoadParts(myQQProfile);
 			saveProfile(myQQProfile);
 		}
@@ -186,6 +188,7 @@ public class QQProfileHandler implements Serializable {
 		// editor.putInt("quesCount", prof.getQuesCount());
 		editor.putString("studyParts", prof.getStudyParts());
 		editor.putString("pref_scores", prof.getScores());
+		editor.putInt("specialScore", prof.getSpecialScore());
 
 		editor.commit();
 

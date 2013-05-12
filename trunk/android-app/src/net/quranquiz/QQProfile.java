@@ -12,15 +12,17 @@ public class QQProfile implements Serializable {
 	private Vector<QQStudyPart> QParts;
 	private Vector<QQScoreRecord> QScores;
 	private boolean specialEnabled;
+	private int specialScore;
 
 	public QQProfile(int lastSeed, int level) {
 		setLastSeed(lastSeed);
 		setLevel(level);
 		specialEnabled = true;
+		specialScore = 0;
 	}
 
 	public QQProfile(String uid, int lastSeed, int level, String QPartsString,
-			String QScoresString) {
+			String QScoresString, int specialScore) {
 
 		setLastSeed(lastSeed);
 		setLevel(level);
@@ -28,6 +30,7 @@ public class QQProfile implements Serializable {
 		setScoreHistory(QScoresString);
 		setuid(uid);
 		specialEnabled = true;
+		setSpecialScore(specialScore);
 	}
 
 	public void addCorrect(int currentPart) {
@@ -96,7 +99,7 @@ public class QQProfile implements Serializable {
 			
 			score += 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
 		}
-		return (int) Math.ceil(score);
+		return (int) Math.ceil(score+specialScore);
 	}
 
 	public String getScores() {
@@ -235,7 +238,14 @@ public class QQProfile implements Serializable {
 	}
 
 	public void addSpecial(int score) {
-		// TODO Save and load special points
-		
+		specialScore+= score;		
+	}
+	
+	public void setSpecialScore(int score){
+		specialScore = score;
+	}
+	
+	public int getSpecialScore(){
+		return specialScore;
 	}
 }

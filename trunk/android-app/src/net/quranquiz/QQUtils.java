@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
+
 public class QQUtils {
 
 	public static int QQDebug = 0;
@@ -155,5 +159,15 @@ public class QQUtils {
 				return i;
 			}
 		return 113;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
+	public static void tvSetBackgroundFromDrawable(TextView tv, int id){
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN){
+			tv.setBackground(App.getContext().getResources().getDrawable(id));	
+		}else{
+			tv.setBackgroundDrawable(App.getContext().getResources().getDrawable(id));
+		}
 	}
 }
