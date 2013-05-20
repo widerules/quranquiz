@@ -213,7 +213,7 @@ public class QQProfile implements Serializable {
 	}
 
 	public boolean updateScoreRecord() {
-		if (QScores.size() < 1) {
+		if (QScores.size() < 5) {
 			QScores.add(new QQScoreRecord(this.getScore()));
 			return true;
 		} else if (QScores.get(QScores.size() - 1).isOlderThan1Day()) {
