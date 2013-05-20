@@ -19,6 +19,7 @@ public class QQQuestion {
 	private int level; // User Level, currently
 	private QQDataBaseHelper q; // Reference to the DB
 	private Random rand;
+	private static int QLEN_EXTRA_LIMIT=2;
 	public int CurrentPart;
 
 	public enum QType { 
@@ -243,6 +244,7 @@ public class QQQuestion {
 		int dir = 1; // search down = +1
 		int limitHit = 1, disp2, disp3;
 		int start_shadow;
+		int extraLength;
 		boolean srch_cond;
 		while (limitHit > 0) {
 			start_shadow = start;
@@ -270,7 +272,15 @@ public class QQQuestion {
 					validCount = 1; // \
 					qLen = 2; // -|-> Default Constants for level-2
 					oLen = 1;
-
+					extraLength = extraQLength(start_shadow, qLen);
+					if(extraLength>-1){
+						qLen +=extraLength;
+						start_shadow -=extraLength;
+					} else {
+						// Too Long Motashabehat, cannot start within, non-unique answer
+						srch_cond = true; 
+					}
+					
 				} else {
 					// Search for a motashabehat near selected index
 					// Specify # Words to display
@@ -304,6 +314,19 @@ public class QQQuestion {
 			start = start_shadow;
 		}
 		return start;
+	}
+
+	private int extraQLength(int start, int qLen) {
+		int extra=0;
+		while((extra<QLEN_EXTRA_LIMIT) && (q.sim3cnt(--start)>0))
+			extra ++;
+		
+		if(extra==QLEN_EXTRA_LIMIT)
+			return -1;
+		else if (extra==0)
+			return 0;
+		else
+			return extra+1;
 	}
 
 }
