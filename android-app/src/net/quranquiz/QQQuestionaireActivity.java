@@ -221,7 +221,13 @@ public class QQQuestionaireActivity extends SherlockActivity implements
         tbSpecialQ.setChecked(true); // Default true, not from profile!
         tbSpecialQ.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	myQQProfile.setSpecialEnabled(tbSpecialQ.isChecked());
+            	Boolean isEnabled = tbSpecialQ.isChecked();
+            	myQQProfile.setSpecialEnabled(isEnabled);
+            	if(isEnabled)
+            		Toast.makeText(getApplicationContext(), "تم تشغيل الأسئلة الخاصة", Toast.LENGTH_SHORT).show();
+            	else
+            		Toast.makeText(getApplicationContext(), "تم إيقاف الاسئلة الخاصة", Toast.LENGTH_SHORT).show();
+
             }
         });
         //Attach to the action bar
