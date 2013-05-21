@@ -157,10 +157,14 @@ public class QQQuestion {
 		// fill Correct Option Words @indx=1 (2,3,..validCount for higher
 		// levels)
 		List<Integer> tmp;
+		int correct;
 		op[0][0] = startIdx + qLen;
 		for (int k = 1; k < 10; k++) {
-			op[k][0] = op[k - 1][0] + oLen; // The next word, or offset=2 for
-											// level-1
+			correct = op[k - 1][0] + oLen;
+			if (correct>QQUtils.QuranWords)
+				op[k][0] = correct - QQUtils.QuranWords;
+			else
+				op[k][0] = correct;
 		}
 		if (level > 1) {
 			if (qLen == 1) { // A 2-word Question
@@ -170,7 +174,7 @@ public class QQQuestion {
 			} else { // A 3-word Question
 				tmp = q.sim3idx(startIdx);
 				for (int i = 1; i < validCount; i++)
-					op[0][i] = tmp.get(i); // TODO: Check start 49969
+					op[0][i] = tmp.get(i);
 			}
 			for (int k = 1; k < 10; k++)
 				for (int j = 1; j < validCount; j++)
@@ -267,20 +271,21 @@ public class QQQuestion {
 
 				} else if (level == 2) {
 
-					// Motashabehat found,continue!
+					// Motashabehat found, srch_cond=false, continue!
 					srch_cond = q.sim2cnt(start_shadow) > 1;
-					validCount = 1; // \
-					qLen = 2; // -|-> Default Constants for level-2
-					oLen = 1;
-					extraLength = extraQLength(start_shadow, qLen);
-					if(extraLength>-1){
-						qLen +=extraLength;
-						start_shadow -=extraLength;
-					} else {
-						// Too Long Motashabehat, cannot start within, non-unique answer
-						srch_cond = true; 
+					if(!srch_cond){
+						validCount = 1; // \
+						qLen = 2; // -|-> Default Constants for level-2
+						oLen = 1;
+						extraLength = extraQLength(start_shadow, qLen);
+						if(extraLength>-1){
+							qLen +=extraLength;
+							start_shadow -=extraLength;
+						} else {
+							// Too Long Motashabehat, cannot start within, non-unique answer
+							srch_cond = true; 
+						}
 					}
-					
 				} else {
 					// Search for a motashabehat near selected index
 					// Specify # Words to display
