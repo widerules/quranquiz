@@ -30,7 +30,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	public static String DB_NAME = "qq.sqlite";
 	
     // 1 -> 2 add q.txtsym column
-    private static final int DB_VERSION = 2;	
+	// 2 -> 3 add q.aya column
+    private static final int DB_VERSION = 3;	
 	private SQLiteDatabase myDataBase;
 
 	private final Context myContext;
@@ -353,6 +354,36 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			}
 		}
 		return ids;
+	}	
+
+	public int ayaNumberOf(int idx) {
+
+		int aya=0;
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery(
+					"select  aya from q where _id >=" + idx +" and aya IS NOT NULL LIMIT 1",
+					null);
+			if (cur.moveToFirst()) {
+				aya = cur.getInt(0);
+				cur.close();
+			}
+		}
+		return aya;
+	}
+
+	public int ayaEndsAfter(int idx) {
+
+		int aya=0;
+		if (myDataBase != null) {
+			Cursor cur = myDataBase.rawQuery(
+					"select _id from q where _id >=" + idx +" and aya IS NOT NULL LIMIT 1",
+					null);
+			if (cur.moveToFirst()) {
+				aya = cur.getInt(0);
+				cur.close();
+			}
+		}
+		return aya-idx;
 	}
 
 }
