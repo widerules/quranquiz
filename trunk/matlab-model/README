@@ -1,6 +1,6 @@
 SA,
 
-- Download Uthmani minimal without any extra symbols from http://tanzil.net/wiki/Download_Quran_Text
+- Download Uthmani minimal without any extra symbols. Select Text with Aya numbers from http://tanzil.net/wiki/Download_Quran_Text
 - Run the script: clearQSymbols.sh
 -- Copy Quran only, without footer: head -6236 quran-uthmani-min.txt
 -- Removes all harakat an unneeded symbols (check unicode list http://jrgraphix.net/r/Unicode/0600-06FF)
