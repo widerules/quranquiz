@@ -1,24 +1,29 @@
-% Parses the Quran Words ..
+cd % Parses the Quran Words ..
 clc;clear;
 
 words_cnt = 77878;
 txt_sym=2;
 fid=fopen('quran-uthmani-min.nosym.txt');
 fid2=fopen('quran-uthmani-min.sym.txt');
-
+aya=1;
 
 display('Loading Quran txt ..');
 for i=1:words_cnt
     q.txt(i) = {fgetl(fid)};
     tokens = regexp(fgetl(fid2),'\|','split');
     if(length(tokens)==3)
+        last_aya = aya;
         aya = cellfun(@str2num,tokens(2));
-        if(i>2)
-            q.aya(i-1)= {num2str(aya-1)};
+        if(i>1)
+            if(aya>1)
+                q.aya(i-1)= {num2str(aya-1)};
+            elseif(aya==1)
+                q.aya(i-1)= {num2str(last_aya)};
+            end
         end
     end
     q.txt_sym(i) = tokens(length(tokens));
-    q.aya(i) = {'null'};
+    q.aya(i) = {' '};
 end
 q.aya(words_cnt) = {'6'};
 fclose(fid);

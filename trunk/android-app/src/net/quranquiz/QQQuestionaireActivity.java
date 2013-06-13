@@ -345,11 +345,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			mVibrator.vibrate(300);
 
-			// Display Correct answer
-			tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
-					+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen))
-					+ " ...";
-			tvBack.setText(tmp);
+			tvBack.setText(getCorrectAnswer());
 			
 			QOptIdx = -1; // trigger a new question
 		} else {
@@ -372,10 +368,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 						myQQProfile.addSpecial(Quest.qType.getScore());
 					
 					// Display Correct answer
-					tmp = "[" + QQUtils.getSuraName(Quest.startIdx) + "] "
-							+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen))
-							+ " ...";
-					tvBack.setText(tmp);
+					tvBack.setText(getCorrectAnswer());
 				}
 			}
 
@@ -406,7 +399,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 															// only?
 
 			// Show the Question!
-			tvQ.setText(QQUtils.fixQ(q.txt(Quest.startIdx, Quest.qLen)));
+			tvQ.setText(QQUtils.fixQ(q.txt(Quest.startIdx, Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY)));
 			QOptIdx = 0;
 		}
 
@@ -417,7 +410,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 					.getText()
 					.toString()
 					.concat(q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
-									* Quest.oLen, Quest.oLen) + "  "
+									* Quest.oLen, Quest.oLen, QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY) + "  "
 							)));
 
 		// Scramble options
@@ -437,11 +430,17 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		String strTemp = new String();
 		for (int j = 0; j < 5; j++) {
 			if(Quest.qType==QType.NOTSPECIAL)
-				strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen);
+				strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen, QQUtils.QQTextFormat.AYAMARKS_NONE);
 			else{
 				switch(Quest.qType){
 				case SURANAME:
 					strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.op[QOptIdx][scrambled[j]]);
+					break;
+				case SURAAYACOUNT:
+					strTemp = " آيات السورة " + Quest.op[QOptIdx][scrambled[j]];
+					break;
+				case AYANUMBER:
+					strTemp = " رقم الآية " + Quest.op[QOptIdx][scrambled[j]];
 					break;
 				default: 
 					strTemp = "-";
@@ -468,6 +467,13 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		QQinit = 0;
 
 	}
+
+	private String getCorrectAnswer() {
+		// Display Correct answer
+		return "[" + "  سورة  "+ QQUtils.getSuraName(Quest.startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.startIdx)+ "] "+ "\n"
+				+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_FULL))
+				+ " ...";
+		}
 
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		myQQProfile.setLevel(itemPosition+1);

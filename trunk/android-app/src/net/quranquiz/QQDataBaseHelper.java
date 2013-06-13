@@ -286,21 +286,40 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		return s;
 	}
 
-	public String txt(int idx, int len) {
+	public String txt(int idx, int len, QQUtils.QQTextFormat fmt) {
 		String s = new String("");
-
+		String word;
+		List<String> str = new ArrayList<String>();
+		str.clear();
+		
 		if (myDataBase != null) {
 			Cursor cur = myDataBase.rawQuery("select txtsym from q where _id>"
 					+ (idx - 1) + " and _id<" + (idx + len), null);
 			if (cur.moveToFirst()) {
 				do {
-					s = s + "   " + 
-							cur.getString(0);
+					word= cur.getString(0);
+					s = s + "   " +	word;
+					str.add(word);
 				} while (cur.moveToNext());
 				cur.close();
 			}
 		}
-		return s;
+		
+		int aya,cnt=0;
+		int index=idx;
+		int diff = ayaEndsAfter(index);
+		while((index+diff)<(idx+len)){
+			aya = ayaNumberOf(index);
+			str.add(index-idx+diff+(++cnt),QQUtils.formattedAyaMark(aya, fmt));
+			index += (diff+1);
+			diff = ayaEndsAfter(index);
+		}
+
+		String txt = new String();
+		for(int i=0; i< str.size();i++){
+			txt = txt + "   " +  str.get(i);
+		}
+		return txt;//s;
 	}
 
 	public List<Integer> uniqueSim1Not2Plus1(int idx) {
@@ -369,6 +388,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 			}
 		}
 		return aya;
+	}
+	
+	public int ayaCountOfSuraAt(int idx) {
+		return ayaNumberOf(QQUtils.sura_idx[QQUtils.getSuraIdx(idx)]-1);
 	}
 
 	public int ayaEndsAfter(int idx) {
