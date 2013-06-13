@@ -8,6 +8,8 @@ package net.quranquiz;
 import java.util.List;
 import java.util.Random;
 
+import android.util.Log;
+
 public class QQQuestion {
 
 	/******** Questions parameters to be set: Start **********/
@@ -38,7 +40,6 @@ public class QQQuestion {
 				default:			return 0;
 			}
 		}	
-	
 		public String getInstructions(){
 			switch(this){
 				case SURANAME: 		
@@ -71,12 +72,15 @@ public class QQQuestion {
 		}else {
 			createQ(prof);
 		}
+
+		//android.util.Log.d("INFO", "QQ @" + startIdx + " type:" + qType.name());
+
 		// stop tracing
 		// Debug.stopMethodTracing();
 	}
 
 	private boolean selectSpecial() {
-		if(Math.random()>0.2) 
+		if(Math.random()>0.20) 
 			return false;
 		else
 			return true;
@@ -89,11 +93,22 @@ public class QQQuestion {
 		lastSeed = sparsed.idx;
 		CurrentPart = sparsed.part;
 
-		qType = QType.SURANAME; //TODO: Implement others
-
+		if(Math.random()>0.5)
+			qType = QType.SURANAME; 
+		else if(Math.random()>0.3)
+			qType = QType.SURAAYACOUNT;
+		else
+			qType = QType.AYANUMBER;
+		
 		switch(qType){
 			case SURANAME: 
 				createQSuraName();
+				break;
+			case SURAAYACOUNT:
+				createQSuraAyaCount();
+				break;
+			case AYANUMBER:
+				createQAyaNumber();
 				break;
 			//TODO: Implement others	
 			default:
@@ -112,9 +127,33 @@ public class QQQuestion {
 		//Correct Answer:
 		op[0][0] = QQUtils.getSuraIdx(startIdx);
 		//Incorrect Answers		
-		fillIncorrectRandomIdx(op[0][0]);
+		fillIncorrectRandomIdx(op[0][0],114);
 	}
 
+	private void createQSuraAyaCount() {
+		// +1 to compensate the rand-gen integer [0-QuranWords-1]
+		startIdx = getValidUniqueStartNear(lastSeed + 1);
+		validCount=1; //Number of correct options at the first round
+		qLen=(level==1)?3:2;
+		oLen=1;
+		//Correct Answer:
+		op[0][0] = q.ayaCountOfSuraAt(startIdx);
+		//Incorrect Answers		
+		fillIncorrectRandomNonZeroIdx(op[0][0],50);
+	}
+
+	private void createQAyaNumber() {
+		// +1 to compensate the rand-gen integer [0-QuranWords-1]
+		startIdx = getValidUniqueStartNear(lastSeed + 1);
+		validCount=1; //Number of correct options at the first round
+		qLen=(level==1)?3:2;
+		oLen=1;
+		//Correct Answer:
+		op[0][0] = q.ayaNumberOf(startIdx);
+		//Incorrect Answers		
+		fillIncorrectRandomNonZeroIdx(op[0][0],50);
+	}
+	
 	private int getValidUniqueStartNear(int start) {
 		// Search for a correct neighbor unique start
 		int dir = 1; // search down = +1
@@ -132,7 +171,7 @@ public class QQQuestion {
 					dir = -dir;
 					break;
 				}
-				srch_cond = q.sim2cnt(start_shadow) == 1;
+				srch_cond = q.sim2cnt(start_shadow) > 0;
 			}
 
 			start = start_shadow;
@@ -230,20 +269,41 @@ public class QQQuestion {
 		}
 	}
 	
-	private void fillIncorrectRandomIdx(int correctIdx){
+	private void fillIncorrectRandomIdx(int correctIdx,int mod){
 		int[] perm = new int[5];
 		int[] rndIdx = {-1,1,0,5,-4};
 
 		perm = QQUtils.randperm(5);
 		// Adding QuranWords does not affect the %QuranWords, but eliminates -ve values
-		int correctIdxPerm = 114 + correctIdx - rndIdx[perm[0]];
+		int correctIdxPerm = mod + correctIdx - rndIdx[perm[0]];
 		
-		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%114;
-		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%114;
-		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%114;
-		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%114;
+		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
+		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
+		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
+		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
 	}
 
+	private void fillIncorrectRandomNonZeroIdx(int correctIdx,int mod){
+		int[] perm = new int[5];
+		int[] rndIdx = {-1,1,0,5,-4};
+
+		perm = QQUtils.randperm(5);
+		// Adding QuranWords does not affect the %QuranWords, but eliminates -ve values
+		int correctIdxPerm = mod + correctIdx - rndIdx[perm[0]];
+		
+		for(int i=1;i<5;i++)
+			if((correctIdx+rndIdx[perm[i]])==rndIdx[perm[0]]){
+				//only one may give a zero, fix and break
+				rndIdx[i] = 2;
+				break;
+			}
+				
+		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
+		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
+		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
+		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
+	}
+	
 	public int getSeed() {
 		return lastSeed;
 	}

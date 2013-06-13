@@ -175,4 +175,20 @@ public class QQUtils {
 			tv.setBackgroundDrawable(App.getContext().getResources().getDrawable(id));
 		}
 	}
+	
+	public enum QQTextFormat { 
+		AYAMARKS_NONE, AYAMARKS_FULL, AYAMARKS_BRACKETS_ONLY;
+	};
+	
+	public static String formattedAyaMark(int ayaNum, QQTextFormat fmt){
+		switch(fmt){
+			case AYAMARKS_BRACKETS_ONLY:
+				return "\u06DD";
+			case AYAMARKS_FULL:
+				return "(" + ayaNum + ")";
+			default:
+				return "";
+		}
+	}
+	
 }
