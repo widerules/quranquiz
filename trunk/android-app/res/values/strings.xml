@@ -26,5 +26,8 @@
 	<string name="_dashboard_start_QQ">إبدأ الاختبار</string>
 	<string name="_dashboard_study_list">نطاق الحفظ</string>
 	<string name="_dashboard_show_chart">التقدم الزمني</string>
-	<string name="_dashboard_us">شاركنا</string>
+	<string name="_dashboard_us">تفاعل معنا</string>
+	<string name="menuitem_feedback">شاركنا برأيك</string>
+	<string name="menuitem_faq">أسئلة متكررة</string>
+	<string name="menuitem_license">رخصة البرنامج</string>
 </resources>
