@@ -8,10 +8,12 @@ package net.quranquiz;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.suredigit.inappfeedback.FeedbackDialog;
@@ -49,6 +51,31 @@ public class QQDashboardActivity extends Activity {
 		finish();
 	}
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.interact_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+    	switch(item.getItemId()){
+    	case R.id.menuitem_feedback:
+    		feedBackDialog.show();
+    		return true;
+    	case R.id.menuitem_faq:
+    		//
+    		return true;
+    	case R.id.menuitem_license:
+    		//
+    		return true;
+    	default:
+    		return super.onContextItemSelected(item);
+    	}
+    }
+    
 	  @Override
 	  public void onStart() {
 	    super.onStart();
@@ -84,7 +111,8 @@ public class QQDashboardActivity extends Activity {
 		feedbackSettings.setSendButtonText("ارسال");
 		feedbackSettings.setText("هل واجهتك متاعب مع اختبار القران؟ تريد توصيل سؤال أو فكرة؟");
 		feedbackSettings.setTitle("شاركنا برأيك");
-		feedbackSettings.setToast("شكرا جزيلا!");
+		feedbackSettings.setToast("سيتم الرد عليك بإذن الله");
+		feedbackSettings.setReplyTitle("رسالة من مطوري البرنامج");
 		feedBackDialog = new FeedbackDialog(this,"AF-F8C9921F6163-17",feedbackSettings);
 		
 		/**
@@ -126,13 +154,15 @@ public class QQDashboardActivity extends Activity {
 						myQQProfileHandler.CurrentProfile))
 						.execute(getApplicationContext()));
 			}
-		});
+		});        
 		
 		btnInfo.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Toast.makeText(getApplicationContext(), "تحت التطوير", Toast.LENGTH_SHORT).show();
-				feedBackDialog.show();
+			    registerForContextMenu(view); 
+			    openContextMenu(view);
+			    unregisterForContextMenu(view);
 			}
 		});
+		
 	}
 }
