@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">         
-   <item android:id="@+id/menuitem_feedback" android:title="@string/menuitem_feedback"></item>
    <item android:id="@+id/menuitem_faq" android:title="@string/menuitem_faq"></item> 
+   <item android:id="@+id/menuitem_feedback" android:title="@string/menuitem_feedback"></item>
+   <item android:id="@+id/menuitem_rate" android:title="@string/menuitem_rate"></item> 
    <item android:id="@+id/menuitem_license" android:title="@string/menuitem_license"></item>
 </menu>

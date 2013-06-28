@@ -8,7 +8,7 @@ package net.quranquiz;
 import android.app.Application;
 import android.content.Context;
 
-public class App extends Application{
+public class QQApp extends Application{
 
     private static Context mContext;
 

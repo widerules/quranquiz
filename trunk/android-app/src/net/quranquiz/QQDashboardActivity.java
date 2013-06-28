@@ -6,14 +6,21 @@
 package net.quranquiz;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.suredigit.inappfeedback.FeedbackDialog;
@@ -66,10 +73,35 @@ public class QQDashboardActivity extends Activity {
     		feedBackDialog.show();
     		return true;
     	case R.id.menuitem_faq:
-    		//
+    		new AlertDialog.Builder(this)
+    		   .setTitle(getString(R.string.menuitem_faq))
+    		   .setMessage(Html.fromHtml(getString(R.string.faq)))
+    		   .create()
+    		   .show();
+    		return true;
+    	case R.id.menuitem_rate:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=net.quranquiz")));
     		return true;
     	case R.id.menuitem_license:
-    		//
+    		
+    		// Linkify the message
+    	    final SpannableString s = new SpannableString(Html.fromHtml(getString(R.string.license)));
+    	    Linkify.addLinks(s, Linkify.ALL);
+    	    final AlertDialog d = new AlertDialog.Builder(this)
+	 		   	.setTitle(getString(R.string.menuitem_license))
+    	        .setMessage( s )
+    	        .create();
+
+    	    d.show();
+    	    ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+    	    
+    	    /*    		
+    		new AlertDialog.Builder(this)
+	 		   .setTitle(getString(R.string.menuitem_license))
+	 		   .setMessage(Html.fromHtml(getString(R.string.license)))
+	 		   .create()
+	 		   .show();
+	 		*/
     		return true;
     	default:
     		return super.onContextItemSelected(item);

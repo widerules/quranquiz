@@ -158,7 +158,7 @@ public class QQProfileHandler implements Serializable {
 					+ String.valueOf(profile.getQuesCount(i)) + ","
 					+ String.valueOf(profile.getAvgLevel(i)) + ";";
 		}
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			checked = (settings.getBoolean("QPart_j" + String.valueOf(i + 26),
 					false)) ? 1 : -1;
 			start = QQUtils.last5_juz_idx[i];
@@ -169,14 +169,16 @@ public class QQProfileHandler implements Serializable {
 					+ String.valueOf(profile.getQuesCount(i + 45)) + ","
 					+ String.valueOf(profile.getAvgLevel(i + 45)) + ";";
 		}
+		/*
+		// Juz' 3amma is always enabled
+		
 		start = QQUtils.last5_juz_idx[4];
 		end = QQUtils.last5_juz_idx[5] - 1;
-		// Juz' 3amma is always enabled
 		newParts += String.valueOf(start) + "," + String.valueOf(end - start)
 				+ "," + String.valueOf(profile.getCorrect(49)) + ","
 				+ String.valueOf(profile.getQuesCount(49)) + ","
 				+ String.valueOf(profile.getAvgLevel(49))+ ";";
-
+		*/
 		profile.setStudyParts(newParts);
 		saveProfile(profile);
 	}
