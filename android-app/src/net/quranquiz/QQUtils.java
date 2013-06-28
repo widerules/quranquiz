@@ -170,9 +170,9 @@ public class QQUtils {
 	@SuppressLint("NewApi")
 	public static void tvSetBackgroundFromDrawable(TextView tv, int id){
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN){
-			tv.setBackground(App.getContext().getResources().getDrawable(id));	
+			tv.setBackground(QQApp.getContext().getResources().getDrawable(id));	
 		}else{
-			tv.setBackgroundDrawable(App.getContext().getResources().getDrawable(id));
+			tv.setBackgroundDrawable(QQApp.getContext().getResources().getDrawable(id));
 		}
 	}
 	

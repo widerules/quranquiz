@@ -5,6 +5,7 @@
 ****/
 package net.quranquiz;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -12,6 +13,7 @@ import android.preference.PreferenceCategory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -83,10 +85,12 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					+ " من "
 					+ String.valueOf(ProfileHandler.CurrentProfile
 							.getQuesCount(45 + i))); // TODO: Prev score
+			/** Last Juz2 Forced ****
 			if (i == 4) {
 				checkBoxPreference.setEnabled(false);
 				checkBoxPreference.setChecked(true);
 			}
+			**/
 			targetCategory.addPreference(checkBoxPreference);
 		}
 	}
@@ -101,18 +105,32 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 	  @Override
 	  public void onStart() {
 	    super.onStart();
-	    EasyTracker.getInstance().activityStart(this); // Add this method.
+	    EasyTracker.getInstance().activityStart(this);
 	  }
 
 	  @Override
 	  public void onStop() {
 	    super.onStop();
-	    EasyTracker.getInstance().activityStop(this); // Add this method.
+	    EasyTracker.getInstance().activityStop(this);
 	  }
 	  
 	@Override
 	protected void onDestroy() {
 		ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
+		
+		if(ProfileHandler.CurrentProfile.getTotalStudyLength()<0.75*QQUtils.Juz2AvgWords){
+    		//Select Juz2 3amma (#30)
+			((CheckBoxPreference)targetCategory.getPreferenceManager().
+					findPreference("QPart_j30")).setChecked(true);
+			ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
+			Toast.makeText(getApplicationContext(), "تم اضافة جزء عم", Toast.LENGTH_LONG).show();
+			new AlertDialog.Builder(this)
+ 		   		.setTitle(getString(R.string.menuitem_license))
+ 		   		.setMessage( "Hello" )
+ 		   		.setPositiveButton(this.getResources().getString(R.string.txt_ok), null)
+ 		   		.create()
+ 		   		.show();
+		}
 		super.onDestroy();
 	}
 }

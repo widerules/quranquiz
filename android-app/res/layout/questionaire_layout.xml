@@ -188,7 +188,7 @@
 	        android:paddingBottom="1dp"
 	        android:paddingRight="10dp"
 	        android:paddingTop="1dp"
-	        android:text="حسنا" />
+	        android:text="@string/txt_ok" />
 	</LinearLayout>
 	
 </ViewFlipper>

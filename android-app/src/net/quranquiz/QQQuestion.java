@@ -43,15 +43,15 @@ public class QQQuestion {
 		public String getInstructions(){
 			switch(this){
 				case SURANAME: 		
-					return App.getContext().getResources().getString(R.string.txt_instruction_SURANAME);
+					return QQApp.getContext().getResources().getString(R.string.txt_instruction_SURANAME);
 				case SURAAYACOUNT: 	
-					return App.getContext().getResources().getString(R.string.txt_instruction_SURAAYACOUNT);
+					return QQApp.getContext().getResources().getString(R.string.txt_instruction_SURAAYACOUNT);
 				case MAKKI: 		
-					return App.getContext().getResources().getString(R.string.txt_instruction_MAKKI);
+					return QQApp.getContext().getResources().getString(R.string.txt_instruction_MAKKI);
 				case AYANUMBER:		
-					return App.getContext().getResources().getString(R.string.txt_instruction_AYANUMBER);
+					return QQApp.getContext().getResources().getString(R.string.txt_instruction_AYANUMBER);
 				default:			
-					return App.getContext().getResources().getString(R.string.txt_instruction);
+					return QQApp.getContext().getResources().getString(R.string.txt_instruction);
 			}
 		}
 	};
