@@ -123,13 +123,15 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 			((CheckBoxPreference)targetCategory.getPreferenceManager().
 					findPreference("QPart_j30")).setChecked(true);
 			ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
-			Toast.makeText(getApplicationContext(), "تم اضافة جزء عم", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "إختياراتك أقل من جزء: تم اضافة جزء عم", Toast.LENGTH_LONG).show();
+			/* Leaks at onDestroy
 			new AlertDialog.Builder(this)
- 		   		.setTitle(getString(R.string.menuitem_license))
+				.setTitle(getString(R.string.menuitem_license))
  		   		.setMessage( "Hello" )
  		   		.setPositiveButton(this.getResources().getString(R.string.txt_ok), null)
  		   		.create()
  		   		.show();
+ 		   	*/
 		}
 		super.onDestroy();
 	}

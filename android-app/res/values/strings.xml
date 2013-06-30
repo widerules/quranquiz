@@ -61,19 +61,18 @@
  &lt;br/> - اذكر رقم الاية: 7 نقاط 
         &lt;br/>
     </string>
-    
-    <string name="license">
-        &lt;b>ماهي رخصة شبكة اختبار القران؟&lt;/b>
-        &lt;br /&gt;
-البرنامج مفتوح المصدر شيفرته توزع تحت الترخيص العام (
-&lt;a href="http://www.gnu.org/licenses/gpl.html">GPL v3&lt;/a>
-) كما يمكن ترخيصه للاستخدام التجاري كبديل. 
-        &lt;br /&gt;
-        &lt;br /&gt;&lt;b>ما هي الرخص المستخدمة لبناء البرنامج؟&lt;/b>
-        &lt;br /&gt;
-        - &lt;a href="http://www.tanzil.net">Tanzil.net&lt;/a> (&lt;a href="http://creativecommons.org/licenses/by/3.0">CC-BY v3&lt;/a>) &lt;br /&gt;
-        - &lt;a href="http://www.android-feedback.com">Android-feedback&lt;/a> (&lt;a href="http://opensource.org/licenses/MIT">MIT&lt;/a>) &lt;br /&gt;
-        - &lt;a href="http://www.achartengine.org">aChartEngine&lt;/a> (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0">Apache v2&lt;/a>) &lt;br /&gt;
-        - &lt;a href="http://actionbarsherlock.com">ActionBar Sherlock&lt;/a> (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0">Apache v2&lt;/a>) &lt;br /&gt;
+    <string name="license"><![CDATA[
+        <b>ماهي رخصة شبكة اختبار القران؟</b>
+        <br />
+البرنامج مفتوح المصدر شيفرته توزع تحت الترخيص العام (<a href="http://www.gnu.org/licenses/gpl.html">GPL v3</a>) كما يمكن ترخيصه للاستخدام التجاري كبديل. 
+        <br />
+        <br /><b>ما هي الرخص المستخدمة لبناء البرنامج؟</b>
+        <br />
+        - <a href="http://www.tanzil.net">Tanzil.net</a> (<a href="http://creativecommons.org/licenses/by/3.0">CC-BY v3</a>) <br />
+        - <a href="http://www.android-feedback.com">Android-feedback</a> (<a href="http://opensource.org/licenses/MIT">MIT</a>) <br />
+        - <a href="http://www.achartengine.org">aChartEngine.org</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache v2</a>) <br />
+        - <a href="http://actionbarsherlock.com">ActionBar Sherlock</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache v2</a>) <br />
+  ]]>
   </string>
+  
 </resources>

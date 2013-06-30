@@ -84,14 +84,11 @@ public class QQDashboardActivity extends Activity {
     		return true;
     	case R.id.menuitem_license:
     		
-    		// Linkify the message
     	    final SpannableString s = new SpannableString(Html.fromHtml(getString(R.string.license)));
-    	    Linkify.addLinks(s, Linkify.ALL);
     	    final AlertDialog d = new AlertDialog.Builder(this)
 	 		   	.setTitle(getString(R.string.menuitem_license))
     	        .setMessage( s )
     	        .create();
-
     	    d.show();
     	    ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     	    

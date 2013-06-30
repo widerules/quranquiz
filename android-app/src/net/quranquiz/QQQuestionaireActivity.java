@@ -232,7 +232,6 @@ public class QQQuestionaireActivity extends SherlockActivity implements
             		Toast.makeText(getApplicationContext(), "تم تشغيل الأسئلة الخاصة", Toast.LENGTH_SHORT).show();
             	else
             		Toast.makeText(getApplicationContext(), "تم إيقاف الاسئلة الخاصة", Toast.LENGTH_SHORT).show();
-
             }
         });
         //Attach to the action bar
@@ -255,14 +254,12 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	public void onBackPressed() {
+			myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
 			Intent i = new Intent();
 			i.putExtra("ProfileHandler", myQQProfileHandler);
 			setResult(12345, i);
 			finish();
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
