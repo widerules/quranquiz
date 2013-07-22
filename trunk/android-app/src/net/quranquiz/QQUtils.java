@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
-import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 public class QQUtils {
