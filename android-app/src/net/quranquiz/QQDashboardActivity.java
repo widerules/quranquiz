@@ -64,6 +64,8 @@ public class QQDashboardActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.interact_menu, menu);
+		if(QQUtils.QQDebug>0)
+			menu.add(0, 123, 0, "Map!");
     }
 
     @Override
@@ -99,6 +101,9 @@ public class QQDashboardActivity extends Activity {
 	 		   .create()
 	 		   .show();
 	 		*/
+    		return true;
+    	case 123:
+			startActivity(new Intent(QQDashboardActivity.this,QQMap.class));
     		return true;
     	default:
     		return super.onContextItemSelected(item);
