@@ -24,8 +24,8 @@ public class QQProfileHandler implements Serializable {
 	private transient static Context myContext;
 	public static final String DEFAULT_STUDY_PARTS = "1,"
 			+ String.valueOf(QQUtils.sura_idx[0]) + ",0,0,1.0;"
-			+ String.valueOf(QQUtils.sura_idx[0] + 1) + ","
-			+ String.valueOf(QQUtils.sura_idx[1] - QQUtils.sura_idx[0])
+			+ String.valueOf(QQUtils.last5_juz_idx[4]) + ","
+			+ String.valueOf(QQUtils.last5_juz_idx[5] - QQUtils.last5_juz_idx[4])
 			+ ",0,0,1.0;";
 
 	public QQProfile CurrentProfile;
@@ -124,7 +124,6 @@ public class QQProfileHandler implements Serializable {
 					QQProfileHandler.DEFAULT_STUDY_PARTS,
 					QQScoreRecord.getInitScoreRecordPack(),
 					0);
-			reLoadParts(myQQProfile);
 			saveProfile(myQQProfile);
 		}
 		CurrentProfile = myQQProfile;

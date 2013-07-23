@@ -85,12 +85,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					+ " من "
 					+ String.valueOf(ProfileHandler.CurrentProfile
 							.getQuesCount(45 + i))); // TODO: Prev score
-			/** Last Juz2 Forced ****
-			if (i == 4) {
-				checkBoxPreference.setEnabled(false);
-				checkBoxPreference.setChecked(true);
-			}
-			**/
+			
 			targetCategory.addPreference(checkBoxPreference);
 		}
 	}
