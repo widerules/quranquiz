@@ -71,7 +71,7 @@
 	  	
 	  	<meta-data
     		android:name="com.google.android.maps.v2.API_KEY"
-    		android:value="abcdefghijklmnopqrstuvwxyz"/>
+    		android:value="AIzaSyCCBqnooy1XtIUvSrVi-g4h7BTukNlWq1k"/>
 	  	
 	</application>
 
