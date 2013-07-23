@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
