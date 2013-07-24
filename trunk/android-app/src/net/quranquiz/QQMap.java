@@ -1,6 +1,8 @@
 package net.quranquiz;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -19,44 +21,56 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-public class QQMap extends FragmentActivity implements LocationListener {
+public class QQMap extends FragmentActivity implements LocationListener, GoogleMap.OnMarkerClickListener {
     private GoogleMap map;
-    private static final LatLng ROMA = new LatLng(42.093230818037,11.7971813678741);
     private LocationManager locationManager;
     private String provider;
-
+    private LatLng cairo;
+    private Marker meMarker;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        map.setOnMarkerClickListener((OnMarkerClickListener) this);
 
+        cairo = new LatLng(30.1,31.45);
+        
         LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean enabledGPS = service
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean enabledWiFi = service
-                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         // Check if enabled and if not send user to the GSP settings
         // Better solution would be to display a dialog and suggesting to 
         // go to the settings
         if (!enabledGPS) {
             Toast.makeText(this, "GPS signal not found", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
         Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE); 
+        criteria.setAltitudeRequired(false); 
+        criteria.setBearingRequired(false); 
+        criteria.setCostAllowed(true); 
+        criteria.setPowerRequirement(Criteria.POWER_LOW); 
+        provider = locationManager.getBestProvider(criteria, true);
         Location location = locationManager.getLastKnownLocation(provider);
 
         // Initialize the location fields
         if (location != null) {
             Toast.makeText(this, "Selected Provider " + provider,
                     Toast.LENGTH_SHORT).show();
+            meMarker = map.addMarker(new MarkerOptions()
+            .position(cairo)
+            .title("That's Me")
+            .snippet("a normal QuranQuiz Node!")
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cairo,12.0f));
+            
             onLocationChanged(location);
         } else {
 
@@ -65,6 +79,18 @@ public class QQMap extends FragmentActivity implements LocationListener {
 
     }
 
+    /**
+     * handle marker click event
+     */    
+    public boolean onMarkerClick(Marker marker) {
+        // TODO Auto-generated method stub
+        if(marker.equals(meMarker)){
+            Toast.makeText(this, "That's me!",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+            return false;           
+    }
+    
     /* Request updates at startup */
     @Override
     protected void onResume() {
@@ -85,13 +111,10 @@ public class QQMap extends FragmentActivity implements LocationListener {
         Toast.makeText(this, "Location " + lat+","+lng,
                 Toast.LENGTH_LONG).show();
         LatLng coordinate = new LatLng(lat, lng);
-        Toast.makeText(this, "Location " + coordinate.latitude+","+coordinate.longitude,
-                Toast.LENGTH_LONG).show();
-        Marker startPerc = map.addMarker(new MarkerOptions()
-        .position(coordinate)
-        .title("Start")
-        .snippet("Inizio del percorso")
-        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+
+        meMarker.setPosition(coordinate);
+        map.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
+        
     }
 
 	public void onProviderDisabled(String arg0) {
