@@ -169,29 +169,42 @@
 	    android:background="@drawable/questionnaire_background"
 	    android:orientation="vertical" >
 
-	    <TextView
-	        android:id="@+id/tvBack"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="fill_vertical"
-	        android:layout_weight="0.90"
-	        android:addStatesFromChildren="true"
-	        android:gravity="center"
-	        android:text="Medium Text"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
+ 	    <TextView
+ 	        android:id="@+id/tvBack"
+ 	        android:layout_width="fill_parent"
+ 	        android:layout_height="wrap_content"
+ 	        android:layout_gravity="fill_vertical"
+  	        android:layout_weight="0.90"
+ 	        android:addStatesFromChildren="true"
+ 	        android:gravity="center"
+ 	        android:text="Medium Text"
+ 	        android:textAppearance="?android:attr/textAppearanceMedium" />
+ 		    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
 
-	    <Button
-	        android:id="@+id/btnBack"
-	        android:layout_width="100dp"
-	        android:layout_height="44dp"
-	        android:layout_gravity="center_horizontal"
-	        android:addStatesFromChildren="true"
-	        android:gravity="center"
-	        android:paddingBottom="1dp"
-	        android:paddingRight="10dp"
-	        android:paddingTop="1dp"
-	        android:text="حسنا" />
-	</LinearLayout>
+	        <Button
+	            android:id="@+id/btnBack"
+	            android:layout_width="100dp"
+	            android:layout_height="44dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginLeft="15dp"
+	            android:text="@string/txt_ok" />
+
+	        <Button
+	            android:id="@+id/btnBackReview"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="140dp"
+	            android:layout_height="44dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginRight="15dp"
+	            android:text="@string/txt_review" />
+
+	    </RelativeLayout>    
+
+ 	</LinearLayout>
 	
 </ViewFlipper>
 </LinearLayout>

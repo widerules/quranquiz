@@ -5,23 +5,19 @@
 ****/
 package net.quranquiz;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.util.Calendar;
-
 import net.quranquiz.QQQuestion.QType;
-
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,13 +45,13 @@ import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 public class QQQuestionaireActivity extends SherlockActivity implements
 		android.view.View.OnClickListener, OnNavigationListener {
 	
-	private SherlockActivity activity;
     private ViewAnimator viewAnimator;
 	private TextView tvQ;
 	private TextView tvScore;
 	private TextView tvBack;
 	private TextView tvInstructions;
 	private Button btnBack;
+	private Button btnBackReview;
 	private ProgressBar bar;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
@@ -69,7 +65,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	private int lastSeed = -1;
 	private int correct_choice = 0;
 	private int CurrentPart = 0;
-
+	private String quranReviewUri = "1/1"; // Sura/Aya
 	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
 
@@ -77,32 +73,19 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 	public void onClick(View v) {
 		int SelID = -2;
-
 		switch (v.getId()) {
-		case R.id.bOp1:
-			SelID = 0;
-			break;
-		case R.id.bOp2:
-			SelID = 1;
-			break;
-		case R.id.bOp3:
-			SelID = 2;
-			break;
-		case R.id.bOp4:
-			SelID = 3;
-			break;
-		case R.id.bOp5:
-			SelID = 4;
-			break;
+			case R.id.bOp1:			SelID = 0;	break;
+			case R.id.bOp2:			SelID = 1;	break;
+			case R.id.bOp3:			SelID = 2;	break;
+			case R.id.bOp4:			SelID = 3;	break;
+			case R.id.bOp5:			SelID = 4;	break;
 		}
 		if (SelID < 0)
 			return;
-
 		userAction(SelID);
 	}
 
 	private void showUsage(){
-
 		Thread splashTread = new Thread() {
             public void run() {
                 try {
@@ -113,10 +96,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
                     e.printStackTrace();
                 }
             }
-
         };
         splashTread.start();
 	}
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -128,27 +111,112 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	
+		initDBHandle();
+		initLogger();
+		setContentView(R.layout.questionaire_layout);
+		initProfile();
+		initUI();
+				
+		if(android.os.Build.VERSION.SDK_INT 
+				>= android.os.Build.VERSION_CODES.HONEYCOMB)
+			QQUtils.disableFixQ();	
+				
+		// Make the first Question
+		userAction(-1);
+	}
+	
+	private void initProfile() {
+		myQQProfileHandler = new QQProfileHandler(this);
+		myQQProfile = myQQProfileHandler.getProfile();
+	}
+
+	private void initUI() {
+
+		actionbar = getSupportActionBar();
+	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
+		bar = (ProgressBar) findViewById(R.id.progressBar1);
+				
+		btnArray = new Button[5];
+		btnArray[0] = (Button) findViewById(R.id.bOp1);
+		btnArray[1] = (Button) findViewById(R.id.bOp2);
+		btnArray[2] = (Button) findViewById(R.id.bOp3);
+		btnArray[3] = (Button) findViewById(R.id.bOp4);
+		btnArray[4] = (Button) findViewById(R.id.bOp5);
+
+		tvInstructions = (TextView) findViewById(R.id.tvInstruction);
+		tvScore = (TextView) findViewById(R.id.Score);
+		tvBack  = (TextView) findViewById(R.id.tvBack);
+		btnBack = (Button) findViewById(R.id.btnBack); 
+		btnBackReview = (Button) findViewById(R.id.btnBackReview); 
 		
-		/*----------Start DB Handle-------------*/
-		q = new QQDataBaseHelper(this);
-		if (!q.checkDataBase()){
-			showUsage();
-			try {
-				q.createDataBase(); //slow!
-			} catch (Exception sqle) {
-			}
+		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
+				"fonts/me_quran.ttf"); //amiri-quran | roboto-regular
+		tvBack.setTypeface(tfQQFont);
+		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
+		btnBackReview.setBackgroundResource(R.drawable.qqoptionbutton_correct);
+		tvQ = (TextView) findViewById(R.id.textView1);
+		tvQ.setTypeface(tfQQFont);
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB){
+			tvQ.setMovementMethod(new ScrollingMovementMethod()); 
+			tvQ.setSelected(true);	
 		}
-		try {
-			q.openDataBase();
-			} 
-		catch (SQLException sqle) {	}
-		catch (Exception ioe) {
-				finish(); //destroy Questionnaire.
-				return;
-			}
-		/*----------End DB Handle-------------*/
+
+		//Inflate the view containing the SpecialQuestion Toggler
+        View vwToggler = LayoutInflater.from(this).inflate(R.layout.special_toggle_view, null);
+        final ToggleButton tbSpecialQ = (ToggleButton)vwToggler.findViewById(R.id.SpecialQToggler);
+        tbSpecialQ.setChecked(true); // Default true, not from profile!
+        tbSpecialQ.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	Boolean isEnabled = tbSpecialQ.isChecked();
+            	myQQProfile.setSpecialEnabled(isEnabled);
+            	if(isEnabled)
+            		Toast.makeText(getApplicationContext(), "تم تشغيل الأسئلة الخاصة", Toast.LENGTH_SHORT).show();
+            	else
+            		Toast.makeText(getApplicationContext(), "تم إيقاف الاسئلة الخاصة", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Attach to the action bar
+        getSupportActionBar().setCustomView(vwToggler);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
 		
-		/*------ Start QQ Logger -------*/
+		for(int i=0;i<5;i++){
+			btnArray[i].setTypeface(tfQQFont);
+			btnArray[i].setOnClickListener(this);
+		}
+		
+		btnBack.setOnClickListener(
+				new OnClickListener(){
+					public void onClick(View arg0) {
+			            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);						
+					}
+		});
+		
+		btnBackReview.setOnClickListener(
+				new OnClickListener(){
+					public void onClick(View arg0) {
+			    		Intent quranViewer = new Intent(Intent.ACTION_VIEW, Uri.parse("quran://"+quranReviewUri)); 
+
+			    		 if (getPackageManager().queryIntentActivities(quranViewer, 0).size() > 0){
+			    	    		startActivity(quranViewer); 
+			    		 } else {
+			    			 Toast.makeText(getBaseContext(),"Install a handler!", Toast.LENGTH_LONG).show();
+			    		 }
+					}
+		});		
+		
+        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
+				(actionbar.getThemedContext(),
+				 R.array.userLevels, 
+				 R.layout.sherlock_spinner_item);
+		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionbar.setListNavigationCallbacks(list, this);
+		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
+	}
+
+	private void initLogger() {
 		if(QQUtils.QQDebug>0){
 			FileAppender appender = new FileAppender();
 			/*
@@ -166,86 +234,27 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	        qqLogger.setLevel(Level.DEBUG);
 	        qqLogger.warn("Logger session started!");
 		}
-		/*------ End QQ Logger -------*/
-
-		setContentView(R.layout.questionaire_layout);
-		actionbar = getSupportActionBar();
-	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
-		bar = (ProgressBar) findViewById(R.id.progressBar1);
-				
-		btnArray = new Button[5];
-		btnArray[0] = (Button) findViewById(R.id.bOp1);
-		btnArray[1] = (Button) findViewById(R.id.bOp2);
-		btnArray[2] = (Button) findViewById(R.id.bOp3);
-		btnArray[3] = (Button) findViewById(R.id.bOp4);
-		btnArray[4] = (Button) findViewById(R.id.bOp5);
-
-		tvInstructions = (TextView) findViewById(R.id.tvInstruction);
-		tvScore = (TextView) findViewById(R.id.Score);
-		tvBack  = (TextView) findViewById(R.id.tvBack);
-		btnBack = (Button) findViewById(R.id.btnBack); 
-		
-		/*----------Start Profile Handle-------------*/
-		myQQProfileHandler = new QQProfileHandler(this);
-		myQQProfile = myQQProfileHandler.getProfile();
-		/*----------End Profile Handle-------------*/
-		
-		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
-				"fonts/me_quran.ttf"); //amiri-quran | roboto-regular
-		tvBack.setTypeface(tfQQFont);
-		btnBack.setBackgroundResource(R.drawable.qqoptionbutton_correct);
-		tvQ = (TextView) findViewById(R.id.textView1);
-		tvQ.setTypeface(tfQQFont);
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB){
-			tvQ.setMovementMethod(new ScrollingMovementMethod()); 
-			tvQ.setSelected(true);	
-		}
-		
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB){
-			QQUtils.disableFixQ();	
-		}
-		btnBack.setOnClickListener(
-				new OnClickListener(){
-					public void onClick(View arg0) {
-			            AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);						
-					}
-		});
-		
-        ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
-				(actionbar.getThemedContext(),
-				 R.array.userLevels, 
-				 R.layout.sherlock_spinner_item);
-		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		actionbar.setListNavigationCallbacks(list, this);
-		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
-		
-        //Inflate the view containing the Toggler
-        View vwToggler = LayoutInflater.from(this).inflate(R.layout.special_toggle_view, null);
-        final ToggleButton tbSpecialQ = (ToggleButton)vwToggler.findViewById(R.id.SpecialQToggler);
-        tbSpecialQ.setChecked(true); // Default true, not from profile!
-        tbSpecialQ.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	Boolean isEnabled = tbSpecialQ.isChecked();
-            	myQQProfile.setSpecialEnabled(isEnabled);
-            	if(isEnabled)
-            		Toast.makeText(getApplicationContext(), "تم تشغيل الأسئلة الخاصة", Toast.LENGTH_SHORT).show();
-            	else
-            		Toast.makeText(getApplicationContext(), "تم إيقاف الاسئلة الخاصة", Toast.LENGTH_SHORT).show();
-            }
-        });
-        //Attach to the action bar
-        getSupportActionBar().setCustomView(vwToggler);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-		
-		for(int i=0;i<5;i++){
-			btnArray[i].setTypeface(tfQQFont);
-			btnArray[i].setOnClickListener(this);
-		}
-		// Make the first Question
-		userAction(-1);
 	}
-	
+
+	private void initDBHandle() {
+		q = new QQDataBaseHelper(this);
+		if (!q.checkDataBase()){
+			showUsage();
+			try {
+				q.createDataBase(); //slow!
+			} catch (Exception sqle) {
+			}
+		}
+		try {
+			q.openDataBase();
+			} 
+		catch (SQLException sqle) {	}
+		catch (Exception ioe) {
+				finish(); //destroy Questionnaire.
+				return;
+			}
+	}
+
 	@Override
 	protected void onDestroy() {
 		if (q != null)
@@ -335,15 +344,13 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 	}
 
 	private void userAction(int selID) {
-		String tmp;
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
 			// Vibrate for 300 milliseconds
 			Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			mVibrator.vibrate(300);
 
-			tvBack.setText(getCorrectAnswer());
-			
+			setBackCard();
 			QOptIdx = -1; // trigger a new question
 		} else {
 			QOptIdx = (QOptIdx == -1) ? -1 : QOptIdx + 1; // Keep -1, or Proceed
@@ -365,7 +372,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 						myQQProfile.addSpecial(Quest.qType.getScore());
 					
 					// Display Correct answer
-					tvBack.setText(getCorrectAnswer());
+					setBackCard();
 				}
 			}
 
@@ -463,6 +470,12 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 
 		QQinit = 0;
 
+	}
+
+	private void setBackCard() {
+		tvBack.setText(getCorrectAnswer());
+		quranReviewUri = String.valueOf(QQUtils.getSuraIdx(Quest.startIdx)+1) +"/" +
+						 q.ayaNumberOf(Quest.startIdx);		
 	}
 
 	private String getCorrectAnswer() {
