@@ -126,11 +126,19 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		userAction(-1);
 	}
 	
+	/**
+	 * Initialize user profile. Load existing or create a default one
+	 */
 	private void initProfile() {
 		myQQProfileHandler = new QQProfileHandler(this);
 		myQQProfile = myQQProfileHandler.getProfile();
 	}
 
+	/**
+	 * Initialize User-Interface components, inflate all needed resources
+	 * and register all needed listeners. This includes the action bar
+	 * and the navigation list.
+	 */
 	private void initUI() {
 
 		actionbar = getSupportActionBar();
@@ -216,6 +224,11 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
 	}
 
+	/**
+	 * Initializes a user-side logger. All debug values are pushed to a 
+	 * file at the user storage area. Logs are included according to their
+	 * level and the required Levels.
+	 */
 	private void initLogger() {
 		if(QQUtils.QQDebug>0){
 			FileAppender appender = new FileAppender();
@@ -236,6 +249,12 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		}
 	}
 
+	/**
+	 * Initialize a handle for the needed SQLite3 database 
+	 * for QuranQuiz to operate. Initially, the DB needs to get 
+	 * uncompressed then its index built. A splash screen is displayed
+	 * to demonstrate a demo screen while the initial DB preparation. 
+	 */
 	private void initDBHandle() {
 		q = new QQDataBaseHelper(this);
 		if (!q.checkDataBase()){
@@ -262,6 +281,10 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		super.onDestroy();
 	}
 
+	/**
+	 * When a user presses the back button, his profile is saved
+	 * and a handle is passed back.
+	 */
 	@Override
 	public void onBackPressed() {
 			myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
