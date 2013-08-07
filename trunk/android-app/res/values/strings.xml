@@ -8,6 +8,7 @@
     <string name="txt_end">اختر الاجابة الصحيحة</string>
     <string name="txt_score">نقاط</string>
     <string name="txt_ok">حسنا</string>   
+    <string name="txt_review">راجعها من المصحف</string>   
     <string name="txt_instruction">اختر التكملة الصحيحة</string>
     <string name="txt_instruction_SURANAME">اختر اسم السورة</string>
     <string name="txt_instruction_SURAAYACOUNT">اختر عدد ايات السورة</string>
