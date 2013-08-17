@@ -5,10 +5,11 @@
 ****/
 package net.quranquiz;
 
-
 import java.util.Calendar;
 import net.quranquiz.QQQuestion.QType;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
@@ -202,16 +203,37 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		});
 		
 		btnBackReview.setOnClickListener(
-				new OnClickListener(){
-					public void onClick(View arg0) {
-			    		Intent quranViewer = new Intent(Intent.ACTION_VIEW, Uri.parse("quran://"+quranReviewUri)); 
+			new OnClickListener(){
+				public void onClick(View arg0) {
+		    		Intent quranViewer = new Intent(Intent.ACTION_VIEW, Uri.parse("quran://"+quranReviewUri)); 
 
-			    		 if (getPackageManager().queryIntentActivities(quranViewer, 0).size() > 0){
-			    	    		startActivity(quranViewer); 
-			    		 } else {
-			    			 Toast.makeText(getBaseContext(),"Install a handler!", Toast.LENGTH_LONG).show();
-			    		 }
-					}
+		    		 if (getPackageManager().queryIntentActivities(quranViewer, 0).size() > 0){
+		    	    		startActivity(quranViewer); 
+		    		 } else {
+		    			 //Prompt user to install a "quran://" app handler
+		    			 AlertDialog.Builder installQViewerDialogBuilder = new AlertDialog.Builder(QQQuestionaireActivity.this);
+		    			 installQViewerDialogBuilder.setTitle(QQApp.getContext().getResources().getString(R.string.installQViewer_title))
+	    						.setMessage(QQApp.getContext().getResources().getString(R.string.installQViewer_msg))
+	    						.setCancelable(true)
+	    						.setPositiveButton(QQApp.getContext().getResources().getString(R.string.installQViewer_install),
+	    							new DialogInterface.OnClickListener() {
+	    							public void onClick(DialogInterface dialog,int id) {
+	    								// Redirect to install QuranAndroid
+	    								Intent intent = new Intent(Intent.ACTION_VIEW); 
+	    								intent.setData(Uri.parse("market://details?id=com.quran.labs.androidquran")); 
+	    								startActivity(intent);
+	    							} })
+	    						.setNegativeButton(QQApp.getContext().getResources().getString(R.string.txt_no),
+	    							new DialogInterface.OnClickListener() {
+	    							public void onClick(DialogInterface dialog,int id) {
+	    								dialog.cancel();
+	    							} });
+		    		 
+						// create alert dialog and show it
+						AlertDialog installQViewerDialog = installQViewerDialogBuilder.create();
+						installQViewerDialog.show();
+		    		 }
+				}
 		});		
 		
         ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource
