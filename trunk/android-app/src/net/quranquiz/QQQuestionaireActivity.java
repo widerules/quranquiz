@@ -49,6 +49,8 @@ public class QQQuestionaireActivity extends SherlockActivity implements
     private ViewAnimator viewAnimator;
 	private TextView tvQ;
 	private TextView tvScore;
+	private TextView tvScoreUp;
+	private TextView tvScoreDown;
 	private TextView tvBack;
 	private TextView tvInstructions;
 	private Button btnBack;
@@ -153,11 +155,13 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 		btnArray[3] = (Button) findViewById(R.id.bOp4);
 		btnArray[4] = (Button) findViewById(R.id.bOp5);
 
-		tvInstructions = (TextView) findViewById(R.id.tvInstruction);
-		tvScore = (TextView) findViewById(R.id.Score);
-		tvBack  = (TextView) findViewById(R.id.tvBack);
-		btnBack = (Button) findViewById(R.id.btnBack); 
-		btnBackReview = (Button) findViewById(R.id.btnBackReview); 
+		tvInstructions 	= (TextView) findViewById(R.id.tvInstruction);
+		tvScore 		= (TextView) findViewById(R.id.Score);
+		tvScoreUp 		= (TextView) findViewById(R.id.tvScoreUp);
+		tvScoreDown 	= (TextView) findViewById(R.id.tvScoreDown);
+		tvBack  		= (TextView) findViewById(R.id.tvBack);
+		btnBack 		= (Button) findViewById(R.id.btnBack); 
+		btnBackReview 	= (Button) findViewById(R.id.btnBackReview); 
 		
 		Typeface tfQQFont = Typeface.createFromAsset(getAssets(),
 				"fonts/me_quran.ttf"); //amiri-quran | roboto-regular
@@ -421,7 +425,7 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 				}
 			}
 
-			if(QQinit==0){
+			if(QQinit==0){ // Need Card Flip if game not initialized
 				AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);				
 			}
 			
@@ -450,6 +454,16 @@ public class QQQuestionaireActivity extends SherlockActivity implements
 			// Show the Question!
 			tvQ.setText(QQUtils.fixQ(q.txt(Quest.startIdx, Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY)));
 			QOptIdx = 0;
+			
+			//Show Score Up/Down
+			if(Quest.qType == QType.NOTSPECIAL){
+				tvScoreUp.setText(myQQProfile.getUpScore(Quest.CurrentPart));
+				tvScoreDown.setText(myQQProfile.getDownScore(Quest.CurrentPart));
+			} else {
+				tvScoreUp.setText(String.valueOf(Quest.qType.getScore()));
+				tvScoreDown.setText("-");				
+			}
+			
 		}
 
 		// Concat correct options to the Question!
