@@ -48,10 +48,9 @@
 	        android:gravity="right" >
 
 	        <LinearLayout
-	            android:layout_width="0dp"
+	            android:layout_width="100dp"
 	            android:layout_height="fill_parent"
 	            android:layout_gravity="left"
-	            android:layout_weight="1"
 	            android:gravity="center"
 	            android:orientation="vertical" >
 	            
@@ -78,9 +77,10 @@
 	                android:layout_marginRight="5dp"
 	                android:layout_marginLeft="3dp"
 	                android:layout_marginTop="5dp"
+	                android:layout_marginBottom="-25dp"
 	                android:background="@drawable/tv_instruction_background"
 	                android:gravity="center"
-	                android:paddingBottom="10dip"
+	                android:paddingBottom="30dip"
 	                android:paddingLeft="10dp"
 	                android:paddingRight="10dp"
 	                android:paddingTop="10dp"
@@ -94,11 +94,52 @@
 	                android:layout_marginRight="5dp"
 	                android:layout_marginLeft="3dp"
 	                android:gravity="center"
-	                android:paddingBottom="10dip"
+	                android:paddingBottom="2dip"
 	                android:paddingLeft="10dp"
 	                android:paddingRight="10dp"
 	                android:text="0"
 	                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	            <RelativeLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content" >
+
+	                <TextView
+	                    android:id="@+id/tvDownSym"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="⬇"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_marginLeft="5dp"
+	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	                <TextView
+	                    android:id="@+id/tvScoreDown"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="2"
+	                    android:layout_toRightOf="@+id/tvDownSym"
+	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+	            	
+	                <TextView
+	                    android:id="@+id/tvScoreUp"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="31"
+	                    android:layout_toLeftOf="@+id/tvUpSym"	                    
+	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+	                
+	                <TextView
+	                    android:id="@+id/tvUpSym"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="⬆"
+	                    android:layout_alignParentRight="true"
+	                    android:layout_marginRight="5dp"
+	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+	            </RelativeLayout>
 
 	            <ProgressBar
 	                android:id="@+id/progressBar1"
