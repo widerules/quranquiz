@@ -6,7 +6,10 @@
 package net.quranquiz;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Vector;
+
+import com.google.analytics.tracking.android.Log;
 
 public class QQProfile implements Serializable {
 
@@ -93,18 +96,10 @@ public class QQProfile implements Serializable {
 	public int getScore() {
 		
 		double score=0.0;
-		double partWeight,scaledQCount,avgLevel,scaledCorrectRatio;
 		for(int i=0;i<QParts.size();i++){
-			partWeight   = QParts.get(i).getNonZeroLength();
-			partWeight	/= QQUtils.Juz2AvgWords;
-			avgLevel     = QParts.get(i).getAvgLevel();
-			scaledQCount = QQUtils.sCurve(QParts.get(i).getNumCorrect(),
-										  QQUtils.Juz2SaturationQCount*partWeight);
-			scaledCorrectRatio = QQUtils.sCurve(QParts.get(i).getCorrectRatio(),1);
-			
-			score += 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
+			score += calculateScorePart(i,false); //No Logging
 		}
-		return (int) Math.ceil(score+specialScore);
+		return (int) Math.round(score+specialScore);
 	}
 
 	public String getScores() {
@@ -255,55 +250,100 @@ public class QQProfile implements Serializable {
 	}
 
 	public CharSequence getUpScore(int CurrentPart) {
-		double partWeight, avgLevel, scaledQCount, scaledCorrectRatio, score;
+		double currentPartScore, currentPartScoreUp;
+		double partWeight, avgLevel, scaledQCount, scaledCorrectRatio;
 		int numCorrect, numQuestions, currLevel;
 		
+		/**
+		 * Find the difference between the current and the to-be-incremented score
+		 * The difference comes from the current part only. The current is calculated
+		 * normally, while the UP is calculated manually as below
+		 * */
+		currentPartScore = calculateScorePart(CurrentPart, true);
+		
+		/**
+		 * Calculate the normalized Number of words in current part + UP
+		 */
 		numCorrect   = QParts.get(CurrentPart).getNumCorrect();
 		numQuestions = QParts.get(CurrentPart).getNumQuestions();
 		currLevel  	 = getLevel();
-		/**
-		 * Calculate the normalized Number of words in current part
-		 */
+		
 		partWeight   = QParts.get(CurrentPart).getNonZeroLength();
 		partWeight	/= QQUtils.Juz2AvgWords;
-		/**
-		 * Calculate the delta avgLevel
-		 */
-		avgLevel     = QParts.get(CurrentPart).getAvgLevel();
-		avgLevel    -= ((numCorrect*avgLevel+currLevel)/(numCorrect +1));
 		
-		scaledQCount = QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect() +1,
-									  QQUtils.Juz2SaturationQCount*partWeight)
-					   -QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect(),
-								  QQUtils.Juz2SaturationQCount*partWeight);
-		scaledCorrectRatio = QQUtils.sCurve((numCorrect+1)/(float)numQuestions,1)
-							  - QQUtils.sCurve(QParts.get(CurrentPart).getCorrectRatio(),1);
-				
-		score = 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
+		avgLevel     = numCorrect*(QParts.get(CurrentPart).getAvgLevel())+currLevel;
+		avgLevel	/= (numCorrect+1);		
+		
+		scaledQCount = QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect() + 1,
+									  QQUtils.Juz2SaturationQCount*partWeight);
+		scaledQCount+=1;
+		scaledCorrectRatio = QQUtils.sCurve(((float)numCorrect+1)/((float)numQuestions+1),1);
+		
+		currentPartScoreUp = 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
 
-		return String.valueOf((int)Math.ceil(score));
+		return String.valueOf((int)Math.round(currentPartScoreUp-currentPartScore));
 	}
 
 	public CharSequence getDownScore(int CurrentPart) {
-		double partWeight, avgLevel, scaledQCount, scaledCorrectRatio, score;
-		int numCorrect, numQuestions;
+		double currentPartScore, currentPartScoreDown;
+		double partWeight, avgLevel, scaledQCount, scaledCorrectRatio;
+		int numCorrect, numQuestions, downScore;
 		
+		/**
+		 * Find the difference between the current and the to-be-decremented score
+		 * The difference comes from the current part only. The current is calculated
+		 * normally, while the DOWN is calculated manually as below
+		 * */
+		currentPartScore = calculateScorePart(CurrentPart, false);
+		
+		/**
+		 * Calculate the normalized Number of words in current part + UP
+		 */
 		numCorrect   = QParts.get(CurrentPart).getNumCorrect();
 		numQuestions = QParts.get(CurrentPart).getNumQuestions();
+		
+		partWeight   = QParts.get(CurrentPart).getNonZeroLength();
+		partWeight	/= QQUtils.Juz2AvgWords;
+		
+		avgLevel     = QParts.get(CurrentPart).getAvgLevel();		
+		scaledQCount = QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect(),
+									  QQUtils.Juz2SaturationQCount*partWeight);
+		scaledQCount+=1;
+		scaledCorrectRatio = QQUtils.sCurve(((float)numCorrect)/((float)numQuestions+1),1);
+		
+		currentPartScoreDown = 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
+		downScore 			 = (int)Math.round(currentPartScore-currentPartScoreDown);
+		if(QQUtils.QQDebug==1 && downScore ==0 ){
+			Log.d("[0Down] Sd= "+new DecimalFormat("##.##").format(100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio)+
+					"::pW="+new DecimalFormat("##.##").format(partWeight)+
+					" av="+new DecimalFormat("##.##").format(avgLevel)+
+					" sC="+new DecimalFormat("##.##").format(scaledQCount)+
+					" sR="+new DecimalFormat("##.##").format(scaledCorrectRatio));			
+		}
+		return String.valueOf(downScore);
+	}
+	
+	private double calculateScorePart(int i, boolean enableLogging){
+		double score=0.0;
+		double partWeight,scaledQCount,avgLevel,scaledCorrectRatio;
 		/**
 		 * Calculate the normalized Number of words in current part
 		 */
-		partWeight   = QParts.get(CurrentPart).getNonZeroLength();
+		partWeight   = QParts.get(i).getNonZeroLength();
 		partWeight	/= QQUtils.Juz2AvgWords;
-		avgLevel     = QParts.get(CurrentPart).getAvgLevel();
+		avgLevel     = QParts.get(i).getAvgLevel();
+		scaledQCount = QQUtils.sCurve(QParts.get(i).getNumCorrect(),
+									  QQUtils.Juz2SaturationQCount*partWeight);
+		scaledQCount+=1;
+		scaledCorrectRatio = QQUtils.sCurve(QParts.get(i).getCorrectRatio(),1);
 		
-		scaledQCount = QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect(),
-								  QQUtils.Juz2SaturationQCount*partWeight);
-		scaledCorrectRatio = QQUtils.sCurve(QParts.get(CurrentPart).getCorrectRatio(),1)
-								-QQUtils.sCurve(numCorrect/(float)(numQuestions+1),1);
-				
 		score = 100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio;
-
-		return String.valueOf((int)Math.ceil(score));
+		if(QQUtils.QQDebug==1 && QParts.get(i).getNumCorrect()>0 && enableLogging)
+			Log.d("["+i+"] S= "+new DecimalFormat("##.##").format(100*partWeight*avgLevel*scaledQCount*scaledCorrectRatio)+
+					"::pW="+new DecimalFormat("##.##").format(partWeight)+
+					" av="+new DecimalFormat("##.##").format(avgLevel)+
+					" sC="+new DecimalFormat("##.##").format(scaledQCount)+
+					" sR="+new DecimalFormat("##.##").format(scaledCorrectRatio));
+		return score;
 	}
 }
