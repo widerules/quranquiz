@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class QQUtils {
 
-	public static int QQDebug = 0;
+	public static int QQDebug = 1;
 	public static int QuranWords = 77878; 
 	public static int Juz2AvgWords = QuranWords/30;
 	

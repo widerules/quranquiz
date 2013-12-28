@@ -6,10 +6,9 @@
 package net.quranquiz;
 
 import java.util.Calendar;
+
 import net.quranquiz.QQQuestion.QType;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -36,7 +34,6 @@ import android.widget.ViewAnimator;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -129,15 +126,18 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		if(QQUtils.QQDebug == 1){
 			SlidingMenu menu = new SlidingMenu(this);
 	
-	        menu.setMode(SlidingMenu.LEFT);
+	        menu.setMode(SlidingMenu.LEFT_RIGHT);
 			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 			menu.setShadowWidthRes(R.dimen.shadow_width);
 			menu.setShadowDrawable(R.drawable.shadow);
 			menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 			menu.setFadeDegree(0.35f);
+			menu.setSecondaryShadowDrawable(R.drawable.shadowright);
+            
 			menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
 			menu.setMenu(R.layout.lastscreen_layout);
-	
+			menu.setSecondaryMenu(R.layout.lastscreen_layout);
+
 			//getFragmentManager().beginTransaction()
 	        //.replace(R.layout.lastscreen_layout, new QQStudyListSideFragment().getTargetFragment())
 	        //.commit();
@@ -427,6 +427,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private void userAction(int selID) {
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
+			//btnArrayR[selID].startAnimation(animFadeOut);
+			//btnArrayR[selID].set
 			// Vibrate for 300 milliseconds
 			Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			mVibrator.vibrate(300);

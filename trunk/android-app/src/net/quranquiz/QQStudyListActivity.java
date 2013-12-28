@@ -6,12 +6,10 @@
 package net.quranquiz;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -92,14 +90,18 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 			targetCategory.addPreference(checkBoxPreference);
 		}
 		for (int i = 0; i < 5; i++) {
+			// create one check box for each item you need
+			// make sure each key is unique
+			corr = ProfileHandler.CurrentProfile.getCorrect(45 + i);
+			tot  = ProfileHandler.CurrentProfile.getQuesCount(45 + i);
+			
 			checkBoxPreference = new CheckBoxPreference(this);
 			checkBoxPreference.setKey("QPart_j" + String.valueOf(i + 26));
 			checkBoxPreference.setTitle(" جزء " + QQUtils.last5_juz_name[i]);
 			checkBoxPreference.setSummary( " إجاباتك الصحيحة "
-					+ String.valueOf(ProfileHandler.CurrentProfile.getCorrect(45 + i))
+					+ String.valueOf(corr)
 					+ " من "
-					+ String.valueOf(ProfileHandler.CurrentProfile
-							.getQuesCount(45 + i))); 
+					+ String.valueOf(tot)); 
 
 			if(android.os.Build.VERSION.SDK_INT 
 					>= android.os.Build.VERSION_CODES.HONEYCOMB){
@@ -118,7 +120,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 
 	public void ToggleAll() {
     	Boolean toggle = !((CheckBoxPreference)targetCategory.getPreference(2)).isChecked();
-    	for (int i=1;i<targetCategory.getPreferenceCount()-1;i++){
+    	for (int i=1;i<targetCategory.getPreferenceCount();i++){ //Alfatiha is always selected
     		((CheckBoxPreference)targetCategory.getPreference(i)).setChecked(toggle);
     	}
 	}
