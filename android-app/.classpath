@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="net/quranquiz/PreferenceListFragment.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/library"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/feedback.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/achartengine-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/libGoogleAnalytics.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/microlog4android-1.0.0.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="/home/tarek/workspace/google_play_srvc/libs/google-play-services.jar"/>
+	<classpathentry kind="lib" path="/home/tarek/workspace/google_play_srvc/libs/google-play-services.jar"/>
+	<classpathentry exported="true" kind="src" path="/slidingmenu"/>
+	<classpathentry exported="true" kind="src" path="/unifiedpreferences"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

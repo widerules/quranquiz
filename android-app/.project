@@ -3,6 +3,9 @@
 	<name>QQDashboardActivity</name>
 	<comment></comment>
 	<projects>
+		<project>google_play_srvc</project>
+		<project>library</project>
+		<project>slidingmenu</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

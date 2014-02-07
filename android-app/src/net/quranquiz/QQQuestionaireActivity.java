@@ -19,6 +19,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,8 @@ import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
@@ -123,7 +127,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		
 
 		// configure the SlidingMenu
-		if(QQUtils.QQDebug == 1){
+		if(QQUtils.QQDebug == 2){
 			SlidingMenu menu = new SlidingMenu(this);
 	
 	        menu.setMode(SlidingMenu.LEFT_RIGHT);
@@ -138,6 +142,21 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			menu.setMenu(R.layout.lastscreen_layout);
 			menu.setSecondaryMenu(R.layout.lastscreen_layout);
 
+			FragmentManager fmanager = getSupportFragmentManager();
+            Fragment fragment = fmanager.findFragmentById(R.id.map);
+            SupportMapFragment supportmapfragment = (SupportMapFragment) fragment;
+
+            //http://stackoverflow.com/questions/14047257/how-do-i-know-the-map-is-ready-to-get-used-when-using-the-supportmapfragment
+            // Returns NULL!
+            GoogleMap mMap = supportmapfragment.getMap();
+            mMap.getUiSettings().setZoomControlsEnabled(false);
+            //mMap.setOnMapClickListener(this);
+            //mMap.setOnInfoWindowClickListener(this);
+            //mMap.setOnMarkerClickListener(this);
+            mMap.setMyLocationEnabled(true);
+            //mMap.setOnMyLocationChangeListener(this);
+            //mMap.setOnMyLocationButtonClickListener(this);
+			
 			//getFragmentManager().beginTransaction()
 	        //.replace(R.layout.lastscreen_layout, new QQStudyListSideFragment().getTargetFragment())
 	        //.commit();

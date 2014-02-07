@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class QQUtils {
 
-	public static int QQDebug = 1;
+	public static int QQDebug = 0;
 	public static int QuranWords = 77878; 
 	public static int Juz2AvgWords = QuranWords/30;
 	
@@ -64,7 +64,7 @@ public class QQUtils {
 	/* Here the indexes point to "start-1" to "end" of each Juz' */
 	public static final int[] last5_juz_idx = { sura_idx[44], sura_idx[49],
 			sura_idx[56], sura_idx[65], sura_idx[76], QuranWords };
-	public static final String QQ_MD5_KEY = ""; // Edited only upon release!
+	public static final String QQ_MD5_KEY = "QQ-"; // Edited only upon release!
 
 	public static int findIdx(int[] scrambled, int i) {
 		for (int j = 0; j < scrambled.length; j++)
