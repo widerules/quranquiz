@@ -208,17 +208,18 @@
 	    android:background="@drawable/questionnaire_background"
 	    android:orientation="vertical" >
 
- 	    <TextView
- 	        android:id="@+id/tvBack"
- 	        android:layout_width="fill_parent"
- 	        android:layout_height="wrap_content"
- 	        android:layout_gravity="fill_vertical"
-  	        android:layout_weight="0.90"
- 	        android:addStatesFromChildren="true"
- 	        android:gravity="center"
- 	        android:text="Medium Text"
- 	        android:textAppearance="?android:attr/textAppearanceMedium" />
- 		    <RelativeLayout
+	    <TextView
+	        android:id="@+id/tvBack"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="fill_vertical"
+	        android:layout_weight="0.90"
+	        android:addStatesFromChildren="true"
+	        android:gravity="center"
+	        android:text="Medium Text"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <RelativeLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 
@@ -241,9 +242,9 @@
 	            android:layout_marginRight="15dp"
 	            android:text="@string/txt_review" />
 
-	    </RelativeLayout>    
+	    </RelativeLayout>
 
- 	</LinearLayout>
+	</LinearLayout>
 	
 </ViewFlipper>
 </LinearLayout>

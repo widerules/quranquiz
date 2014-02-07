@@ -102,14 +102,13 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content" >
 
-	                <TextView
+	                <ImageView
 	                    android:id="@+id/tvDownSym"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:text="⬇"
+	                    android:layout_width="9dp"
+	                    android:layout_height="13dp"
 	                    android:layout_alignParentLeft="true"
 	                    android:layout_marginLeft="5dp"
-	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+	                    android:src="@drawable/arrow_down" />
 
 	                <TextView
 	                    android:id="@+id/tvScoreDown"
@@ -127,14 +126,14 @@
 	                    android:layout_toLeftOf="@+id/tvUpSym"	                    
 	                    android:textAppearance="?android:attr/textAppearanceSmall" />
 	                
-	                <TextView
+	                <ImageView
 	                    android:id="@+id/tvUpSym"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:text="⬆"
+	                    android:layout_width="9dp"
+	                    android:layout_height="13dp"
 	                    android:layout_alignParentRight="true"
 	                    android:layout_marginRight="5dp"
-	                    android:textAppearance="?android:attr/textAppearanceSmall" />
+	                    android:src="@drawable/arrow_up" />
+
 
 	            </RelativeLayout>
 	            
@@ -143,7 +142,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:paddingLeft="10dp"
-	                android:paddingTop="30dp" />
+	                android:paddingTop="10dp" />
 	        </LinearLayout>
 
 	        <LinearLayout
@@ -203,6 +202,7 @@
 	<LinearLayout
 	    android:layout_width="300dp"
 	    android:layout_height="300dp"
+		android:layout_gravity="center"
 	    android:background="@drawable/questionnaire_background"
 	    android:orientation="vertical" >
 

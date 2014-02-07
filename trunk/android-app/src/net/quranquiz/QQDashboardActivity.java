@@ -146,7 +146,7 @@ public class QQDashboardActivity extends Activity {
 		feedbackSettings.setTitle("شاركنا برأيك");
 		feedbackSettings.setToast("سيتم الرد عليك بإذن الله");
 		feedbackSettings.setReplyTitle("رسالة من مطوري البرنامج");
-		feedBackDialog = new FeedbackDialog(this,"AF-F8C9921F6163-17",feedbackSettings);
+		feedBackDialog = new FeedbackDialog(this,"AF-19DA2D7DEDEE-D7",feedbackSettings);
 		
 		/**
 		 * Handling all button click events
