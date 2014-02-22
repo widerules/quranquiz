@@ -22,11 +22,6 @@ public class QQProfileHandler implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String MY_PROFILE = "MyQQProfile";
 	private transient static Context myContext;
-	public static final String DEFAULT_STUDY_PARTS = "1,"
-			+ String.valueOf(QQUtils.sura_idx[0]) + ",0,0,1.0;"
-			+ String.valueOf(QQUtils.last5_juz_idx[4]) + ","
-			+ String.valueOf(QQUtils.last5_juz_idx[5] - QQUtils.last5_juz_idx[4])
-			+ ",0,0,1.0;";
 
 	public QQProfile CurrentProfile;
 
@@ -121,7 +116,7 @@ public class QQProfileHandler implements Serializable {
 					// Toast.LENGTH_LONG).show();
 			myQQProfile = new QQProfile(getHashedUID(),
 					new Random().nextInt(QQUtils.QuranWords), 1,
-					QQProfileHandler.DEFAULT_STUDY_PARTS,
+					QQProfileHandler.getInitStudyParts(),
 					QQScoreRecord.getInitScoreRecordPack(),
 					0);
 			saveProfile(myQQProfile);
@@ -200,5 +195,26 @@ public class QQProfileHandler implements Serializable {
 
 		CurrentProfile = prof;
 	}
+	
+	public static final String getInitStudyParts(){
+		int i;
+		String newParts = new String("1,"
+				+ String.valueOf(QQUtils.sura_idx[0]) + ",0,0,1.0;");
+
+		for (i = 1; i < 45; i++) 
+			newParts += "-"
+				+ String.valueOf(QQUtils.sura_idx[i-1]) + ","
+				+ String.valueOf(QQUtils.sura_idx[i] - QQUtils.sura_idx[i-1])
+				+ ",0,0,1.0;";
+		
+		for (i = 0; i < 5; i++) 
+			newParts += "-"
+				+ String.valueOf(QQUtils.last5_juz_idx[i]) + ","
+				+ String.valueOf(QQUtils.last5_juz_idx[i+1] - QQUtils.last5_juz_idx[i])
+				+ ",0,0,1.0;";
+		
+		return newParts;
+	}
+			
 
 }

@@ -77,6 +77,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private String quranReviewUri = "1/1"; // Sura/Aya
 	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
+	private QQSession myQQSession;
 
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
@@ -163,7 +164,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		}
 		
 		initProfile();
+		initSession();
 		initUI();
+		
 				
 		if(android.os.Build.VERSION.SDK_INT 
 				>= android.os.Build.VERSION_CODES.HONEYCOMB)
@@ -174,15 +177,29 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	}
 	
 	/**
+	 * Initialize user profile. Resume existing or create a default one
+	 */
+	private void initSession() {
+		myQQSession = new QQSession();		
+	}
+
+	/**
 	 * Initialize user profile. Load existing or create a default one
 	 */
 	private void initProfile() {
+		Intent intentStudyList;
 		myQQProfileHandler = new QQProfileHandler(this);
 		myQQProfile = myQQProfileHandler.getProfile();
 		//Load List Selector first time
 		if(myQQProfile.getTotalQuesCount()==0){
-			Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
+			if(android.os.Build.VERSION.SDK_INT 
+					>= android.os.Build.VERSION_CODES.HONEYCOMB)
+				intentStudyList = new Intent(QQQuestionaireActivity.this,
 					QQStudyListActivity.class);
+			else
+				intentStudyList = new Intent(QQQuestionaireActivity.this,
+						QQStudyListCompatActivity.class);
+			
 			intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 			startActivity(intentStudyList);
 		}	
@@ -372,7 +389,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) { //TODO: Clean, unused
 		switch (item.getItemId()) {
 		case R.id.Profile:
 			Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
@@ -482,7 +499,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 				AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);				
 			}
 			
-			Quest = new QQQuestion(myQQProfile, q);
+			myQQProfileHandler.reLoadCurrentProfile(); // For first Question
+			Quest = new QQQuestion(myQQProfile, q, myQQSession);
 			CurrentPart = Quest.CurrentPart;
 			
 			if(QQUtils.QQDebug>0){
