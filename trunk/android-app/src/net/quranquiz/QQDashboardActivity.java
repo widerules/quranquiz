@@ -162,13 +162,20 @@ public class QQDashboardActivity extends Activity {
 
 		btnSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				Intent intentStudyList;
 				if (myQQProfileHandler == null) {
 					myQQProfileHandler = new QQProfileHandler(
 							getApplicationContext());
 					myQQProfileHandler.getProfile();
 				}
-				Intent intentStudyList = new Intent(QQDashboardActivity.this,
+				if(android.os.Build.VERSION.SDK_INT 
+						>= android.os.Build.VERSION_CODES.HONEYCOMB)
+					intentStudyList = new Intent(QQDashboardActivity.this,
 						QQStudyListActivity.class);
+				else
+					intentStudyList = new Intent(QQDashboardActivity.this,
+							QQStudyListCompatActivity.class);
+				
 				intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 				startActivity(intentStudyList);
 			}

@@ -51,7 +51,11 @@
         <activity
 	    	android:name=".QQStudyListActivity"
 	    	android:theme="@style/Theme.qqstyle" >
-	  	</activity> 
+	  	</activity>
+        <activity
+	    	android:name=".QQStudyListCompatActivity"
+	    	android:theme="@style/Theme.qqstyle" >
+	  	</activity>  
         <activity
 	    	android:name=".QQMap" >
 	  	</activity>

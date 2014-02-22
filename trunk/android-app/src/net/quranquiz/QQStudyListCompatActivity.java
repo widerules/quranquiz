@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class QQStudyListActivity extends SherlockPreferenceActivity{
+public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 
 	private QQProfileHandler ProfileHandler;
 	private PreferenceCategory targetCategory;
@@ -26,7 +26,8 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 
 		
-		CheckBoxPreference checkBoxPreference;
+		//CheckBoxPreference checkBoxPreference;
+		QQCheckBoxPreference checkBoxPreference;
 		
 		super.onCreate(savedInstanceState);
 
@@ -64,7 +65,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 			corr = ProfileHandler.CurrentProfile.getCorrect(i);
 			tot  = ProfileHandler.CurrentProfile.getQuesCount(i);
 			
-			checkBoxPreference = new CheckBoxPreference(this);
+			checkBoxPreference = new QQCheckBoxPreference(this, null);
 			checkBoxPreference.setKey("QPart_s" + String.valueOf(i + 1));
 			checkBoxPreference.setTitle(" سورة " + QQUtils.sura_name[i]);
 			checkBoxPreference.setSummary( " إجاباتك الصحيحة "
@@ -73,8 +74,8 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					+ String.valueOf(tot)
 					); 
 			
-			if(android.os.Build.VERSION.SDK_INT 
-					>= android.os.Build.VERSION_CODES.HONEYCOMB){
+			//if(android.os.Build.VERSION.SDK_INT 
+			//		>= android.os.Build.VERSION_CODES.HONEYCOMB){
 				if(tot == 0)
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_grey));
 				else if(((double)corr/tot)>= 0.8)
@@ -83,7 +84,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_yellow));
 				else 
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_red));
-			}
+			//}
 
 			if (i == 0) {
 				checkBoxPreference.setEnabled(false);
@@ -97,7 +98,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 			corr = ProfileHandler.CurrentProfile.getCorrect(45 + i);
 			tot  = ProfileHandler.CurrentProfile.getQuesCount(45 + i);
 			
-			checkBoxPreference = new CheckBoxPreference(this);
+			checkBoxPreference = new QQCheckBoxPreference(this, null);
 			checkBoxPreference.setKey("QPart_j" + String.valueOf(i + 26));
 			checkBoxPreference.setTitle(" جزء " + QQUtils.last5_juz_name[i]);
 			checkBoxPreference.setSummary( " إجاباتك الصحيحة "
@@ -105,8 +106,8 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					+ " من "
 					+ String.valueOf(tot)); 
 
-			if(android.os.Build.VERSION.SDK_INT 
-					>= android.os.Build.VERSION_CODES.HONEYCOMB){
+			//if(android.os.Build.VERSION.SDK_INT 
+			//		>= android.os.Build.VERSION_CODES.HONEYCOMB){
 				if(tot == 0)
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_grey));
 				else if(((double)corr/tot)>= 0.8)
@@ -115,7 +116,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_yellow));
 				else 
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_red));
-			}
+			//}
 			targetCategory.addPreference(checkBoxPreference);
 		}
 	}

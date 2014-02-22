@@ -7,7 +7,6 @@ package net.quranquiz;
 
 import java.util.List;
 import java.util.Random;
-
 import android.util.Log;
 
 public class QQQuestion {
@@ -25,7 +24,9 @@ public class QQQuestion {
 	private int lastSeed; // Seed for the Question
 	private int level; // User Level, currently
 	private QQDataBaseHelper q; // Reference to the DB
+	private QQSession session;  // Reference to the QQSession
 	private Random rand;
+	private QQSparseResult sparsed;
 	private static int QLEN_EXTRA_LIMIT=2;
 	public int CurrentPart;
 
@@ -56,7 +57,7 @@ public class QQQuestion {
 		}
 	};
 		
-	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb) {
+	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb, QQSession s) {
 		// start tracing to "/sdcard/calc.trace"
 		// Debug.startMethodTracing("QQ.trace");
 
@@ -67,6 +68,7 @@ public class QQQuestion {
 		// Keep Reference of Level, Q
 		level = prof.getLevel();
 		q = qdb;
+		session = s;
 		if(prof.isSpecialEnabled() && selectSpecial()){
 			createSpecialQ(prof);
 		}else {
@@ -88,10 +90,6 @@ public class QQQuestion {
 	
 	private void createSpecialQ(QQProfile prof) {
 		rounds = 1;
-		QQSparseResult sparsed = prof.getSparsePoint(rand.nextInt(prof
-				.getTotalStudyLength()));
-		lastSeed = sparsed.idx;
-		CurrentPart = sparsed.part;
 
 		if(Math.random()>0.5)
 			qType = QType.SURANAME; 
@@ -102,25 +100,32 @@ public class QQQuestion {
 		
 		switch(qType){
 			case SURANAME: 
-				createQSuraName();
+				createQSuraName(prof);
 				break;
 			case SURAAYACOUNT:
-				createQSuraAyaCount();
+				createQSuraAyaCount(prof);
 				break;
 			case AYANUMBER:
-				createQAyaNumber();
+				createQAyaNumber(prof);
 				break;
 			//TODO: Implement others	
 			default:
 				qType = QType.SURANAME;
-				createQSuraName();
+				createQSuraName(prof);
 				break;	
 		}
 	}
 	
-	private void createQSuraName() {
-		// +1 to compensate the rand-gen integer [0-QuranWords-1]
-		startIdx = getValidUniqueStartNear(lastSeed + 1);
+	private void createQSuraName(QQProfile prof) {
+		do{
+			sparsed = prof.getSparsePoint(rand.nextInt(prof
+					.getTotalStudyLength()));
+			lastSeed = sparsed.idx;
+			CurrentPart = sparsed.part;
+			// +1 to compensate the rand-gen integer [0-QuranWords-1]
+			startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(startIdx));
+
 		validCount=1; //Number of correct options at the first round
 		qLen=(level==1)?3:2;
 		oLen=1;
@@ -130,9 +135,16 @@ public class QQQuestion {
 		fillIncorrectRandomIdx(op[0][0],114);
 	}
 
-	private void createQSuraAyaCount() {
-		// +1 to compensate the rand-gen integer [0-QuranWords-1]
-		startIdx = getValidUniqueStartNear(lastSeed + 1);
+	private void createQSuraAyaCount(QQProfile prof) {
+		do{
+			sparsed = prof.getSparsePoint(rand.nextInt(prof
+					.getTotalStudyLength()));
+			lastSeed = sparsed.idx;
+			CurrentPart = sparsed.part;
+			// +1 to compensate the rand-gen integer [0-QuranWords-1]
+			startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(startIdx));
+
 		validCount=1; //Number of correct options at the first round
 		qLen=(level==1)?3:2;
 		oLen=1;
@@ -142,9 +154,16 @@ public class QQQuestion {
 		fillIncorrectRandomNonZeroIdx(op[0][0],50);
 	}
 
-	private void createQAyaNumber() {
-		// +1 to compensate the rand-gen integer [0-QuranWords-1]
-		startIdx = getValidUniqueStartNear(lastSeed + 1);
+	private void createQAyaNumber(QQProfile prof) {
+		do{
+			sparsed = prof.getSparsePoint(rand.nextInt(prof
+					.getTotalStudyLength()));
+			lastSeed = sparsed.idx;
+			CurrentPart = sparsed.part;
+			// +1 to compensate the rand-gen integer [0-QuranWords-1]
+			startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(startIdx));
+		
 		validCount=1; //Number of correct options at the first round
 		qLen=(level==1)?3:2;
 		oLen=1;
@@ -182,17 +201,19 @@ public class QQQuestion {
 	private void createQ(QQProfile prof) {
 		rounds = 10;
 		qType = QType.NOTSPECIAL;
-		QQSparseResult sparsed = prof.getSparsePoint(rand.nextInt(prof
-				.getTotalStudyLength()));
-		lastSeed = sparsed.idx;
-		CurrentPart = sparsed.part;
-
-		// +1 to compensate the rand-gen integer [0-QuranWords-1]
-		// TODO: Near Start does not regard QParts boundaries
-		startIdx = getValidStartNear(lastSeed + 1);
-
+		
+		do{
+			sparsed= prof.getSparsePoint(rand.nextInt(
+										prof.getTotalStudyLength()));
+			lastSeed = sparsed.idx;
+			CurrentPart = sparsed.part;
+	
+			// +1 to compensate the rand-gen integer [0-QuranWords-1]
+			// TODO: Near Start does not regard QParts boundaries
+			startIdx = getValidStartNear(lastSeed + 1);
+		}while(!session.addIfNew(startIdx));
+		
 		fillCorrectOptions();
-
 		fillIncorrectOptions();
 
 	}
