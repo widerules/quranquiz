@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="net/quranquiz/PreferenceListFragment.java" kind="src" path="src"/>
+	<classpathentry excluding="net/quranquiz/PreferenceListFragment.java|net/quranquiz/QQStudyListSideFragment.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
@@ -12,7 +12,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="/home/tarek/workspace/google_play_srvc/libs/google-play-services.jar"/>
 	<classpathentry exported="true" kind="src" path="/slidingmenu"/>
-	<classpathentry exported="true" kind="src" path="/unifiedpreferences"/>
 	<classpathentry exported="true" kind="lib" path="/home/tarek/quranquiz/android-app/libs/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
