@@ -74,7 +74,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					); 
 			
 			if(android.os.Build.VERSION.SDK_INT 
-					>= android.os.Build.VERSION_CODES.HONEYCOMB){
+					>= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
 				if(tot == 0)
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_grey));
 				else if(((double)corr/tot)>= 0.8)
@@ -106,7 +106,7 @@ public class QQStudyListActivity extends SherlockPreferenceActivity{
 					+ String.valueOf(tot)); 
 
 			if(android.os.Build.VERSION.SDK_INT 
-					>= android.os.Build.VERSION_CODES.HONEYCOMB){
+					>= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
 				if(tot == 0)
 					checkBoxPreference.setIcon(getResources().getDrawable(R.drawable.smiley_grey));
 				else if(((double)corr/tot)>= 0.8)
