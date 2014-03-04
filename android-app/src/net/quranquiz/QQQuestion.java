@@ -209,10 +209,10 @@ public class QQQuestion {
 			CurrentPart = sparsed.part;
 	
 			// +1 to compensate the rand-gen integer [0-QuranWords-1]
-			// TODO: Near Start does not regard QParts boundaries
 			startIdx = getValidStartNear(lastSeed + 1);
 		}while(!session.addIfNew(startIdx));
 		
+		//TODO:: Debug! startIdx = 77876;
 		fillCorrectOptions();
 		fillIncorrectOptions();
 

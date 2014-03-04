@@ -79,8 +79,8 @@ save QWords.mat q;
     for i=1:words_cnt-2
         fprintf(fido,'%d,%s,%s,%d,%d,%d,%s\n', i, char(q.txt(i)),char(q.txt_sym(i)),q.sim1(i).cnt,q.sim2(i).cnt,q.sim3(i).cnt,char(q.aya(i)));
     end
-    fprintf(fido,'%d,%s,%s,%d,%d,0,%s\n', words_cnt-1, char(q.txt(words_cnt-1)),char(q.txt_sym(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt,char(q.aya(i)));
-    fprintf(fido,'%d,%s,%s,%d,0,0,%s\n', words_cnt, char(q.txt(words_cnt)),char(q.txt_sym(words_cnt)),q.sim1(words_cnt).cnt,char(q.aya(i)));     
+    fprintf(fido,'%d,%s,%s,%d,%d,0,%s\n', words_cnt-1, char(q.txt(words_cnt-1)),char(q.txt_sym(words_cnt-1)),q.sim1(words_cnt-1).cnt,q.sim2(words_cnt-1).cnt,char(q.aya(words_cnt-1)));
+    fprintf(fido,'%d,%s,%s,%d,0,0,%s\n', words_cnt, char(q.txt(words_cnt)),char(q.txt_sym(words_cnt)),q.sim1(words_cnt).cnt,char(q.aya(words_cnt)));     
  end
  
  fclose(fido);
