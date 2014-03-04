@@ -29,9 +29,14 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	public static String DB_PATH = "/data/data/net.quranquiz/databases/";
 	public static String DB_NAME = "qq.sqlite";
 	
-    // 1 -> 2 add q.txtsym column
-	// 2 -> 3 add q.aya column
-    private static final int DB_VERSION = 3;	
+	/*
+	 * DB Update Log
+	 * =============
+     * 1 -> 2 add q.txtsym column
+	 * 2 -> 3 add q.aya column
+	 * 3 -> 4 fix last aya number
+	 */
+    private static final int DB_VERSION = 4;	
 	private SQLiteDatabase myDataBase;
 
 	private final Context myContext;
@@ -303,16 +308,28 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				} while (cur.moveToNext());
 				cur.close();
 			}
+			if((idx+len)>QQUtils.QuranWords){
+				cur = myDataBase.rawQuery("select txtsym from q where _id<"
+						 + (idx + len - QQUtils.QuranWords), null);
+				if (cur.moveToFirst()) {
+					do {
+						word= cur.getString(0);
+						s = s + "   " +	word;
+						str.add(word);
+					} while (cur.moveToNext());
+					cur.close();
+				}	
+			}
 		}
 		
 		int aya,cnt=0;
 		int index=idx;
-		int diff = ayaEndsAfter(index);
+		int diff = ayaEndsAfter(QQUtils.modQWords(index));
 		while((index+diff)<(idx+len)){
-			aya = ayaNumberOf(index);
-			str.add(index-idx+diff+(++cnt),QQUtils.formattedAyaMark(aya, fmt));
+			aya = ayaNumberOf(QQUtils.modQWords(index));
+			str.add(QQUtils.modQWords(index-idx+diff+(++cnt)),QQUtils.formattedAyaMark(aya, fmt));
 			index += (diff+1);
-			diff = ayaEndsAfter(index);
+			diff = ayaEndsAfter(QQUtils.modQWords(index));
 		}
 
 		String txt = new String();

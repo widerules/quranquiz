@@ -128,6 +128,10 @@ public class QQUtils {
 
 		return yp;
 	}
+	
+	public static int modQWords(int idx){
+		return idx%QuranWords;
+	}
 
 	public static void disableFixQ(){
 		blFixQ = false;
