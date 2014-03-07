@@ -212,10 +212,8 @@ public class QQQuestion {
 			startIdx = getValidStartNear(lastSeed + 1);
 		}while(!session.addIfNew(startIdx));
 		
-		//TODO:: Debug! startIdx = 77876;
 		fillCorrectOptions();
 		fillIncorrectOptions();
-
 	}
 
 	private void fillCorrectOptions() {

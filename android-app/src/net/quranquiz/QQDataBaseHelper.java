@@ -309,8 +309,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				cur.close();
 			}
 			if((idx+len)>QQUtils.QuranWords){
-				cur = myDataBase.rawQuery("select txtsym from q where _id<"
-						 + (idx + len - QQUtils.QuranWords), null);
+				cur = myDataBase.rawQuery("select txtsym from q where _id>"
+						+ (idx - QQUtils.QuranWords -1) + " and _id<" + (idx + len - QQUtils.QuranWords), null);
 				if (cur.moveToFirst()) {
 					do {
 						word= cur.getString(0);
@@ -408,7 +408,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public int ayaCountOfSuraAt(int idx) {
-		return ayaNumberOf(QQUtils.sura_idx[QQUtils.getSuraIdx(idx)]-1);
+		return ayaNumberOf(QQUtils.sura_idx[QQUtils.getSuraIdx(idx)] -1);
 	}
 
 	public int ayaEndsAfter(int idx) {
