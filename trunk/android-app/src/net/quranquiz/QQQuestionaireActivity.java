@@ -7,7 +7,7 @@ package net.quranquiz;
 
 import java.util.Calendar;
 
-import net.quranquiz.QQQuestion.QType;
+import net.quranquiz.QQQuestionaire.QType;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,7 +66,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private Button[] btnArray;
 	private ActionBar actionbar;
 	private QQDataBaseHelper q;
-	private QQQuestion Quest;
+	private QQQuestionaire Quest;
 	private int QOptIdx = -1;
 	private int QQinit = 1;
 	// TODO: Grab the last seed from the loaded profile! (replace -1, level 1)
@@ -500,7 +500,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			}
 			
 			myQQProfileHandler.reLoadCurrentProfile(); // For first Question
-			Quest = new QQQuestion(myQQProfile, q, myQQSession);
+			Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
 			CurrentPart = Quest.CurrentPart;
 			
 			if(QQUtils.QQDebug>0){
