@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Random;
 import android.util.Log;
 
-public class QQQuestion {
+public class QQQuestionaire {
 
+	private QQQuestionObject qo;
 	/******** Questions parameters to be set: Start **********/
 	public int rounds; // How many rounds a question has: 10 for normal, 1 for special
 	public int validCount; //Number of correct options at the first round
@@ -57,7 +58,7 @@ public class QQQuestion {
 		}
 	};
 		
-	public QQQuestion(QQProfile prof, QQDataBaseHelper qdb, QQSession s) {
+	public QQQuestionaire(QQProfile prof, QQDataBaseHelper qdb, QQSession s) {
 		// start tracing to "/sdcard/calc.trace"
 		// Debug.startMethodTracing("QQ.trace");
 
@@ -416,6 +417,11 @@ public class QQQuestion {
 			return 0;
 		else
 			return extra+1;
+	}
+
+	public static QQQuestionObject createDefinedQuestion(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

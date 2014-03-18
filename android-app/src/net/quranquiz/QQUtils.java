@@ -20,7 +20,8 @@ public class QQUtils {
 	public static int QQDebug = 0;
 	public static int QuranWords = 77878; 
 	public static int Juz2AvgWords = QuranWords/30;
-	
+	public static int DAILYQUIZ_PARTS_COUNT = 49;
+	public static int DAILYQUIZ_QUESTIONS_COUNT = 20;
 	private static boolean blFixQ = true;
 	
 	// Question Count after which the score starts to saturate per Juz2
