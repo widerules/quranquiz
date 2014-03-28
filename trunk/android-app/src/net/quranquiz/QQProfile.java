@@ -112,6 +112,12 @@ public class QQProfile implements Serializable {
 		return tokens;
 	}
 
+	/**
+	 * After getting a random number between 1:TotalStudy,
+	 * it's needed to map that number to un-contiguous study part.
+	 * @param CntTot: 
+	 * @return
+	 */
 	public QQSparseResult getSparsePoint(int CntTot) {
 		int Length = 0, i, pLength;
 		for (i = 0; i < QParts.size(); i++) {
