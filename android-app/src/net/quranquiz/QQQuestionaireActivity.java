@@ -78,7 +78,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private QQProfileHandler myQQProfileHandler;
 	private QQProfile myQQProfile;
 	private QQSession myQQSession;
-
+	private AlertDialog.Builder builder;
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
 	public void onClick(View v) {
@@ -180,7 +180,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	 * Initialize user profile. Resume existing or create a default one
 	 */
 	private void initSession() {
-		myQQSession = new QQSession();		
+		myQQSession = new QQSession(myQQProfile, this);		
 	}
 
 	/**
@@ -623,6 +623,33 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	
 	public QQProfileHandler getProfileHandler(){
 		return myQQProfileHandler;
+	}
+	
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+	        switch (which){
+	        case DialogInterface.BUTTON_POSITIVE:
+	            //Yes button clicked
+	        	myQQSession.reportDialogDisplayed();
+	        	myQQSession.isDailyQuizRunning = true;
+	        	//TODO: Start The Daily Quiz!
+	            break;
+
+	        case DialogInterface.BUTTON_NEGATIVE:
+	            //No button clicked
+	        	myQQSession.reportDialogDisplayed();
+	            break;
+	        }
+	    }
+	};
+
+	public void askDailyQuiz() {
+		builder = new AlertDialog.Builder(this);
+		builder.setMessage("Are you sure?")
+			.setPositiveButton("Yes", dialogClickListener)
+		    .setNegativeButton("No", dialogClickListener)
+		    .show();		
 	}
 
 }

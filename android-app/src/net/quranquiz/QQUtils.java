@@ -21,7 +21,7 @@ public class QQUtils {
 	public static int QuranWords = 77878; 
 	public static int Juz2AvgWords = QuranWords/30;
 	public static int DAILYQUIZ_PARTS_COUNT = 49;
-	public static int DAILYQUIZ_QUESTIONS_COUNT = 20;
+	public static int DAILYQUIZ_QPERPART_COUNT = 20;
 	private static boolean blFixQ = true;
 	
 	// Question Count after which the score starts to saturate per Juz2
@@ -193,6 +193,12 @@ public class QQUtils {
 			default:
 				return "";
 		}
+	}
+	
+	public static int getRandomLevel(){
+		float r = new Random().nextFloat();
+		if(r>0.5) return 2;
+		else	return 1;
 	}
 	
 }

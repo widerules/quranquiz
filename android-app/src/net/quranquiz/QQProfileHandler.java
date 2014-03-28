@@ -216,5 +216,12 @@ public class QQProfileHandler implements Serializable {
 		return newParts;
 	}
 			
-
+	public static String getStudyPartFromIndex(int i){
+		if(i>0){
+			return    String.valueOf(QQUtils.sura_idx[i-1]) + ","
+					+ String.valueOf(QQUtils.sura_idx[i] - QQUtils.sura_idx[i-1])
+					+ ",0,0,1.0;";
+		}
+		return null;
+	}
 }

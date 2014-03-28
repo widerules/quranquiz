@@ -7,11 +7,9 @@ package net.quranquiz;
 
 import java.util.List;
 import java.util.Random;
-import android.util.Log;
 
 public class QQQuestionaire {
 
-	private QQQuestionObject qo;
 	/******** Questions parameters to be set: Start **********/
 	public int rounds; // How many rounds a question has: 10 for normal, 1 for special
 	public int validCount; //Number of correct options at the first round
@@ -22,10 +20,12 @@ public class QQQuestionaire {
 	public QType qType; // Question Type: NOTSPECIAL or <Special Type>
 	/******** Questions parameters to be set: End **********/
 
+	public QQQuestionObject qo;
+
 	private int lastSeed; // Seed for the Question
 	private int level; // User Level, currently
-	private QQDataBaseHelper q; // Reference to the DB
-	private QQSession session;  // Reference to the QQSession
+	private static QQDataBaseHelper q; // Reference to the DB
+	private static QQSession session;  // Reference to the QQSession
 	private Random rand;
 	private QQSparseResult sparsed;
 	private static int QLEN_EXTRA_LIMIT=2;
@@ -68,18 +68,25 @@ public class QQQuestionaire {
 
 		// Keep Reference of Level, Q
 		level = prof.getLevel();
-		q = qdb;
-		session = s;
-		if(prof.isSpecialEnabled() && selectSpecial()){
-			createSpecialQ(prof);
-		}else {
-			createQ(prof);
-		}
+		if(qdb != null) q = qdb;
+		if(s != null) session = s;
+		
+		createQ(prof);
 
 		//android.util.Log.d("INFO", "QQ @" + startIdx + " type:" + qType.name());
 
 		// stop tracing
 		// Debug.stopMethodTracing();
+	}
+
+	private QQQuestionObject createQ(QQProfile prof) {
+		if(prof.isSpecialEnabled() && selectSpecial()){
+			createSpecialQ(prof);
+		}else {
+			createNormalQ(prof);
+		}
+		qo = new 	QQQuestionObject(rounds, validCount, op, startIdx, qLen, oLen, qType);
+		return qo;
 	}
 
 	private boolean selectSpecial() {
@@ -199,7 +206,7 @@ public class QQQuestionaire {
 		return start;
 	}
 
-	private void createQ(QQProfile prof) {
+	private void createNormalQ(QQProfile prof) {
 		rounds = 10;
 		qType = QType.NOTSPECIAL;
 		
@@ -419,9 +426,15 @@ public class QQQuestionaire {
 			return extra+1;
 	}
 
-	public static QQQuestionObject createDefinedQuestion(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	public static QQQuestionObject createDefinedQuestion(int part) {
+		QQProfile profileSinglePart;
+		profileSinglePart = new QQProfile(null, new Random().nextInt(),
+											QQUtils.getRandomLevel(),
+											QQProfileHandler.getStudyPartFromIndex(part),
+											QQScoreRecord.getInitScoreRecordPack(),
+											0);
+		QQQuestionaire tmp = new QQQuestionaire(profileSinglePart, null, null);
+		return tmp.qo ;
 	}
 
 }

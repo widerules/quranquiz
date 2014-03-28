@@ -163,7 +163,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 
         @Override
         protected void onPostExecute(String result) {
-    		TextView tvShare = (TextView) findViewById(R.id.textViewShare);
+    		//TextView tvShare = (TextView) findViewById(R.id.textViewShare);
 			//tvShare.append(result);
         }
 
