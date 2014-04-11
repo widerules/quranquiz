@@ -3,6 +3,7 @@ package net.quranquiz;
 import java.io.Serializable;
 
 import android.text.format.Time;
+import android.util.Log;
 
 public class QQDailyQuiz implements Serializable {
 
@@ -21,10 +22,12 @@ public class QQDailyQuiz implements Serializable {
 		
 		objects = new QQQuestionObject[QQUtils.DAILYQUIZ_PARTS_COUNT][QQUtils.DAILYQUIZ_QPERPART_COUNT];
 		
-		for(int i=1;i<partCount;i++ ) //Skip Al-Fatiha!
+		for(int i=1;i<partCount;i++ ){ //Skip Al-Fatiha!
 			for(int j=0;j<questionsCount;j++){
 				objects[i][j] = QQQuestionaire.createDefinedQuestion(i);
 			}
+			Log.d("DailyQuiz","created part"+i);
+		}
 	}
 	
 
