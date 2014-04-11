@@ -15,6 +15,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * This session holds a vector of current questions to 
@@ -31,15 +33,15 @@ public class QQSession {
 	private Vector<Integer> vQStart;
 	private QQProfile prof;
 	private QQQuestionaireActivity activity;
-	
+	private static boolean blockRecursiveDailyQuizChecks = false;
 	/**
 	 * Daily Quiz state directs an internal state machine
 	 * to communicate properly with the server according to
-	 * the following states:
-	 * -2	: Nothing done yet 						>> Start Checking server
-	 * -1 	: Currently Checking					>> wait. 
-	 *  0 	: Has No/Invalid object of DailyQuiz 	>> Create + Post Object	[isDailyQuizReady ?]
-	 *  1	: Has a valid object of DailyQuiz 		>> Get Object	[isDailyQuizReady ?]
+	 * the following states:	\n
+	 * -2	: Nothing done yet 						>> Start Checking server					\n
+	 * -1 	: Currently Checking					>> wait. 									\n
+	 *  0 	: Has No/Invalid object of DailyQuiz 	>> Create + Post Object	[isDailyQuizReady ?]\n
+	 *  1	: Has a valid object of DailyQuiz 		>> Get Object	[isDailyQuizReady ?]		\n
 	 *  2	: Dialog displayed to user [isDailyQuizRunning ?]
 	 */
 	private int dailyQuizState;
@@ -55,7 +57,9 @@ public class QQSession {
 	}
 	
 	public boolean addIfNew(int idx){
-		checkDailyQuiz();
+		if(!blockRecursiveDailyQuizChecks)
+			checkDailyQuiz();
+		
 		if(vQStart.contains(Integer.valueOf(idx))){
 			return false;
 		}else if(vQStart.isEmpty()){
@@ -83,8 +87,11 @@ public class QQSession {
 				new CheckAsyncQQDailyQuiz().execute(prof);		
 				break;
 			case 0:
-				dailyQuiz = new QQDailyQuiz();
-				new SetAsyncQQDailyQuiz().execute(prof);		
+				if(!blockRecursiveDailyQuizChecks){
+					blockRecursiveDailyQuizChecks = true;
+					dailyQuiz = new QQDailyQuiz();
+					new SetAsyncQQDailyQuiz().execute(prof);	
+				}
 				break;			
 			case 1:
 				new GetAsyncQQDailyQuiz().execute(prof);		
@@ -98,7 +105,9 @@ public class QQSession {
 			activity.askDailyQuiz();
 			dailyQuizState = 2;
 		}
-			
+		//Toast
+		Toast.makeText(activity, "State ="+dailyQuizState,Toast.LENGTH_SHORT).show();
+		Log.d("DailyQuiz", "State ="+dailyQuizState);
 	}
 
 	private class CheckAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
