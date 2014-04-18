@@ -1,5 +1,9 @@
 package net.quranquiz;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import android.text.format.Time;
@@ -22,12 +26,24 @@ public class QQDailyQuiz implements Serializable {
 		
 		objects = new QQQuestionObject[QQUtils.DAILYQUIZ_PARTS_COUNT][QQUtils.DAILYQUIZ_QPERPART_COUNT];
 		
-		for(int i=1;i<partCount;i++ ){ //Skip Al-Fatiha!
+		for(int i=1;i<=partCount;i++ ){ //Skip Al-Fatiha!
 			for(int j=0;j<questionsCount;j++){
-				objects[i][j] = QQQuestionaire.createDefinedQuestion(i);
+				objects[i-1][j] = QQQuestionaire.createDefinedQuestion(i);
 			}
 			Log.d("DailyQuiz","created part"+i);
 		}
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    ObjectOutput out;
+		try {
+			out = new ObjectOutputStream(bos);
+		    out.writeObject(objects);
+		    out.close();
+		    bos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Log.d("DailyQuiz","objects size = " + bos.toByteArray().length + "bytes");
 	}
 	
 
