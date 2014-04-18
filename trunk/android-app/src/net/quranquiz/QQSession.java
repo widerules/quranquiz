@@ -1,9 +1,14 @@
 package net.quranquiz;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import mirror.android.util.Base64;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -82,18 +87,18 @@ public class QQSession {
 	private void checkDailyQuiz() {
 		if(!isDailyQuizReady){
 			switch(dailyQuizState){
-			case -2:
+			case -2: //No info yet
 				dailyQuizState = -1;
 				new CheckAsyncQQDailyQuiz().execute(prof);		
 				break;
-			case 0:
+			case 0: //Server has out-dated object, create 1 for him
 				if(!blockRecursiveDailyQuizChecks){
 					blockRecursiveDailyQuizChecks = true;
 					dailyQuiz = new QQDailyQuiz();
 					new SetAsyncQQDailyQuiz().execute(prof);	
 				}
 				break;			
-			case 1:
+			case 1: //Server has a valid object, get it
 				new GetAsyncQQDailyQuiz().execute(prof);		
 				break;	
 			case 2:
@@ -205,6 +210,7 @@ public class QQSession {
     			nameValuePairs.add(new BasicNameValuePair("uid_ap", ids[3]));
     			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
     			nameValuePairs.add(new BasicNameValuePair("m", md5));
+    			
     			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
     			// Execute HTTP Post Request
@@ -259,8 +265,24 @@ public class QQSession {
    			nameValuePairs.add(new BasicNameValuePair("uid_tw", ids[2]));
    			nameValuePairs.add(new BasicNameValuePair("uid_ap", ids[3]));
    			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
-   			//TODO: Add the object!
    			nameValuePairs.add(new BasicNameValuePair("m", md5));
+   			
+   			//TODO: Add the object!
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		    ObjectOutput out;
+			try {
+				out = new ObjectOutputStream(bos);
+			    //out.writeObject(getSession.dailyObject);
+			    out.close();
+			    bos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+   			
+   			nameValuePairs.add(new BasicNameValuePair("dq", 
+   					new String(Base64.encode(bos.toByteArray(),Base64.DEFAULT))));
+   			
    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
    			// Execute HTTP Post Request
