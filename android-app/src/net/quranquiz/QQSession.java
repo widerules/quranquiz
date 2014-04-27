@@ -1,13 +1,15 @@
 package net.quranquiz;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import mirror.android.os.AsyncTask;
 import mirror.android.util.Base64;
 
 import org.apache.http.HttpResponse;
@@ -19,7 +21,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -94,8 +95,7 @@ public class QQSession {
 			case 0: //Server has out-dated object, create 1 for him
 				if(!blockRecursiveDailyQuizChecks){
 					blockRecursiveDailyQuizChecks = true;
-					dailyQuiz = new QQDailyQuiz();
-					new SetAsyncQQDailyQuiz().execute(prof);	
+					new SetAsyncQQDailyQuiz().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
 				}
 				break;			
 			case 1: //Server has a valid object, get it
@@ -237,16 +237,16 @@ public class QQSession {
         protected void onProgressUpdate(Void... values) {        }
    } 
 
-   private class SetAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
+   private class SetAsyncQQDailyQuiz extends AsyncTask<Void, Void, String> {
 
        @Override
-       protected String doInBackground(QQProfile... params) {
+       protected String doInBackground(Void... params) {
    		String uid, md5;
    		String[] ids;
    		String response="";
-   		QQProfile currentProfile = params[0];
-
-			
+   		QQProfile currentProfile = prof;
+   		QQDailyQuiz dailyQuiz = new QQDailyQuiz();
+   		String sdq = null;
    		/******************* Entail User Data ***************/
    		uid = currentProfile.getuid();
    		ids = uid.split("\\+");
@@ -267,9 +267,10 @@ public class QQSession {
    			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
    			nameValuePairs.add(new BasicNameValuePair("m", md5));
    			
-   			//TODO: Add the object!
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		    ObjectOutput out;
+   			//Get the object!
+			ByteArrayOutputStream bos = dailyQuiz.bos;
+		    /*
+			ObjectOutput out;
 			try {
 				out = new ObjectOutputStream(bos);
 			    //out.writeObject(getSession.dailyObject);
@@ -279,9 +280,9 @@ public class QQSession {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-   			
-   			nameValuePairs.add(new BasicNameValuePair("dq", 
-   					new String(Base64.encode(bos.toByteArray(),Base64.DEFAULT))));
+   			*/
+			sdq = new String(Base64.encode(bos.toByteArray(),Base64.DEFAULT));
+   			nameValuePairs.add(new BasicNameValuePair("dq", sdq));
    			
    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -291,14 +292,30 @@ public class QQSession {
    		} catch (ClientProtocolException e) {
    		} catch (IOException e) {
    		}
-   		return response;
+   		//TODO: Vslidate response
+   		//response
+   		return sdq;
        }      
 
        @Override
-       protected void onPostExecute(String result) {
+       protected void onPostExecute(String sdq) {
+    	   //TODO: Set the object
+
+    	   ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decode(sdq, Base64.DEFAULT));
+    	   ObjectInputStream is;
+		try {
+			is = new ObjectInputStream(bis);
+	    	dailyQuiz = (QQDailyQuiz)is.readObject();
+	    	is.close();		
+	    	} catch (StreamCorruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	   isDailyQuizReady = true;
     	   checkDailyQuiz();
-    	   //TODO: Set the object
        }
 
        @Override

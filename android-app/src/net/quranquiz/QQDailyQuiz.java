@@ -16,6 +16,7 @@ public class QQDailyQuiz implements Serializable {
 	private int partCount;
 	private int questionsCount;
 	private QQQuestionObject[][] objects;
+	public 	ByteArrayOutputStream bos;
 
 	public QQDailyQuiz(){
 		timeStamp 		= new Time();
@@ -32,7 +33,7 @@ public class QQDailyQuiz implements Serializable {
 			}
 			Log.d("DailyQuiz","created part"+i);
 		}
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bos = new ByteArrayOutputStream();
 	    ObjectOutput out;
 		try {
 			out = new ObjectOutputStream(bos);
