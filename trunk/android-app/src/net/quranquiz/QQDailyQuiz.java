@@ -6,6 +6,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import net.quranquiz.QQSession.SetAsyncQQDailyQuiz;
+
 import android.text.format.Time;
 import android.util.Log;
 
@@ -18,7 +20,7 @@ public class QQDailyQuiz implements Serializable {
 	private QQQuestionObject[][] objects;
 	public 	ByteArrayOutputStream bos;
 
-	public QQDailyQuiz(){
+	public QQDailyQuiz(SetAsyncQQDailyQuiz setAsyncQQDailyQuiz){
 		timeStamp 		= new Time();
 		timeStamp.setToNow();
 		
@@ -28,6 +30,7 @@ public class QQDailyQuiz implements Serializable {
 		objects = new QQQuestionObject[QQUtils.DAILYQUIZ_PARTS_COUNT][QQUtils.DAILYQUIZ_QPERPART_COUNT];
 		
 		for(int i=1;i<=partCount;i++ ){ //Skip Al-Fatiha!
+			setAsyncQQDailyQuiz.triggerUpdateProgress(i);
 			for(int j=0;j<questionsCount;j++){
 				objects[i-1][j] = QQQuestionaire.createDefinedQuestion(i);
 			}

@@ -22,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /**
@@ -35,11 +36,16 @@ public class QQSession {
 	public boolean isDailyQuizReady;
 	public boolean isDailyQuizRunning;
 	public QQDailyQuiz dailyQuiz;
+	public int createdParts;
 	
+	private CheckAsyncQQDailyQuiz casqqdq;
+	private SetAsyncQQDailyQuiz sasqqdq;
+	private GetAsyncQQDailyQuiz gasqqdq;
 	private Vector<Integer> vQStart;
 	private QQProfile prof;
 	private QQQuestionaireActivity activity;
 	private static boolean blockRecursiveDailyQuizChecks = false;
+	
 	/**
 	 * Daily Quiz state directs an internal state machine
 	 * to communicate properly with the server according to
@@ -90,16 +96,19 @@ public class QQSession {
 			switch(dailyQuizState){
 			case -2: //No info yet
 				dailyQuizState = -1;
-				new CheckAsyncQQDailyQuiz().execute(prof);		
+				casqqdq = new CheckAsyncQQDailyQuiz();
+				casqqdq.execute(prof);		
 				break;
 			case 0: //Server has out-dated object, create 1 for him
 				if(!blockRecursiveDailyQuizChecks){
 					blockRecursiveDailyQuizChecks = true;
-					new SetAsyncQQDailyQuiz().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
+					sasqqdq = new SetAsyncQQDailyQuiz();
+					sasqqdq.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
 				}
 				break;			
 			case 1: //Server has a valid object, get it
-				new GetAsyncQQDailyQuiz().execute(prof);		
+				gasqqdq = new GetAsyncQQDailyQuiz();
+				gasqqdq.execute(prof);
 				break;	
 			case 2:
 				break;
@@ -110,12 +119,10 @@ public class QQSession {
 			activity.askDailyQuiz();
 			dailyQuizState = 2;
 		}
-		//Toast
-		Toast.makeText(activity, "State ="+dailyQuizState,Toast.LENGTH_SHORT).show();
 		Log.d("DailyQuiz", "State ="+dailyQuizState);
 	}
 
-	private class CheckAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
+	class CheckAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
 
 	        @Override
 	        protected String doInBackground(QQProfile... params) {
@@ -150,6 +157,7 @@ public class QQSession {
 	    		} catch (ClientProtocolException e) {
 	    		} catch (IOException e) {
 	    		}
+	       		Log.d("DailyQuiz", " Check :::::: "+ response);
 	    		return response;
 	        }      
 
@@ -172,7 +180,7 @@ public class QQSession {
 	        	}
 	        	/**
 	        	 * HACK for testing
-	        	 */ dailyQuizState=0;
+	        	 */ //dailyQuizState=0;
 	        	checkDailyQuiz();
 	        }
 
@@ -183,7 +191,7 @@ public class QQSession {
 	        protected void onProgressUpdate(Void... values) {        }
 	   } 
 	
-   private class GetAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
+   class GetAsyncQQDailyQuiz extends AsyncTask<QQProfile, Void, String> {
 
         @Override
         protected String doInBackground(QQProfile... params) {
@@ -237,7 +245,7 @@ public class QQSession {
         protected void onProgressUpdate(Void... values) {        }
    } 
 
-   private class SetAsyncQQDailyQuiz extends AsyncTask<Void, Void, String> {
+   class SetAsyncQQDailyQuiz extends AsyncTask<Void, Integer, String> {
 
        @Override
        protected String doInBackground(Void... params) {
@@ -245,7 +253,7 @@ public class QQSession {
    		String[] ids;
    		String response="";
    		QQProfile currentProfile = prof;
-   		QQDailyQuiz dailyQuiz = new QQDailyQuiz();
+   		dailyQuiz = new QQDailyQuiz(this); //Very Slow!
    		String sdq = null;
    		/******************* Entail User Data ***************/
    		uid = currentProfile.getuid();
@@ -282,7 +290,7 @@ public class QQSession {
 			}
    			*/
 			sdq = new String(Base64.encode(bos.toByteArray(),Base64.DEFAULT));
-   			nameValuePairs.add(new BasicNameValuePair("dq", sdq));
+   			nameValuePairs.add(new BasicNameValuePair("obj", sdq));
    			
    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -292,15 +300,14 @@ public class QQSession {
    		} catch (ClientProtocolException e) {
    		} catch (IOException e) {
    		}
-   		//TODO: Vslidate response
-   		//response
+   		//TODO: Validate response
+   		Log.d("DailyQuiz", response);
+
    		return sdq;
        }      
 
        @Override
        protected void onPostExecute(String sdq) {
-    	   //TODO: Set the object
-
     	   ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decode(sdq, Base64.DEFAULT));
     	   ObjectInputStream is;
 		try {
@@ -319,14 +326,36 @@ public class QQSession {
        }
 
        @Override
-       protected void onPreExecute() {        }
+       protected void onPreExecute() {
+    	   Toast.makeText(activity,"Preparing the daily quiz. Get ready!",Toast.LENGTH_LONG).show();
+    	   activity.leftBar.setVisibility(ProgressBar.VISIBLE);
+    	   activity.leftBar.setMax(QQUtils.DAILYQUIZ_PARTS_COUNT);
+       }
 
        @Override
-       protected void onProgressUpdate(Void... values) {        }
+       protected void onProgressUpdate(Integer... values) {
+    	   activity.leftBar.setProgress(values[0]);
+       }
+       
+       public void triggerUpdateProgress(int i){
+    	   publishProgress(i);
+       }
   }
 
 public void reportDialogDisplayed() {
 	dailyQuizState = 2;
+}
+
+/**
+ * Close all background ASyncTasks
+ */
+public void close() {
+	if(casqqdq != null)
+		casqqdq.cancel(true);
+	if(sasqqdq != null)
+		sasqqdq.cancel(true);
+	if(gasqqdq != null)
+		gasqqdq.cancel(true);	
 } 
 
 }
