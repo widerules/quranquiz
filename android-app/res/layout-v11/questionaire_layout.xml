@@ -46,7 +46,15 @@
 	        android:layout_height="wrap_content"
 	        android:baselineAligned="true"
 	        android:gravity="right" >
-
+	        
+			<net.quranquiz.VerticalProgressBar
+		        style="?android:attr/progressBarStyleHorizontal"
+			    android:id="@+id/verticalBarLeft"
+			    android:layout_width="10dp"
+                android:layout_marginLeft="-5dp"
+			    android:layout_height="fill_parent"
+			    android:progress="30" />
+			
 	        <LinearLayout
 	            android:layout_width="100dp"
 	            android:layout_height="fill_parent"
