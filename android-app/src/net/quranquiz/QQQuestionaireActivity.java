@@ -62,6 +62,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private Button btnBack;
 	private Button btnBackReview;
 	private ProgressBar bar;
+	public VerticalProgressBar leftBar;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
 	private ActionBar actionbar;
@@ -215,7 +216,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		actionbar = getSupportActionBar();
 	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
 		bar = (ProgressBar) findViewById(R.id.progressBar1);
-				
+		leftBar = (VerticalProgressBar) findViewById(R.id.verticalBarLeft);
+		leftBar.setProgress(0);
+		
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
 		btnArray[1] = (Button) findViewById(R.id.bOp2);
@@ -266,7 +269,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			btnArray[i].setTypeface(tfQQFont);
 			btnArray[i].setOnClickListener(this);
 		}
-		
+				
 		btnBack.setOnClickListener(
 				new OnClickListener(){
 					public void onClick(View arg0) {
@@ -385,6 +388,11 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			Intent i = new Intent();
 			i.putExtra("ProfileHandler", myQQProfileHandler);
 			setResult(12345, i);
+			
+			/**
+			 * Close Session*/
+			myQQSession.close();
+			
 			finish();
 	}
 
