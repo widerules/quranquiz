@@ -18,4 +18,5 @@
 
 <resources>
     <color name="pressed_qqstyle">#CC0071b7</color>
+    <color name="white">#FFF</color>
 </resources>

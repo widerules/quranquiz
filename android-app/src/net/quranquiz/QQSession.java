@@ -1,16 +1,11 @@
 package net.quranquiz;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import mirror.android.os.AsyncTask;
-import mirror.android.util.Base64;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -232,8 +227,12 @@ public class QQSession {
 
         @Override
         protected void onPostExecute(String result) {
-    		//TODO: Parse to fill up "dailyQuiz"
-        	//dailyQuiz =
+        	try {
+				dailyQuiz = (QQDailyQuiz) QQUtils.fromString64(result);
+				Log.d("DailyQuiz", "Got quiz with Quesitons: "+dailyQuiz.questionsCount);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         	isDailyQuizReady = true;
         	checkDailyQuiz();
         }
@@ -275,21 +274,11 @@ public class QQSession {
    			nameValuePairs.add(new BasicNameValuePair("uid_ot", ids[4]));
    			nameValuePairs.add(new BasicNameValuePair("m", md5));
    			
-   			//Get the object!
-			ByteArrayOutputStream bos = dailyQuiz.bos;
-		    /*
-			ObjectOutput out;
-			try {
-				out = new ObjectOutputStream(bos);
-			    //out.writeObject(getSession.dailyObject);
-			    out.close();
-			    bos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-   			*/
-			sdq = new String(Base64.encode(bos.toByteArray(),Base64.DEFAULT));
+			sdq = new String("");
+   			sdq = QQUtils.toString64(dailyQuiz);
+   	   		Log.d("DailyQuiz", "From DQ with number: "+dailyQuiz.questionsCount);
+   	   		Log.d("DailyQuiz", "returning String64 of length: "+sdq.length());
+
    			nameValuePairs.add(new BasicNameValuePair("obj", sdq));
    			
    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -298,8 +287,9 @@ public class QQSession {
    			HttpResponse res = httpclient.execute(httppost);
    			response += EntityUtils.toString(res.getEntity()); 
    		} catch (ClientProtocolException e) {
-   		} catch (IOException e) {
+   		} catch (Exception e) {
    		}
+   		
    		//TODO: Validate response
    		Log.d("DailyQuiz", response);
 
@@ -308,21 +298,14 @@ public class QQSession {
 
        @Override
        protected void onPostExecute(String sdq) {
-    	   ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decode(sdq, Base64.DEFAULT));
-    	   ObjectInputStream is;
-		try {
-			is = new ObjectInputStream(bis);
-	    	dailyQuiz = (QQDailyQuiz)is.readObject();
-	    	is.close();		
-	    	} catch (StreamCorruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	   isDailyQuizReady = true;
-    	   checkDailyQuiz();
+			try {
+		    	dailyQuiz = (QQDailyQuiz)QQUtils.fromString64(sdq);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			isDailyQuizReady = true;
+			checkDailyQuiz();
+			Log.d("DailyQuiz", "Set quiz with Quesitons: "+dailyQuiz.questionsCount);
        }
 
        @Override
