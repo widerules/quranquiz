@@ -1,24 +1,18 @@
 package net.quranquiz;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import net.quranquiz.QQSession.SetAsyncQQDailyQuiz;
-
 import android.text.format.Time;
 import android.util.Log;
 
 public class QQDailyQuiz implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Time timeStamp;
-	private int partCount;
-	private int questionsCount;
-	private QQQuestionObject[][] objects;
-	public 	ByteArrayOutputStream bos;
+	public Time timeStamp;
+	public int partCount;
+	public int questionsCount;
+	public QQQuestionObject[][] objects;
 
 	public QQDailyQuiz(SetAsyncQQDailyQuiz setAsyncQQDailyQuiz){
 		timeStamp 		= new Time();
@@ -36,18 +30,6 @@ public class QQDailyQuiz implements Serializable {
 			}
 			Log.d("DailyQuiz","created part"+i);
 		}
-		bos = new ByteArrayOutputStream();
-	    ObjectOutput out;
-		try {
-			out = new ObjectOutputStream(bos);
-		    out.writeObject(objects);
-		    out.close();
-		    bos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Log.d("DailyQuiz","objects size = " + bos.toByteArray().length + "bytes");
 	}
 	
 

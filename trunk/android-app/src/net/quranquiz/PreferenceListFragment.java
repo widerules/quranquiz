@@ -1,5 +1,4 @@
 package net.quranquiz;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -32,7 +31,8 @@ public class PreferenceListFragment extends ListFragment{
     private static final int FIRST_REQUEST_CODE = 100;
     
     private static final int MSG_BIND_PREFERENCES = 0;
-    private Handler mHandler = new Handler() {
+    @SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

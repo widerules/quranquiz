@@ -5,6 +5,12 @@
 ****/
 package net.quranquiz;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import mirror.android.util.Base64;
 import android.annotation.SuppressLint;
 import android.widget.TextView;
 
@@ -199,6 +206,29 @@ public class QQUtils {
 		float r = new Random().nextFloat();
 		if(r>0.5) return 2;
 		else	return 1;
+	}
+	
+	/** Write the object to a Base64 string. */
+    public static String toString64( Serializable o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
+        oos.close();
+        return new String( Base64.encode( baos.toByteArray(), Base64.DEFAULT ) );
+    }
+    
+	/** Read the object from a Base64 string. */
+    public static Object fromString64( String s ) throws IOException, ClassNotFoundException {
+		byte [] data = Base64.decode(s, Base64.DEFAULT);
+		Object o = null;
+		//try{
+			ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+			o  = ois.readObject();
+			ois.close();
+		//} catch(EOFException e){
+			//That's normal, I do not have EOF
+		//}
+		return o;
 	}
 	
 }

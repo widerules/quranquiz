@@ -15,9 +15,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -52,6 +55,7 @@ import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		android.view.View.OnClickListener, OnNavigationListener {
 	
+	private View ll_background;
     private ViewAnimator viewAnimator;
 	private TextView tvQ;
 	private TextView tvScore;
@@ -62,6 +66,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private Button btnBack;
 	private Button btnBackReview;
 	private ProgressBar bar;
+	private TextView tvCountUp;
+	private TextView tvCountUpTenths;
 	public VerticalProgressBar leftBar;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
@@ -80,6 +86,10 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private QQProfile myQQProfile;
 	private QQSession myQQSession;
 	private AlertDialog.Builder builder;
+	private long startTime = 0L;
+	private Handler countUpHandler = new Handler();
+	long timeInMillies = 0L;
+
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
 	public void onClick(View v) {
@@ -96,6 +106,22 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		userAction(SelID);
 	}
 
+	 private Runnable updateTimerMethod = new Runnable() {
+
+		  public void run() {
+		   timeInMillies = SystemClock.uptimeMillis() - startTime;
+
+		   int seconds = (int) (timeInMillies / 1000);
+		   int minutes = seconds / 60;
+		   seconds = seconds % 60;
+		   int tenths = (int) ((timeInMillies % 1000)/100);
+		   tvCountUp.setText(String.format("%02d", minutes) + ":"
+		     + String.format("%02d", seconds));
+		   tvCountUpTenths.setText("."
+		     + String.format("%01d", tenths));
+		   countUpHandler.postDelayed(this, 100);
+		  }
+	 };
 	private void showUsage(){
 		Thread splashTread = new Thread() {
             public void run() {
@@ -134,9 +160,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	
 	        menu.setMode(SlidingMenu.LEFT_RIGHT);
 			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-			menu.setShadowWidthRes(R.dimen.shadow_width);
+			//menu.setShadowWidthRes(R.dimen.shadow_width);
 			menu.setShadowDrawable(R.drawable.shadow);
-			menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+			//menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 			menu.setFadeDegree(0.35f);
 			menu.setSecondaryShadowDrawable(R.drawable.shadowright);
             
@@ -213,9 +239,17 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	 */
 	private void initUI() {
 
-		actionbar = getSupportActionBar();
-	    viewAnimator = (ViewAnimator)this.findViewById(R.id.view_flipper);
-		bar = (ProgressBar) findViewById(R.id.progressBar1);
+		actionbar 		= getSupportActionBar();
+		ll_background 	= (View)findViewById(R.id.ll_back);
+	    viewAnimator 	= (ViewAnimator)findViewById(R.id.view_flipper);
+	    
+		bar 			= (ProgressBar) findViewById(R.id.dailyQuizProgress);
+		tvCountUp		= (TextView) findViewById(R.id.dailyProgressCountUp);
+		tvCountUpTenths	= (TextView) findViewById(R.id.dailyProgressCountUpTenths);	
+		bar.setVisibility(View.INVISIBLE); 
+		tvCountUp.setVisibility(View.INVISIBLE);
+		tvCountUpTenths.setVisibility(View.INVISIBLE);
+
 		leftBar = (VerticalProgressBar) findViewById(R.id.verticalBarLeft);
 		leftBar.setProgress(0);
 		
@@ -602,8 +636,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 				// display([' -- ',num2str(validCount),' correct options
 				// left!']); // TODO: Subtract done options
 			}
-		}else{ // Not level 3, Remove the timer
-			bar.setVisibility(View.INVISIBLE);
+		}else{ // Not level 3
+			
 		}
 
 		QQinit = 0;
@@ -642,6 +676,25 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	        	myQQSession.reportDialogDisplayed();
 	        	myQQSession.isDailyQuizRunning = true;
 	        	//TODO: Start The Daily Quiz!
+	        	/*
+	        	AlphaAnimation  glowing_anim= new AlphaAnimation(1, 0);
+	        	glowing_anim.setDuration(1500); 
+	        	glowing_anim.setInterpolator(new LinearInterpolator()); 
+	        	glowing_anim.setRepeatCount(AlphaAnimation.INFINITE);
+	        	glowing_anim.setRepeatMode(Animation.REVERSE);
+	        	
+	        	ll_background.setBackgroundResource(R.drawable.timed_background_100);
+	        	ll_background.startAnimation(glowing_anim);
+	        	*/
+	        	
+	        	ll_background.setBackgroundResource(R.drawable.animation_background);
+	        	((AnimationDrawable) ll_background.getBackground()).start();
+	        	
+	        	tvCountUp.setVisibility(View.VISIBLE);
+	        	tvCountUpTenths.setVisibility(View.VISIBLE);
+	        	
+	        	startTime = SystemClock.uptimeMillis();
+	            countUpHandler.postDelayed(updateTimerMethod, 0); //To Stop: countUpHandler.removeCallbacks(updateTimerMethod);
 	            break;
 
 	        case DialogInterface.BUTTON_NEGATIVE:
@@ -654,10 +707,13 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 	public void askDailyQuiz() {
 		builder = new AlertDialog.Builder(this);
-		builder.setMessage("Are you sure?")
-			.setPositiveButton("Yes", dialogClickListener)
-		    .setNegativeButton("No", dialogClickListener)
-		    .show();		
+		builder.setMessage(			getResources().getString(R.string.daily_dialogue_ask))
+				.setPositiveButton(	getResources().getString(R.string.txt_ok), dialogClickListener)
+				.setNegativeButton(	getResources().getString(R.string.daily_dialogue_later), dialogClickListener)
+				.setTitle(			getResources().getString(R.string.daily_dialogue_title))
+				.setCancelable(false)
+				.show();		
 	}
 
+	
 }
