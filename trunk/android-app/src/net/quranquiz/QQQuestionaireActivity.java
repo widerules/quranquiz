@@ -89,6 +89,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private long startTime = 0L;
 	private Handler countUpHandler = new Handler();
 	long timeInMillies = 0L;
+	private QQDailyQuizHandler dailyQuizHandler;
 
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
@@ -252,6 +253,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 		leftBar = (VerticalProgressBar) findViewById(R.id.verticalBarLeft);
 		leftBar.setProgress(0);
+		leftBar.setVisibility(View.INVISIBLE);
 		
 		btnArray = new Button[5];
 		btnArray[0] = (Button) findViewById(R.id.bOp1);
@@ -502,7 +504,18 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 	}
 
+	/**
+	 * @param selID: Which of the five option buttons are pressed
+	 * 
+	 * This function is the main driver of the game logic. Whenever a user presses
+	 * any of the 5 option buttons, this function is called and changes the game
+	 * internal state.
+	 * Initially, this function is called with an argument = -1
+	 */
 	private void userAction(int selID) {
+		if(myQQSession.isDailyQuizRunning){
+			leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
+		}
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
 			//btnArrayR[selID].startAnimation(animFadeOut);
@@ -521,7 +534,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		if (QOptIdx == -1 || QOptIdx == Quest.rounds) {
 			myQQProfile = myQQProfileHandler.CurrentProfile;
 			
-			if (QQinit == 0 && QOptIdx == -1) { // A wrong answer
+			if (QQinit == 0 && QOptIdx == -1) { // A wrong non-special answer
 				if(Quest.qType == QType.NOTSPECIAL)
 					myQQProfile.addIncorrect(CurrentPart);
 
@@ -541,7 +554,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 				AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);				
 			}
 			
-			myQQProfileHandler.reLoadCurrentProfile(); // For first Question
+			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
 			Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
 			CurrentPart = Quest.CurrentPart;
 			
@@ -652,7 +665,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 	private String getCorrectAnswer() {
 		// Display Correct answer
-		return "[" + "  سورة  "+ QQUtils.getSuraName(Quest.startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.startIdx)+ "] "+ "\n"
+		return "[" + "  سورة  "+ QQUtils.getSuraNameFromWordIdx(Quest.startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.startIdx)+ "] "+ "\n"
 				+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_FULL))
 				+ " ...";
 		}
@@ -695,6 +708,11 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	        	
 	        	startTime = SystemClock.uptimeMillis();
 	            countUpHandler.postDelayed(updateTimerMethod, 0); //To Stop: countUpHandler.removeCallbacks(updateTimerMethod);
+	            leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
+	            leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
+	            
+	            dailyQuizHandler = myQQSession.getDailyQuizHandler();
+	            userAction(-1);
 	            break;
 
 	        case DialogInterface.BUTTON_NEGATIVE:

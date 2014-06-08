@@ -72,8 +72,15 @@ public class QQUtils {
 	/* Here the indexes point to "start-1" to "end" of each Juz' */
 	public static final int[] last5_juz_idx = { sura_idx[44], sura_idx[49],
 			sura_idx[56], sura_idx[65], sura_idx[76], QuranWords };
-	public static final String QQ_MD5_KEY = "QQ-"; // Edited only upon release!
+	public static final String QQ_MD5_KEY = ""; // Edited only upon release!
 
+	/* Each Study Part Weight in relative to an average Juz2. 
+	 * Fatiha is 1%, while Juz2 Amma is 95% of an average Juz2 length*/
+	public static final int[] PartWeight100 = { 1, 236, 134, 145, 108, 118, 128, 48,
+			96, 71, 74, 69, 33, 32, 25, 71, 60, 61, 37, 52, 45, 49, 41, 51, 35, 51,
+			44, 55, 38, 32, 21, 14, 50, 34, 30, 28, 33, 28, 45, 47, 31, 33, 32, 13, 
+			19, 96, 104, 102, 104, 95 };
+	
 	public static int findIdx(int[] scrambled, int i) {
 		for (int j = 0; j < scrambled.length; j++)
 			if (scrambled[j] == i)
@@ -160,12 +167,23 @@ public class QQUtils {
 			return text;
 	}
 
-	public static String getSuraName(int wordIdx) {
+	public static String getSuraNameFromWordIdx(int wordIdx) {
 		return sura_name[getSuraIdx(wordIdx)];
 	}
 
 	public static String getSuraNameFromIdx(int suraIdx) {
 		return sura_name[suraIdx];
+	}
+	
+	public static int getPartNumberFromWordIdx(int wordIdx){
+		if(wordIdx <= last5_juz_idx[0])
+			return getSuraIdx(wordIdx);
+		else{
+			for(int i=0;i<5;i++)
+				if(wordIdx<last5_juz_idx[i+1])
+					return 45+i;
+			return 49;
+		}
 	}
 	
 	public static int getSuraIdx(int wordIdx) {

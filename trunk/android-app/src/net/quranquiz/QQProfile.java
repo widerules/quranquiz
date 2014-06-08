@@ -148,6 +148,41 @@ public class QQProfile implements Serializable {
 		return tokens;
 	}
 
+	/**
+	 * @return An array of weights for studied parts to sum up 
+	 * to QQUtils.DAILYQUIZ_QPERPART_COUNT
+	 */
+	public int[] getDailyQuizStudyPartsWeights(){
+		int sparse[] = new int[QQUtils.DAILYQUIZ_PARTS_COUNT];
+		int totalStudyWeight = (int)Math.ceil((double)getTotalStudyLength()/QQUtils.Juz2AvgWords);
+		
+		/*Fill array as: [0, 0, W1, 0, W2, ..]*/
+		for(int i=0;i<QQUtils.DAILYQUIZ_PARTS_COUNT;i++){
+			//Skip Al-Fatiha
+			if(QParts.get(i+1).getLength()==0)
+				sparse[i] = 0;
+			else 
+				sparse[i] = QQUtils.DAILYQUIZ_QPERPART_COUNT*QQUtils.PartWeight100[i+1]
+								/totalStudyWeight;
+		}
+
+		/*Check if W1:Wn sum to DAILYQUIZ_QPERPART_COUNT*/
+		int sum=0;
+		for(int i=0;i<QQUtils.DAILYQUIZ_PARTS_COUNT;i++)
+			sum += sparse[i];
+		int sumCorrection = QQUtils.DAILYQUIZ_QPERPART_COUNT - sum;
+		
+		/*Apply correction (due to approx) to last selection*/
+		for(int i=QQUtils.DAILYQUIZ_PARTS_COUNT-1;i>=0;i--){
+			if(sparse[i]!=0){
+				sparse[i] += sumCorrection;
+				break;
+			}
+		}
+
+		return sparse;
+	}
+
 	public int getTotalCorrect() {
 		int Tot = 0;
 		QQStudyPart QPart;
@@ -170,6 +205,9 @@ public class QQProfile implements Serializable {
 		return Tot;
 	}
 
+	/**
+	 * @return The total word count of studied parts
+	 */
 	public int getTotalStudyLength() {
 		int Length = 0;
 		QQStudyPart QPart;
@@ -231,14 +269,12 @@ public class QQProfile implements Serializable {
 
 	public double getTotAvgLevel() {
 		double avg=0.0,studyWeight=0.0;
-		double partWeight,avgLevel;
+		double avgLevel,partWeight;
 		for(int i=0;i<QParts.size();i++){
-			partWeight   = QParts.get(i).getLength();
-			partWeight	/= QQUtils.Juz2AvgWords;
-			avgLevel     = QParts.get(i).getAvgLevel();
-			
+			avgLevel    = QParts.get(i).getAvgLevel();
+			partWeight	= QQUtils.PartWeight100[i]/100; 
 			studyWeight += partWeight;
-			avg += avgLevel*partWeight;
+			avg 		+= avgLevel*partWeight;
 		}
 		return avg/studyWeight;
 	}
@@ -274,8 +310,7 @@ public class QQProfile implements Serializable {
 		numQuestions = QParts.get(CurrentPart).getNumQuestions();
 		currLevel  	 = getLevel();
 		
-		partWeight   = QParts.get(CurrentPart).getNonZeroLength();
-		partWeight	/= QQUtils.Juz2AvgWords;
+		partWeight   = QQUtils.PartWeight100[CurrentPart]/100;
 		
 		avgLevel     = numCorrect*(QParts.get(CurrentPart).getAvgLevel())+currLevel;
 		avgLevel	/= (numCorrect+1);		
@@ -307,9 +342,7 @@ public class QQProfile implements Serializable {
 		 */
 		numCorrect   = QParts.get(CurrentPart).getNumCorrect();
 		numQuestions = QParts.get(CurrentPart).getNumQuestions();
-		
-		partWeight   = QParts.get(CurrentPart).getNonZeroLength();
-		partWeight	/= QQUtils.Juz2AvgWords;
+		partWeight   = QQUtils.PartWeight100[CurrentPart]/100;
 		
 		avgLevel     = QParts.get(CurrentPart).getAvgLevel();		
 		scaledQCount = QQUtils.sCurve(QParts.get(CurrentPart).getNumCorrect(),
@@ -335,8 +368,7 @@ public class QQProfile implements Serializable {
 		/**
 		 * Calculate the normalized Number of words in current part
 		 */
-		partWeight   = QParts.get(i).getNonZeroLength();
-		partWeight	/= QQUtils.Juz2AvgWords;
+		partWeight   = QQUtils.PartWeight100[i]/100;
 		avgLevel     = QParts.get(i).getAvgLevel();
 		scaledQCount = QQUtils.sCurve(QParts.get(i).getNumCorrect(),
 									  QQUtils.Juz2SaturationQCount*partWeight);
@@ -351,5 +383,14 @@ public class QQProfile implements Serializable {
 					" sC="+new DecimalFormat("##.##").format(scaledQCount)+
 					" sR="+new DecimalFormat("##.##").format(scaledCorrectRatio));
 		return score;
+	}
+		
+	/**
+	 * Used to dump values stored statically into QQUtils.PartWeight100 
+	 */
+	@SuppressWarnings("unused")
+	private void dumpWeights(){
+		for(int i=0;i<QParts.size();i++)
+			System.out.println("["+i+"]= " + Math.round(((double)QParts.get(i).getNonZeroLength()*100)/QQUtils.Juz2AvgWords));
 	}
 }
