@@ -40,6 +40,7 @@ public class QQSession {
 	private QQProfile prof;
 	private QQQuestionaireActivity activity;
 	private static boolean blockRecursiveDailyQuizChecks = false;
+	private QQDailyQuizHandler dailyQuizHandler = null;
 	
 	/**
 	 * Daily Quiz state directs an internal state machine
@@ -61,6 +62,11 @@ public class QQSession {
 		dailyQuiz		 	= null;
 		dailyQuizState		= -2;
 		vQStart = new Vector<Integer>();
+	}
+	
+	public QQDailyQuizHandler getDailyQuizHandler(){
+		this.dailyQuizHandler = new QQDailyQuizHandler(this.dailyQuiz, prof);
+		return dailyQuizHandler;
 	}
 	
 	public boolean addIfNew(int idx){
@@ -310,7 +316,7 @@ public class QQSession {
 
        @Override
        protected void onPreExecute() {
-    	   Toast.makeText(activity,"Preparing the daily quiz. Get ready!",Toast.LENGTH_LONG).show();
+    	   Toast.makeText(activity,QQApp.getContext().getResources().getString(R.string.daily_dialogue_building),Toast.LENGTH_LONG).show();
     	   activity.leftBar.setVisibility(ProgressBar.VISIBLE);
     	   activity.leftBar.setMax(QQUtils.DAILYQUIZ_PARTS_COUNT);
        }

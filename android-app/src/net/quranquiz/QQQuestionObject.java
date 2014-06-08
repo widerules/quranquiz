@@ -15,6 +15,7 @@ public class QQQuestionObject implements Serializable{
 	public int qLen; // Number of words to display to start the Question
 	public int oLen; // Number of words of each option
 	public QType qType; // Question Type: NOTSPECIAL or <Special Type>
+	public int currentPart; // Current Study Part
 	/******** Questions parameters to be set: End **********/
 	
 	public QQQuestionObject(int rounds, int validCount, 
@@ -27,6 +28,7 @@ public class QQQuestionObject implements Serializable{
 		this.qLen 		= qLen;
 		this.oLen 		= oLen;
 		this.qType 		= qType;
+		this.currentPart= QQUtils.getPartNumberFromWordIdx(startIdx);
 	}
 
 }

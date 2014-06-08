@@ -18,6 +18,7 @@ public class QQQuestionaire {
 	public int qLen; // Number of words to display to start the Question
 	public int oLen; // Number of words of each option
 	public QType qType; // Question Type: NOTSPECIAL or <Special Type>
+	public int CurrentPart;
 	/******** Questions parameters to be set: End **********/
 
 	public QQQuestionObject qo;
@@ -29,7 +30,6 @@ public class QQQuestionaire {
 	private Random rand;
 	private QQSparseResult sparsed;
 	private static int QLEN_EXTRA_LIMIT=2;
-	public int CurrentPart;
 
 	public enum QType { 
 		NOTSPECIAL, SURANAME, SURAAYACOUNT, MAKKI, AYANUMBER;
@@ -79,6 +79,21 @@ public class QQQuestionaire {
 		// Debug.stopMethodTracing();
 	}
 
+	public int getSeed() {
+		return lastSeed;
+	}
+	
+	public static QQQuestionObject createDefinedQuestion(int part) {
+		QQProfile profileSinglePart;
+		profileSinglePart = new QQProfile(null, new Random().nextInt(),
+											QQUtils.getRandomLevel(),
+											QQProfileHandler.getStudyPartFromIndex(part),
+											QQScoreRecord.getInitScoreRecordPack(),
+											0);
+		QQQuestionaire tmp = new QQQuestionaire(profileSinglePart, null, null);
+		return tmp.qo ;
+	}
+	
 	private QQQuestionObject createQ(QQProfile prof) {
 		if(prof.isSpecialEnabled() && selectSpecial()){
 			createSpecialQ(prof);
@@ -331,10 +346,6 @@ public class QQQuestionaire {
 		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
 	}
 	
-	public int getSeed() {
-		return lastSeed;
-	}
-
 	private int getValidStartNear(int start) {
 		// Search for a correct neighbor start according to level
 		int dir = 1; // search down = +1
@@ -424,17 +435,6 @@ public class QQQuestionaire {
 			return 0;
 		else
 			return extra+1;
-	}
-
-	public static QQQuestionObject createDefinedQuestion(int part) {
-		QQProfile profileSinglePart;
-		profileSinglePart = new QQProfile(null, new Random().nextInt(),
-											QQUtils.getRandomLevel(),
-											QQProfileHandler.getStudyPartFromIndex(part),
-											QQScoreRecord.getInitScoreRecordPack(),
-											0);
-		QQQuestionaire tmp = new QQQuestionaire(profileSinglePart, null, null);
-		return tmp.qo ;
 	}
 
 }
