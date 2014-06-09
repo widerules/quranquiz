@@ -8,8 +8,10 @@ package net.quranquiz.ui;
 import net.quranquiz.R;
 import net.quranquiz.storage.QQProfileHandler;
 import net.quranquiz.util.QQUtils;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,15 +50,23 @@ public class QQDashboardActivity extends Activity {
 	    feedBackDialog.dismiss();
 	} 
 	
+	@SuppressLint("NewApi")
 	@Override
 	public void onBackPressed() {
-	    feedBackDialog.dismiss();
-		if (myQQProfileHandler != null) {
+	    
+		feedBackDialog.dismiss();
+	    
+	    /*Backup service is available since FROYO*/
+	    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO)
+	    	new BackupManager(this).dataChanged();
+		
+	    if (myQQProfileHandler != null) {
 			Intent lastIntent = new Intent(QQDashboardActivity.this,
 					QQLastScreenActivity.class);
 			lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
 			startActivity(lastIntent);
 		}
+	    
 		finish();
 	}
 

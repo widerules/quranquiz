@@ -30,7 +30,7 @@
 	<string name="daily_dialogue_title">الاختبار اليومي جاهز</string>
 	<string name="daily_dialogue_ask">تنافس مع اعضاء شبكة اختبار القران، عشرة أسئلة سريعة في نطاق حفظك، هل ترغب ان تبدأ الآن؟</string>
 	<string name="daily_dialogue_later">في وقت لاحق</string>
-	<string name="daily_dialogue_building">جاري تجهيز اختبار اليوم، كن على استعداد</string>
+	<string name="daily_dialogue_building">جاري تجهيز اختبار اليوم، استعد!</string>
 				
 	<string name="add_values">Add values to the chart</string>    
 	<string name="x">X</string>    
