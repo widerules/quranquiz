@@ -12,6 +12,7 @@ import net.quranquiz.model.DailyQuizQuestionnaire;
 import net.quranquiz.model.QQQuestionaire;
 import net.quranquiz.model.QQQuestionaire.QType;
 import net.quranquiz.model.QQSession;
+import net.quranquiz.model.QuestionnaireProvider;
 import net.quranquiz.storage.QQDataBaseHelper;
 import net.quranquiz.storage.QQProfile;
 import net.quranquiz.storage.QQProfileHandler;
@@ -82,7 +83,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private Button[] btnArray;
 	private ActionBar actionbar;
 	private QQDataBaseHelper q;
-	private QQQuestionaire Quest;
+	private QuestionnaireProvider Quest = null;
 	private int QOptIdx = -1;
 	private int QQinit = 1;
 	// TODO: Grab the last seed from the loaded profile! (replace -1, level 1)
@@ -98,7 +99,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private long startTime = 0L;
 	private Handler countUpHandler = new Handler();
 	long timeInMillies = 0L;
-	private DailyQuizQuestionnaire dailyQuizHandler;
+	private boolean isDailyQuizRunning_cachedValue=false;
 
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
@@ -564,7 +565,20 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			}
 			
 			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
-			Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
+			
+			if( Quest == null || isDailyQuizRunning_cachedValue != myQQSession.isDailyQuizRunning){
+				isDailyQuizRunning_cachedValue = myQQSession.isDailyQuizRunning;
+				if(isDailyQuizRunning_cachedValue)
+					Quest = new DailyQuizQuestionnaire(myQQSession.dailyQuiz, myQQProfile);
+				else 
+					Quest = new QQQuestionaire(myQQProfile, q, myQQSession);	
+			}else
+				Quest.createNextQ();
+			
+			if(isDailyQuizRunning_cachedValue){
+				leftBar.setProgress(leftBar.getProgress()-1);
+			}
+
 			CurrentPart = Quest.getQ().currentPart;
 			
 			if(QQUtils.QQDebug>0){
@@ -719,8 +733,6 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	            countUpHandler.postDelayed(updateTimerMethod, 0); //To Stop: countUpHandler.removeCallbacks(updateTimerMethod);
 	            leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
-	            
-	            dailyQuizHandler = myQQSession.getDailyQuizQuestionnaire();
 	            userAction(-1);
 	            break;
 

@@ -22,13 +22,16 @@
         android:glEsVersion="0x00020000"
         android:required="true"/>
 	
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19" />
 
     <application
         android:icon="@drawable/ic_launcher"
         android:name=".util.QQApp"
         android:label="@string/app_name" 
+        android:backupAgent=".storage.QQBackupAgent"
         android:allowBackup="true" >
+        <meta-data android:name="com.google.android.backup.api_key" 
+			android:value="AEdPqrEAAAAI-EEk4S9DUAsN4e8F1n5Fx9mLle7b7lgzP7Lvvg" />
         <activity
             android:label="@string/app_name"
             android:name=".ui.QQDashboardActivity"
