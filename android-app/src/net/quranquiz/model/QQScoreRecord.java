@@ -3,7 +3,8 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.model;
+
 
 import java.io.Serializable;
 import java.text.DateFormat;

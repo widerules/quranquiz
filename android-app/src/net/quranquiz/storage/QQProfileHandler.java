@@ -3,11 +3,13 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.storage;
 
 import java.io.Serializable;
 import java.util.Random;
 
+import net.quranquiz.model.QQScoreRecord;
+import net.quranquiz.util.QQUtils;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;

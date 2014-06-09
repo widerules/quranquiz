@@ -3,7 +3,6 @@
  */
 package net.quranquiz.model;
 
-import net.quranquiz.QQQuestionObject;
 
 /**
  * An interface for all questionnaire providers, such as

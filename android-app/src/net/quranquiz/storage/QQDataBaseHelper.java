@@ -3,7 +3,7 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.storage;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+import net.quranquiz.R;
+import net.quranquiz.util.QQUtils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;

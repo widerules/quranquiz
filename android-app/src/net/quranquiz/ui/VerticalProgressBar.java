@@ -1,4 +1,9 @@
-package net.quranquiz;
+/****
+* Copyright (C) 2011-2013 Quran Quiz Net 
+* Tarek Eldeeb <tarekeldeeb@gmail.com>
+* License: see LICENSE.txt
+****/
+package net.quranquiz.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;

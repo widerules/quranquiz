@@ -3,11 +3,20 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.ui;
 
 import java.util.Calendar;
 
-import net.quranquiz.QQQuestionaire.QType;
+import net.quranquiz.R;
+import net.quranquiz.model.DailyQuizQuestionnaire;
+import net.quranquiz.model.QQQuestionaire;
+import net.quranquiz.model.QQQuestionaire.QType;
+import net.quranquiz.model.QQSession;
+import net.quranquiz.storage.QQDataBaseHelper;
+import net.quranquiz.storage.QQProfile;
+import net.quranquiz.storage.QQProfileHandler;
+import net.quranquiz.util.QQApp;
+import net.quranquiz.util.QQUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -89,7 +98,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private long startTime = 0L;
 	private Handler countUpHandler = new Handler();
 	long timeInMillies = 0L;
-	private QQDailyQuizHandler dailyQuizHandler;
+	private DailyQuizQuestionnaire dailyQuizHandler;
 
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
@@ -443,7 +452,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			break;
 		case R.id.Settings:
 			Intent intentPreferences = new Intent(QQQuestionaireActivity.this,
-					QQPreferences.class);
+					QQPreferencesActivity.class);
 			startActivity(intentPreferences);
 			break;
 		}
@@ -531,19 +540,19 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 															// with options ..
 		}
 
-		if (QOptIdx == -1 || QOptIdx == Quest.rounds) {
+		if (QOptIdx == -1 || QOptIdx == Quest.getQ().rounds) {
 			myQQProfile = myQQProfileHandler.CurrentProfile;
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong non-special answer
-				if(Quest.qType == QType.NOTSPECIAL)
+				if(Quest.getQ().qType == QType.NOTSPECIAL)
 					myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
-				if(QQinit == 0 && QOptIdx == Quest.rounds){
-					if(Quest.qType == QType.NOTSPECIAL)
+				if(QQinit == 0 && QOptIdx == Quest.getQ().rounds){
+					if(Quest.getQ().qType == QType.NOTSPECIAL)
 						myQQProfile.addCorrect(CurrentPart);
 					else
-						myQQProfile.addSpecial(Quest.qType.getScore());
+						myQQProfile.addSpecial(Quest.getQ().qType.getScore());
 					
 					// Display Correct answer
 					setBackCard();
@@ -556,13 +565,13 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			
 			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
 			Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
-			CurrentPart = Quest.CurrentPart;
+			CurrentPart = Quest.getQ().currentPart;
 			
 			if(QQUtils.QQDebug>0){
 				qqLogger.debug("------" +Calendar.getInstance().getTimeInMillis()+"------");
-				qqLogger.debug("@"+Quest.startIdx+" v="+Quest.validCount);
+				qqLogger.debug("@"+Quest.getQ().startIdx+" v="+Quest.getQ().validCount);
 				for(int dd=0;dd<10;dd++){
-					qqLogger.debug(Quest.op[dd][0]+"-"+Quest.op[dd][1]+"-"+Quest.op[dd][2]+"-"+Quest.op[dd][3]+"-"+Quest.op[dd][4]);					
+					qqLogger.debug(Quest.getQ().op[dd][0]+"-"+Quest.getQ().op[dd][1]+"-"+Quest.getQ().op[dd][2]+"-"+Quest.getQ().op[dd][3]+"-"+Quest.getQ().op[dd][4]);					
 				}
 			}
 			// Update profile after a new Question!
@@ -578,15 +587,15 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 															// only?
 
 			// Show the Question!
-			tvQ.setText(QQUtils.fixQ(q.txt(Quest.startIdx, Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY)));
+			tvQ.setText(QQUtils.fixQ(q.txt(Quest.getQ().startIdx, Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY)));
 			QOptIdx = 0;
 			
 			//Show Score Up/Down
-			if(Quest.qType == QType.NOTSPECIAL){
-				tvScoreUp.setText(myQQProfile.getUpScore(Quest.CurrentPart));
-				tvScoreDown.setText(myQQProfile.getDownScore(Quest.CurrentPart));
+			if(Quest.getQ().qType == QType.NOTSPECIAL){
+				tvScoreUp.setText(myQQProfile.getUpScore(Quest.getQ().currentPart));
+				tvScoreDown.setText(myQQProfile.getDownScore(Quest.getQ().currentPart));
 			} else {
-				tvScoreUp.setText(String.valueOf(Quest.qType.getScore()));
+				tvScoreUp.setText(String.valueOf(Quest.getQ().qType.getScore()));
 				tvScoreDown.setText("-");				
 			}
 			
@@ -598,8 +607,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			tvQ.setText(QQUtils.fixQ(tvQ
 					.getText()
 					.toString()
-					.concat(q.txt(Quest.startIdx + Quest.qLen + (QOptIdx - 1)
-									* Quest.oLen, Quest.oLen, QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY) + "  "
+					.concat(q.txt(Quest.getQ().startIdx + Quest.getQ().qLen + (QOptIdx - 1)
+									* Quest.getQ().oLen, Quest.getQ().oLen, QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY) + "  "
 							)));
 
 		// Scramble options
@@ -608,8 +617,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		correct_choice = QQUtils.findIdx(scrambled, 0); // idx=1
 
 		//Display Instructions
-		tvInstructions.setText(Quest.qType.getInstructions());
-		if(Quest.qType == QType.NOTSPECIAL)
+		tvInstructions.setText(Quest.getQ().qType.getInstructions());
+		if(Quest.getQ().qType == QType.NOTSPECIAL)
 			QQUtils.tvSetBackgroundFromDrawable(tvInstructions, R.drawable.tv_instruction_background);
 		else
 			QQUtils.tvSetBackgroundFromDrawable(tvInstructions, R.drawable.tv_instruction_special_background);
@@ -618,18 +627,18 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		// Display Options:
 		String strTemp = new String();
 		for (int j = 0; j < 5; j++) {
-			if(Quest.qType==QType.NOTSPECIAL)
-				strTemp = q.txt(Quest.op[QOptIdx][scrambled[j]], Quest.oLen, QQUtils.QQTextFormat.AYAMARKS_NONE);
+			if(Quest.getQ().qType==QType.NOTSPECIAL)
+				strTemp = q.txt(Quest.getQ().op[QOptIdx][scrambled[j]], Quest.getQ().oLen, QQUtils.QQTextFormat.AYAMARKS_NONE);
 			else{
-				switch(Quest.qType){
+				switch(Quest.getQ().qType){
 				case SURANAME:
-					strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.op[QOptIdx][scrambled[j]]);
+					strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.getQ().op[QOptIdx][scrambled[j]]);
 					break;
 				case SURAAYACOUNT:
-					strTemp = " آيات السورة " + Quest.op[QOptIdx][scrambled[j]];
+					strTemp = " آيات السورة " + Quest.getQ().op[QOptIdx][scrambled[j]];
 					break;
 				case AYANUMBER:
-					strTemp = " رقم الآية " + Quest.op[QOptIdx][scrambled[j]];
+					strTemp = " رقم الآية " + Quest.getQ().op[QOptIdx][scrambled[j]];
 					break;
 				default: 
 					strTemp = "-";
@@ -659,14 +668,14 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 	private void setBackCard() {
 		tvBack.setText(getCorrectAnswer());
-		quranReviewUri = String.valueOf(QQUtils.getSuraIdx(Quest.startIdx)+1) +"/" +
-						 q.ayaNumberOf(Quest.startIdx);		
+		quranReviewUri = String.valueOf(QQUtils.getSuraIdx(Quest.getQ().startIdx)+1) +"/" +
+						 q.ayaNumberOf(Quest.getQ().startIdx);		
 	}
 
 	private String getCorrectAnswer() {
 		// Display Correct answer
-		return "[" + "  سورة  "+ QQUtils.getSuraNameFromWordIdx(Quest.startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.startIdx)+ "] "+ "\n"
-				+ QQUtils.fixQ(q.txt(Quest.startIdx, 12 * Quest.oLen + Quest.qLen,QQUtils.QQTextFormat.AYAMARKS_FULL))
+		return "[" + "  سورة  "+ QQUtils.getSuraNameFromWordIdx(Quest.getQ().startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.getQ().startIdx)+ "] "+ "\n"
+				+ QQUtils.fixQ(q.txt(Quest.getQ().startIdx, 12 * Quest.getQ().oLen + Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_FULL))
 				+ " ...";
 		}
 
@@ -711,7 +720,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	            leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            
-	            dailyQuizHandler = myQQSession.getDailyQuizHandler();
+	            dailyQuizHandler = myQQSession.getDailyQuizQuestionnaire();
 	            userAction(-1);
 	            break;
 

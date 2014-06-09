@@ -3,30 +3,38 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.model;
 
 import java.util.List;
 import java.util.Random;
 
-public class QQQuestionaire {
+import net.quranquiz.R;
+import net.quranquiz.storage.QQDataBaseHelper;
+import net.quranquiz.storage.QQProfile;
+import net.quranquiz.storage.QQProfileHandler;
+import net.quranquiz.util.QQApp;
+import net.quranquiz.util.QQUtils;
 
-	/******** Questions parameters to be set: Start **********/
-	public int rounds; // How many rounds a question has: 10 for normal, 1 for special
-	public int validCount; //Number of correct options at the first round
-	public int[][] op = new int[10][5]; // Holds all 5 options x 10 rounds
-	public int startIdx; // Precise Position near seed, valid options
-	public int qLen; // Number of words to display to start the Question
-	public int oLen; // Number of words of each option
-	public QType qType; // Question Type: NOTSPECIAL or <Special Type>
-	public int CurrentPart;
-	/******** Questions parameters to be set: End **********/
+public class QQQuestionaire implements QuestionnaireProvider {
 
-	public QQQuestionObject qo;
+	/**
+	 * Questions parameters to be set: qo.<param>
+	 * rounds; 		// How many rounds a question has: 10 for normal, 1 for special
+	 * validCount; 	//Number of correct options at the first round
+	 * op[10][5]; 	// Holds all 5 options x 10 rounds
+	 * startIdx; 	// Precise Position near seed, valid options
+	 * qLen; 		// Number of words to display to start the Question
+	 * oLen; 		// Number of words of each option
+	 * qType; 		// Question Type: NOTSPECIAL or <Special Type>
+	 * currentPart;	// Study part of the current question
+	 */
+	private QQQuestionObject qo;
 
 	private int lastSeed; // Seed for the Question
 	private int level; // User Level, currently
 	private static QQDataBaseHelper q; // Reference to the DB
 	private static QQSession session;  // Reference to the QQSession
+	private QQProfile prof; 	       // Reference to the QQProfile
 	private Random rand;
 	private QQSparseResult sparsed;
 	private static int QLEN_EXTRA_LIMIT=2;
@@ -71,7 +79,9 @@ public class QQQuestionaire {
 		if(qdb != null) q = qdb;
 		if(s != null) session = s;
 		
-		createQ(prof);
+		this.prof = prof;
+		qo = new QQQuestionObject();
+		createNextQ();
 
 		//android.util.Log.d("INFO", "QQ @" + startIdx + " type:" + qType.name());
 
@@ -94,16 +104,6 @@ public class QQQuestionaire {
 		return tmp.qo ;
 	}
 	
-	private QQQuestionObject createQ(QQProfile prof) {
-		if(prof.isSpecialEnabled() && selectSpecial()){
-			createSpecialQ(prof);
-		}else {
-			createNormalQ(prof);
-		}
-		qo = new 	QQQuestionObject(rounds, validCount, op, startIdx, qLen, oLen, qType);
-		return qo;
-	}
-
 	private boolean selectSpecial() {
 		if(Math.random()>0.20) 
 			return false;
@@ -112,16 +112,16 @@ public class QQQuestionaire {
 	}
 	
 	private void createSpecialQ(QQProfile prof) {
-		rounds = 1;
+		qo.rounds = 1;
 
 		if(Math.random()>0.5)
-			qType = QType.SURANAME; 
+			qo.qType = QType.SURANAME; 
 		else if(Math.random()>0.3)
-			qType = QType.SURAAYACOUNT;
+			qo.qType = QType.SURAAYACOUNT;
 		else
-			qType = QType.AYANUMBER;
+			qo.qType = QType.AYANUMBER;
 		
-		switch(qType){
+		switch(qo.qType){
 			case SURANAME: 
 				createQSuraName(prof);
 				break;
@@ -133,7 +133,7 @@ public class QQQuestionaire {
 				break;
 			//TODO: Implement others	
 			default:
-				qType = QType.SURANAME;
+				qo.qType = QType.SURANAME;
 				createQSuraName(prof);
 				break;	
 		}
@@ -144,18 +144,18 @@ public class QQQuestionaire {
 			sparsed = prof.getSparsePoint(rand.nextInt(prof
 					.getTotalStudyLength()));
 			lastSeed = sparsed.idx;
-			CurrentPart = sparsed.part;
+			qo.currentPart = sparsed.part;
 			// +1 to compensate the rand-gen integer [0-QuranWords-1]
-			startIdx = getValidUniqueStartNear(lastSeed + 1);
-		}while(!session.addIfNew(startIdx));
+			qo.startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(qo.startIdx));
 
-		validCount=1; //Number of correct options at the first round
-		qLen=(level==1)?3:2;
-		oLen=1;
+		qo.validCount=1; //Number of correct options at the first round
+		qo.qLen=(level==1)?3:2;
+		qo.oLen=1;
 		//Correct Answer:
-		op[0][0] = QQUtils.getSuraIdx(startIdx);
+		qo.op[0][0] = QQUtils.getSuraIdx(qo.startIdx);
 		//Incorrect Answers		
-		fillIncorrectRandomIdx(op[0][0],114);
+		fillIncorrectRandomIdx(qo.op[0][0],114);
 	}
 
 	private void createQSuraAyaCount(QQProfile prof) {
@@ -163,18 +163,18 @@ public class QQQuestionaire {
 			sparsed = prof.getSparsePoint(rand.nextInt(prof
 					.getTotalStudyLength()));
 			lastSeed = sparsed.idx;
-			CurrentPart = sparsed.part;
+			qo.currentPart = sparsed.part;
 			// +1 to compensate the rand-gen integer [0-QuranWords-1]
-			startIdx = getValidUniqueStartNear(lastSeed + 1);
-		}while(!session.addIfNew(startIdx));
+			qo.startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(qo.startIdx));
 
-		validCount=1; //Number of correct options at the first round
-		qLen=(level==1)?3:2;
-		oLen=1;
+		qo.validCount=1; //Number of correct options at the first round
+		qo.qLen=(level==1)?3:2;
+		qo.oLen=1;
 		//Correct Answer:
-		op[0][0] = q.ayaCountOfSuraAt(startIdx);
+		qo.op[0][0] = q.ayaCountOfSuraAt(qo.startIdx);
 		//Incorrect Answers		
-		fillIncorrectRandomNonZeroIdx(op[0][0],50);
+		fillIncorrectRandomNonZeroIdx(qo.op[0][0],50);
 	}
 
 	private void createQAyaNumber(QQProfile prof) {
@@ -182,18 +182,18 @@ public class QQQuestionaire {
 			sparsed = prof.getSparsePoint(rand.nextInt(prof
 					.getTotalStudyLength()));
 			lastSeed = sparsed.idx;
-			CurrentPart = sparsed.part;
+			qo.currentPart = sparsed.part;
 			// +1 to compensate the rand-gen integer [0-QuranWords-1]
-			startIdx = getValidUniqueStartNear(lastSeed + 1);
-		}while(!session.addIfNew(startIdx));
+			qo.startIdx = getValidUniqueStartNear(lastSeed + 1);
+		}while(!session.addIfNew(qo.startIdx));
 		
-		validCount=1; //Number of correct options at the first round
-		qLen=(level==1)?3:2;
-		oLen=1;
+		qo.validCount=1; //Number of correct options at the first round
+		qo.qLen=(level==1)?3:2;
+		qo.oLen=1;
 		//Correct Answer:
-		op[0][0] = q.ayaNumberOf(startIdx);
+		qo.op[0][0] = q.ayaNumberOf(qo.startIdx);
 		//Incorrect Answers		
-		fillIncorrectRandomNonZeroIdx(op[0][0],50);
+		fillIncorrectRandomNonZeroIdx(qo.op[0][0],50);
 	}
 	
 	private int getValidUniqueStartNear(int start) {
@@ -222,18 +222,18 @@ public class QQQuestionaire {
 	}
 
 	private void createNormalQ(QQProfile prof) {
-		rounds = 10;
-		qType = QType.NOTSPECIAL;
+		qo.rounds = 10;
+		qo.qType = QType.NOTSPECIAL;
 		
 		do{
 			sparsed= prof.getSparsePoint(rand.nextInt(
 										prof.getTotalStudyLength()));
 			lastSeed = sparsed.idx;
-			CurrentPart = sparsed.part;
+			qo.currentPart = sparsed.part;
 	
 			// +1 to compensate the rand-gen integer [0-QuranWords-1]
-			startIdx = getValidStartNear(lastSeed + 1);
-		}while(!session.addIfNew(startIdx));
+			qo.startIdx = getValidStartNear(lastSeed + 1);
+		}while(!session.addIfNew(qo.startIdx));
 		
 		fillCorrectOptions();
 		fillIncorrectOptions();
@@ -244,27 +244,27 @@ public class QQQuestionaire {
 		// levels)
 		List<Integer> tmp;
 		int correct;
-		op[0][0] = startIdx + qLen;
+		qo.op[0][0] = qo.startIdx + qo.qLen;
 		for (int k = 1; k < 10; k++) {
-			correct = op[k - 1][0] + oLen;
+			correct = qo.op[k - 1][0] + qo.oLen;
 			if (correct>QQUtils.QuranWords)
-				op[k][0] = correct - QQUtils.QuranWords;
+				qo.op[k][0] = correct - QQUtils.QuranWords;
 			else
-				op[k][0] = correct;
+				qo.op[k][0] = correct;
 		}
 		if (level > 1) {
-			if (qLen == 1) { // A 2-word Question
-				tmp = q.sim2idx(startIdx);
-				for (int i = 1; i < validCount; i++)
-					op[0][i] = tmp.get(i);
+			if (qo.qLen == 1) { // A 2-word Question
+				tmp = q.sim2idx(qo.startIdx);
+				for (int i = 1; i < qo.validCount; i++)
+					qo.op[0][i] = tmp.get(i);
 			} else { // A 3-word Question
-				tmp = q.sim3idx(startIdx);
-				for (int i = 1; i < validCount; i++)
-					op[0][i] = tmp.get(i);
+				tmp = q.sim3idx(qo.startIdx);
+				for (int i = 1; i < qo.validCount; i++)
+					qo.op[0][i] = tmp.get(i);
 			}
 			for (int k = 1; k < 10; k++)
-				for (int j = 1; j < validCount; j++)
-					op[k][j] = op[k - 1][j] + 1;
+				for (int j = 1; j < qo.validCount; j++)
+					qo.op[k][j] = qo.op[k - 1][j] + 1;
 		}
 	}
 
@@ -277,7 +277,7 @@ public class QQQuestionaire {
 		List<Integer> randList;
 
 		for (int i = 0; i < 10; i++) {
-			last_correct = op[i][0] - 1;
+			last_correct = qo.op[i][0] - 1;
 
 			// We want to remove redundant correct choices from the given
 			// options, this is made by removing subset sim2 from sim1
@@ -291,22 +291,22 @@ public class QQQuestionaire {
 			if (uniq_cnt > 3) {
 				rnd_idx = QQUtils.randperm(uniq_cnt);
 				for (int j = 1; j < 5; j++) {
-					op[i][j] = diffList.get(rnd_idx[j - 1]);
+					qo.op[i][j] = diffList.get(rnd_idx[j - 1]);
 				}
 			} else{
 				// We need Random unique and does not match correct
-				randList = q.randomUnique4NotMatching(op[i][0]);			
+				randList = q.randomUnique4NotMatching(qo.op[i][0]);			
 				if (uniq_cnt > 0) {
 					rnd_idx = QQUtils.randperm(uniq_cnt);
 					for (int j = 1; j < uniq_cnt + 1; j++) {
-						op[i][j] = diffList.get(rnd_idx[j - 1]);
+						qo.op[i][j] = diffList.get(rnd_idx[j - 1]);
 					}
 					for (int j = uniq_cnt + 1; j < 5; j++) {
-						op[i][j] = randList.get(j-uniq_cnt-1);
+						qo.op[i][j] = randList.get(j-uniq_cnt-1);
 					}
 				} else { // uniq_cnt=0, all random options!
 					for (int j = 1; j < 5; j++)
-						op[i][j] = randList.get(j-uniq_cnt-1);				}
+						qo.op[i][j] = randList.get(j-uniq_cnt-1);				}
 			}
 		}
 	}
@@ -319,10 +319,10 @@ public class QQQuestionaire {
 		// Adding QuranWords does not affect the %QuranWords, but eliminates -ve values
 		int correctIdxPerm = mod + correctIdx - rndIdx[perm[0]];
 		
-		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
-		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
-		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
-		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
+		qo.op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
+		qo.op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
+		qo.op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
+		qo.op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
 	}
 
 	private void fillIncorrectRandomNonZeroIdx(int correctIdx,int mod){
@@ -340,10 +340,10 @@ public class QQQuestionaire {
 				break;
 			}
 				
-		op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
-		op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
-		op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
-		op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
+		qo.op[0][1] = (correctIdxPerm + rndIdx[perm[1]])%mod;
+		qo.op[0][2] = (correctIdxPerm + rndIdx[perm[2]])%mod;
+		qo.op[0][3] = (correctIdxPerm + rndIdx[perm[3]])%mod;
+		qo.op[0][4] = (correctIdxPerm + rndIdx[perm[4]])%mod;
 	}
 	
 	private int getValidStartNear(int start) {
@@ -368,21 +368,21 @@ public class QQQuestionaire {
 
 					// Motashabehat found,continue!
 					srch_cond = q.sim2cnt(start_shadow) > 1;
-					validCount = 1; // \
-					qLen = 3; // -|-> Default Constants for level-1
-					oLen = 2;
+					qo.validCount = 1; // \
+					qo.qLen = 3; // -|-> Default Constants for level-1
+					qo.oLen = 2;
 
 				} else if (level == 2) {
 
 					// Motashabehat found, srch_cond=false, continue!
 					srch_cond = q.sim2cnt(start_shadow) > 1;
 					if(!srch_cond){
-						validCount = 1; // \
-						qLen = 2; // -|-> Default Constants for level-2
-						oLen = 1;
-						extraLength = extraQLength(start_shadow, qLen);
+						qo.validCount = 1; // \
+						qo.qLen = 2; // -|-> Default Constants for level-2
+						qo.oLen = 1;
+						extraLength = extraQLength(start_shadow, qo.qLen);
 						if(extraLength>-1){
-							qLen +=extraLength;
+							qo.qLen +=extraLength;
 							start_shadow -=extraLength;
 						} else {
 							// Too Long Motashabehat, cannot start within, non-unique answer
@@ -407,15 +407,15 @@ public class QQQuestionaire {
 					srch_cond = (disp3 == 0 && disp2 == 0);
 
 					if (srch_cond == false) { // Found!
-						validCount = (disp2 > disp3) ? disp2 : disp3;// TODO:
+						qo.validCount = (disp2 > disp3) ? disp2 : disp3;// TODO:
 																		// Check,
 																		// +1
 																		// caused
 																		// bound
 																		// excep
-						qLen = (disp2 > disp3) ? 1 : 2;
+						qo.qLen = (disp2 > disp3) ? 1 : 2;
 					}
-					oLen = 1;
+					qo.oLen = 1;
 				}
 			}
 
@@ -435,6 +435,20 @@ public class QQQuestionaire {
 			return 0;
 		else
 			return extra+1;
+	}
+
+	@Override
+	public QQQuestionObject getQ() {
+		return qo;
+	}
+
+	@Override
+	public void createNextQ() {
+		if(prof.isSpecialEnabled() && selectSpecial()){
+			createSpecialQ(prof);
+		}else {
+			createNormalQ(prof);
+		}		
 	}
 
 }

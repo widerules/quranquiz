@@ -48,7 +48,7 @@
 	        android:baselineAligned="true"
 	        android:gravity="right" >
 	        
-			<net.quranquiz.VerticalProgressBar
+			<net.quranquiz.ui.VerticalProgressBar
 		        style="?android:attr/progressBarStyleHorizontal"
 			    android:id="@+id/verticalBarLeft"
 			    android:layout_width="10dp"
@@ -161,9 +161,8 @@
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:layout_alignParentLeft="true"
-	                    android:layout_alignTop="@+id/textView2"
 	                    android:layout_marginLeft="5dp" />
-
+					<!-- android:layout_alignTop="@+id/textView2" -->
 	                <TextView
 	                    android:id="@+id/dailyProgressCountUp"
 	                    android:layout_width="wrap_content"

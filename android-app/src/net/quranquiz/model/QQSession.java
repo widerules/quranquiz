@@ -1,4 +1,9 @@
-package net.quranquiz;
+/****
+* Copyright (C) 2011-2013 Quran Quiz Net 
+* Tarek Eldeeb <tarekeldeeb@gmail.com>
+* License: see LICENSE.txt
+****/
+package net.quranquiz.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,6 +11,11 @@ import java.util.List;
 import java.util.Vector;
 
 import mirror.android.os.AsyncTask;
+import net.quranquiz.R;
+import net.quranquiz.storage.QQProfile;
+import net.quranquiz.ui.QQQuestionaireActivity;
+import net.quranquiz.util.QQApp;
+import net.quranquiz.util.QQUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -40,7 +50,7 @@ public class QQSession {
 	private QQProfile prof;
 	private QQQuestionaireActivity activity;
 	private static boolean blockRecursiveDailyQuizChecks = false;
-	private QQDailyQuizHandler dailyQuizHandler = null;
+	private DailyQuizQuestionnaire dailyQuizQuestionnaire = null;
 	
 	/**
 	 * Daily Quiz state directs an internal state machine
@@ -64,9 +74,9 @@ public class QQSession {
 		vQStart = new Vector<Integer>();
 	}
 	
-	public QQDailyQuizHandler getDailyQuizHandler(){
-		this.dailyQuizHandler = new QQDailyQuizHandler(this.dailyQuiz, prof);
-		return dailyQuizHandler;
+	public DailyQuizQuestionnaire getDailyQuizQuestionnaire(){
+		this.dailyQuizQuestionnaire = new DailyQuizQuestionnaire(this.dailyQuiz, prof);
+		return dailyQuizQuestionnaire;
 	}
 	
 	public boolean addIfNew(int idx){
