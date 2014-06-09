@@ -3,8 +3,11 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.ui;
 
+import net.quranquiz.R;
+import net.quranquiz.storage.QQProfileHandler;
+import net.quranquiz.util.QQUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;

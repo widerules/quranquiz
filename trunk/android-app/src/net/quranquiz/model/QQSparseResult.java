@@ -3,7 +3,7 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.model;
 
 public class QQSparseResult {
 

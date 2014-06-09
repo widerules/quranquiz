@@ -3,12 +3,15 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.ui;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+
+import net.quranquiz.model.QQScoreRecord;
+import net.quranquiz.storage.QQProfile;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;

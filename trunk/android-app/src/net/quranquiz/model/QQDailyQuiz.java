@@ -1,8 +1,14 @@
-package net.quranquiz;
+/****
+* Copyright (C) 2011-2013 Quran Quiz Net 
+* Tarek Eldeeb <tarekeldeeb@gmail.com>
+* License: see LICENSE.txt
+****/
+package net.quranquiz.model;
 
 import java.io.Serializable;
 
-import net.quranquiz.QQSession.SetAsyncQQDailyQuiz;
+import net.quranquiz.model.QQSession.SetAsyncQQDailyQuiz;
+import net.quranquiz.util.QQUtils;
 import android.text.format.Time;
 import android.util.Log;
 

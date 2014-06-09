@@ -3,11 +3,16 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.quranquiz.R;
+import net.quranquiz.storage.QQProfile;
+import net.quranquiz.storage.QQProfileHandler;
+import net.quranquiz.util.QQUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

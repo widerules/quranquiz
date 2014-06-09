@@ -1,6 +1,12 @@
-package net.quranquiz;
+/****
+* Copyright (C) 2011-2013 Quran Quiz Net 
+* Tarek Eldeeb <tarekeldeeb@gmail.com>
+* License: see LICENSE.txt
+****/
+package net.quranquiz.ui;
 
 
+import net.quranquiz.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;

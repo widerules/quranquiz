@@ -3,7 +3,7 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.util;
 
 import android.app.Application;
 import android.content.Context;

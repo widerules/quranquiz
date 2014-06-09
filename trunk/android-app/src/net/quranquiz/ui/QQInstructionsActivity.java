@@ -3,11 +3,9 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-/**
- * 
- */
-package net.quranquiz;
+package net.quranquiz.ui;
 
+import net.quranquiz.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;

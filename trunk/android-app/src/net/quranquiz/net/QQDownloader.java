@@ -3,7 +3,8 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.net;
+
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;

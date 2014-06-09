@@ -3,11 +3,16 @@
 * Tarek Eldeeb <tarekeldeeb@gmail.com>
 * License: see LICENSE.txt
 ****/
-package net.quranquiz;
+package net.quranquiz.storage;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Vector;
+
+import net.quranquiz.model.QQScoreRecord;
+import net.quranquiz.model.QQSparseResult;
+import net.quranquiz.model.QQStudyPart;
+import net.quranquiz.util.QQUtils;
 
 import com.google.analytics.tracking.android.Log;
 
