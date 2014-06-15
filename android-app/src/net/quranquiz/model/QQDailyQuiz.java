@@ -9,20 +9,16 @@ import java.io.Serializable;
 
 import net.quranquiz.model.QQSession.SetAsyncQQDailyQuiz;
 import net.quranquiz.util.QQUtils;
-import android.text.format.Time;
 import android.util.Log;
 
 public class QQDailyQuiz implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	public Time timeStamp;
 	public int partCount;
 	public int questionsCount;
 	public QQQuestionObject[][] objects;
 
 	public QQDailyQuiz(SetAsyncQQDailyQuiz setAsyncQQDailyQuiz){
-		timeStamp 		= new Time();
-		timeStamp.setToNow();
 		
 		partCount 		= QQUtils.DAILYQUIZ_PARTS_COUNT;
 		questionsCount	= QQUtils.DAILYQUIZ_QPERPART_COUNT;
