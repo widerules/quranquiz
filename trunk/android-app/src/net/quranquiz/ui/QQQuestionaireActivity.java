@@ -99,7 +99,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private long startTime = 0L;
 	private Handler countUpHandler = new Handler();
 	long timeInMillies = 0L;
-	private boolean isDailyQuizRunning_cachedValue=false;
+	private boolean isDailyQuizRunning_shadow=false;
 
 	private final static Logger qqLogger = LoggerFactory.getLogger(QQQuestionaireActivity.class);
 
@@ -205,7 +205,6 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		initSession();
 		initUI();
 		
-				
 		if(android.os.Build.VERSION.SDK_INT 
 				>= android.os.Build.VERSION_CODES.HONEYCOMB)
 			QQUtils.disableFixQ();	
@@ -523,9 +522,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	 * Initially, this function is called with an argument = -1
 	 */
 	private void userAction(int selID) {
-		if(myQQSession.isDailyQuizRunning){
-			leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
-		}
+
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
 			//btnArrayR[selID].startAnimation(animFadeOut);
@@ -566,20 +563,22 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			
 			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
 			
-			if( Quest == null || isDailyQuizRunning_cachedValue != myQQSession.isDailyQuizRunning){
-				isDailyQuizRunning_cachedValue = myQQSession.isDailyQuizRunning;
-				if(isDailyQuizRunning_cachedValue)
+			if( Quest == null || isDailyQuizRunning_shadow != myQQSession.isDailyQuizRunning){
+				isDailyQuizRunning_shadow = myQQSession.isDailyQuizRunning;
+				if(isDailyQuizRunning_shadow){
 					Quest = new DailyQuizQuestionnaire(myQQSession.dailyQuiz, myQQProfile);
-				else 
-					Quest = new QQQuestionaire(myQQProfile, q, myQQSession);	
+					leftBar.setVisibility(View.VISIBLE);
+				}else{ 
+					Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
+					leftBar.setVisibility(View.INVISIBLE);
+				}
 			}else
 				Quest.createNextQ();
 			
-			if(isDailyQuizRunning_cachedValue){
-				leftBar.setProgress(leftBar.getProgress()-1);
+			if(isDailyQuizRunning_shadow){
+				leftBar.setProgress(myQQSession.getDailyQuizQuestionnaire().getRemainingQuestions());
 			}
-
-			CurrentPart = Quest.getQ().currentPart;
+			CurrentPart = Quest.getQ().currentPart;	
 			
 			if(QQUtils.QQDebug>0){
 				qqLogger.debug("------" +Calendar.getInstance().getTimeInMillis()+"------");
@@ -731,7 +730,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	        	
 	        	startTime = SystemClock.uptimeMillis();
 	            countUpHandler.postDelayed(updateTimerMethod, 0); //To Stop: countUpHandler.removeCallbacks(updateTimerMethod);
-	            leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
+	     	   	leftBar.setVisibility(ProgressBar.VISIBLE);
+	     	   	leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            userAction(-1);
 	            break;

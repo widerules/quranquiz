@@ -63,6 +63,7 @@ public class QQSession {
 	 *  2	: Dialog displayed to user [isDailyQuizRunning ?]
 	 */
 	private int dailyQuizState;
+	private int retries = 0;
 	
 	public QQSession(QQProfile profile, QQQuestionaireActivity QQQActivity){
 		prof				= profile;
@@ -80,7 +81,7 @@ public class QQSession {
 	}
 	
 	public boolean addIfNew(int idx){
-		if(!blockRecursiveDailyQuizChecks)
+		if(!blockRecursiveDailyQuizChecks && (retries++)<3)
 			checkDailyQuiz();
 		
 		if(vQStart.contains(Integer.valueOf(idx))){
@@ -114,7 +115,8 @@ public class QQSession {
 				if(!blockRecursiveDailyQuizChecks){
 					blockRecursiveDailyQuizChecks = true;
 					sasqqdq = new SetAsyncQQDailyQuiz();
-					sasqqdq.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
+					//sasqqdq.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);	
+					sasqqdq.execute();
 				}
 				break;			
 			case 1: //Server has a valid object, get it
@@ -168,7 +170,7 @@ public class QQSession {
 	    		} catch (ClientProtocolException e) {
 	    		} catch (IOException e) {
 	    		}
-	       		Log.d("DailyQuiz", " Check :::::: "+ response);
+	       		Log.d("DailyQuiz", " Check DQ Response :: "+ response);
 	    		return response;
 	        }      
 
@@ -188,10 +190,10 @@ public class QQSession {
 	        	}else{
 	        		//Weird response!
 	        		dailyQuizState = -2;
+	        		
+	        		/*Stop communicating with server after 3 retries*/
+	        		if((retries++)>3)dailyQuizState = 0;
 	        	}
-	        	/**
-	        	 * HACK for testing
-	        	 */ //dailyQuizState=0;
 	        	checkDailyQuiz();
 	        }
 
@@ -302,8 +304,8 @@ public class QQSession {
    			// Execute HTTP Post Request
    			HttpResponse res = httpclient.execute(httppost);
    			response += EntityUtils.toString(res.getEntity()); 
-   		} catch (ClientProtocolException e) {
    		} catch (Exception e) {
+   			e.printStackTrace();
    		}
    		
    		//TODO: Validate response
