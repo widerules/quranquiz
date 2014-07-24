@@ -35,12 +35,14 @@ import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +73,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private TextView tvScore;
 	private TextView tvScoreUp;
 	private TextView tvScoreDown;
+	private TextView tvSymScore;
+	private ImageView ivSymScoreUp;
+	private ImageView ivSymScoreDown;
 	private TextView tvBack;
 	private TextView tvInstructions;
 	private Button btnBack;
@@ -275,6 +280,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		tvScore 		= (TextView) findViewById(R.id.Score);
 		tvScoreUp 		= (TextView) findViewById(R.id.tvScoreUp);
 		tvScoreDown 	= (TextView) findViewById(R.id.tvScoreDown);
+		tvSymScore 		= (TextView) findViewById(R.id.tvScore);
+		ivSymScoreUp 	= (ImageView) findViewById(R.id.tvUpSym);
+		ivSymScoreDown 	= (ImageView) findViewById(R.id.tvDownSym);
 		tvBack  		= (TextView) findViewById(R.id.tvBack);
 		btnBack 		= (Button) findViewById(R.id.btnBack); 
 		btnBackReview 	= (Button) findViewById(R.id.btnBackReview); 
@@ -363,7 +371,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionbar.setListNavigationCallbacks(list, this);
-		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel()-1);
+		actionbar.setSelectedNavigationItem(myQQProfileHandler.CurrentProfile.getLevel());
 	}
 
 	/**
@@ -543,15 +551,17 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong non-special answer
 				if(Quest.getQ().qType == QType.NOTSPECIAL)
-					myQQProfile.addIncorrect(CurrentPart);
+					if(myQQProfile.getLevel()>0)
+						myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
 				if(QQinit == 0 && QOptIdx == Quest.getQ().rounds){
-					if(Quest.getQ().qType == QType.NOTSPECIAL)
-						myQQProfile.addCorrect(CurrentPart);
-					else
-						myQQProfile.addSpecial(Quest.getQ().qType.getScore());
-					
+					if(myQQProfile.getLevel()>0){
+						if(Quest.getQ().qType == QType.NOTSPECIAL)
+							myQQProfile.addCorrect(CurrentPart);
+						else
+							myQQProfile.addSpecial(Quest.getQ().qType.getScore());
+					}
 					// Display Correct answer
 					setBackCard();
 				}
@@ -563,13 +573,21 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			
 			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
 			
+			// Check for DailyQuiz end
+			if(Quest != null && myQQSession.isDailyQuizRunning 
+					&& myQQSession.getDailyQuizQuestionnaire().getRemainingQuestions()<1)
+				myQQSession.isDailyQuizRunning = false;
+			
+			//Take Action: Switch between DailyQuiz <--> FreeRunning Questionnaire
 			if( Quest == null || isDailyQuizRunning_shadow != myQQSession.isDailyQuizRunning){
 				isDailyQuizRunning_shadow = myQQSession.isDailyQuizRunning;
 				if(isDailyQuizRunning_shadow){
 					Quest = new DailyQuizQuestionnaire(myQQSession.dailyQuiz, myQQProfile);
+					setScoreUIVisible(true);
 					leftBar.setVisibility(View.VISIBLE);
 				}else{ 
 					Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
+					setScoreUIVisible(myQQProfile.getLevel()!=0);
 					leftBar.setVisibility(View.INVISIBLE);
 				}
 			}else
@@ -600,7 +618,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 															// only?
 
 			// Show the Question!
-			tvQ.setText(QQUtils.fixQ(q.txt(Quest.getQ().startIdx, Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_ONLY)));
+			tvQ.setText(QQUtils.fixQ(q.txt(Quest.getQ().startIdx, Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_START)));
 			QOptIdx = 0;
 			
 			//Show Score Up/Down
@@ -693,8 +711,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		}
 
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		myQQProfile.setLevel(itemPosition+1);
+		myQQProfile.setLevel(itemPosition);
 		myQQProfileHandler.saveProfile(myQQProfile);
+		setScoreUIVisible(itemPosition!=0); // Hide score for practicing
 		return true;
 	}
 	
@@ -752,6 +771,24 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 				.setTitle(			getResources().getString(R.string.daily_dialogue_title))
 				.setCancelable(false)
 				.show();		
+	}
+	
+	private void setScoreUIVisible(boolean visibile){
+		if(!visibile){
+			tvScore.setVisibility(View.INVISIBLE);
+			tvScoreUp.setVisibility(View.INVISIBLE);
+			tvScoreDown.setVisibility(View.INVISIBLE);
+			tvSymScore.setVisibility(View.INVISIBLE);
+			ivSymScoreUp.setVisibility(View.INVISIBLE);
+			ivSymScoreDown.setVisibility(View.INVISIBLE);
+		}else{
+			tvScore.setVisibility(View.VISIBLE);
+			tvScoreUp.setVisibility(View.VISIBLE);
+			tvScoreDown.setVisibility(View.VISIBLE);	
+			tvSymScore.setVisibility(View.VISIBLE);
+			ivSymScoreUp.setVisibility(View.VISIBLE);
+			ivSymScoreDown.setVisibility(View.VISIBLE);
+		}
 	}
 
 	

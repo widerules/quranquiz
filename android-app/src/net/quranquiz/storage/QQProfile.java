@@ -157,18 +157,39 @@ public class QQProfile implements Serializable {
 	 * @return An array of weights for studied parts to sum up 
 	 * to QQUtils.DAILYQUIZ_QPERPART_COUNT
 	 */
-	public int[] getDailyQuizStudyPartsWeights(){
+	public int[] getDailyQuizStudyPartsWeights(String dailyRandom){
 		int sparse[] = new int[QQUtils.DAILYQUIZ_PARTS_COUNT];
 		int totalStudyWeight = (int)Math.ceil((double)getTotalStudyLength()/QQUtils.Juz2AvgWords);
+		int Wn, WnX100_remainder=0, WnX100;
 		
 		/*Fill array as: [0, 0, W1, 0, W2, ..]*/
 		for(int i=0;i<QQUtils.DAILYQUIZ_PARTS_COUNT;i++){
 			//Skip Al-Fatiha
 			if(QParts.get(i+1).getLength()==0)
 				sparse[i] = 0;
-			else 
-				sparse[i] = QQUtils.DAILYQUIZ_QPERPART_COUNT*QQUtils.PartWeight100[i+1]
-								/totalStudyWeight;
+			else{
+				WnX100 = QQUtils.DAILYQUIZ_QPERPART_COUNT*QQUtils.PartWeight100[i+1]
+									/totalStudyWeight; //Weight with scaling of 100
+				if( Integer.valueOf(dailyRandom.charAt(i))>4 ){
+					Wn = (int) Math.ceil((WnX100+WnX100_remainder)/(float)100);
+					if(Wn>0){
+						sparse[i] = Wn;
+						WnX100_remainder += WnX100-100;
+					} else {
+						sparse[i] = 0;
+						WnX100_remainder += WnX100;
+					}
+				} else {
+					Wn = (int) Math.round((WnX100+WnX100_remainder)/(float)100);
+					if(Wn>0){
+						sparse[i] = Wn;
+						WnX100_remainder += WnX100-100;
+					} else {
+						sparse[i] = 0;
+						WnX100_remainder += WnX100;
+					}
+				}
+			}
 		}
 
 		/*Check if W1:Wn sum to DAILYQUIZ_QPERPART_COUNT*/
@@ -185,6 +206,16 @@ public class QQProfile implements Serializable {
 			}
 		}
 
+		Log.i("DailyQuizStudyPartsWeights:: "+ sparse[0] + sparse[1] + sparse[2] + sparse[3] + sparse[4] + sparse[5] 
+											 + sparse[6] + sparse[7] + sparse[8] + sparse[9] + sparse[10] + sparse[11] 
+											 + sparse[12] + sparse[13] + sparse[14] + sparse[15] + sparse[16] + sparse[17] 
+											 + sparse[18] + sparse[19] + sparse[20] + sparse[21] + sparse[22] + sparse[23] 
+											 + sparse[24] + sparse[25] + sparse[26] + sparse[27] + sparse[28] + sparse[29] 
+											 + sparse[30] + sparse[31] + sparse[32] + sparse[33] + sparse[34] + sparse[35] 
+											 + sparse[36] + sparse[37] + sparse[38] + sparse[39] + sparse[40] + sparse[41] 
+											 + sparse[42] + sparse[43] + sparse[44] + sparse[45] + sparse[46] + sparse[47] 
+										     + " " + sparse[48]);
+		
 		return sparse;
 	}
 

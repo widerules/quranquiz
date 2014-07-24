@@ -3,12 +3,14 @@
 <resources>
 
     <string-array name="userLevels">
+        <item name="beginner">مراجعة</item>
         <item name="easy">مستوى 1</item>
         <item name="medium">مستوى 2</item>
         <!-- <item name="hard">المستوى الأصعب</item> -->    
     </string-array>
     
     <string-array name="userLevelsValues">
+        <item name="beginner">0</item>
         <item name="easy">1</item>
         <item name="medium">2</item>
         <!--  <item name="hard">3</item> -->   

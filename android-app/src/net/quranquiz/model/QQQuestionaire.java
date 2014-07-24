@@ -105,7 +105,7 @@ public class QQQuestionaire implements QuestionnaireProvider {
 	}
 	
 	private boolean selectSpecial() {
-		if(Math.random()>0.20) 
+		if(prof.getLevel()==0 || Math.random()>0.20) 
 			return false;
 		else
 			return true;
@@ -364,22 +364,24 @@ public class QQQuestionaire implements QuestionnaireProvider {
 					dir = -dir;
 					break;
 				}
-				if (level == 1) { // Get a non-motashabehat near selected index
+				if (level == 0) { // Get a non-motashabehat at aya start
+					srch_cond = !q.isAyaStart(start_shadow);
+					qo.validCount = 1; // \
+					qo.qLen = 3;       // -|-> Default Constants for level-0
+					qo.oLen = 2;       // /
 
-					// Motashabehat found,continue!
+				} else if (level == 1) { // Get a Motashabehat near selected index
 					srch_cond = q.sim2cnt(start_shadow) > 1;
 					qo.validCount = 1; // \
-					qo.qLen = 3; // -|-> Default Constants for level-1
-					qo.oLen = 2;
+					qo.qLen = 3;       // -|-> Default Constants for level-1
+					qo.oLen = 2;       // /
 
 				} else if (level == 2) {
-
-					// Motashabehat found, srch_cond=false, continue!
 					srch_cond = q.sim2cnt(start_shadow) > 1;
 					if(!srch_cond){
 						qo.validCount = 1; // \
-						qo.qLen = 2; // -|-> Default Constants for level-2
-						qo.oLen = 1;
+						qo.qLen = 2;       // -|-> Default Constants for level-2
+						qo.oLen = 1;       // /
 						extraLength = extraQLength(start_shadow, qo.qLen);
 						if(extraLength>-1){
 							qo.qLen +=extraLength;
