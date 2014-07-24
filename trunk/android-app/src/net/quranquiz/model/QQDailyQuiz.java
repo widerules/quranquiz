@@ -17,12 +17,13 @@ public class QQDailyQuiz implements Serializable {
 	public int partCount;
 	public int questionsCount;
 	public QQQuestionObject[][] objects;
+	public String randomSeed;
 
 	public QQDailyQuiz(SetAsyncQQDailyQuiz setAsyncQQDailyQuiz){
 		
 		partCount 		= QQUtils.DAILYQUIZ_PARTS_COUNT;
 		questionsCount	= QQUtils.DAILYQUIZ_QPERPART_COUNT;
-		
+		randomSeed		= new String("87652309188765230918876523091887652309188765230918");
 		objects = new QQQuestionObject[QQUtils.DAILYQUIZ_PARTS_COUNT][QQUtils.DAILYQUIZ_QPERPART_COUNT];
 		
 		for(int i=1;i<=partCount;i++ ){ //Skip Al-Fatiha!

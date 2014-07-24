@@ -5,7 +5,6 @@
 ****/
 package net.quranquiz.model;
 
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;

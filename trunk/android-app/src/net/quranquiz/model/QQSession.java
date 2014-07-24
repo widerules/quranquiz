@@ -129,7 +129,8 @@ public class QQSession {
 			}
 		}else{
 			activity.closeContextMenu();
-			activity.askDailyQuiz();
+			if(dailyQuizState!=2) //Ask only once! FIXME: Better implementation?
+				activity.askDailyQuiz();
 			dailyQuizState = 2;
 		}
 		Log.d("DailyQuiz", "State ="+dailyQuizState);

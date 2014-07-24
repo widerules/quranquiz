@@ -17,6 +17,7 @@ import java.util.zip.ZipInputStream;
 
 import net.quranquiz.R;
 import net.quranquiz.util.QQUtils;
+import net.quranquiz.util.QQUtils.QQTextFormat;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -335,6 +336,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		}
 
 		String txt = new String();
+		
+		if(fmt == QQTextFormat.AYAMARKS_BRACKETS_START && isAyaStart(idx))
+			txt = QQUtils.formattedAyaMark(0, fmt);
 		for(int i=0; i< str.size();i++){
 			txt = txt + "   " +  str.get(i);
 		}
@@ -427,5 +431,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		}
 		return aya-idx;
 	}
-
+	
+	public boolean isAyaStart(int idx) {
+		//Check if the previous word is an aya end
+		return (ayaEndsAfter(idx-1)==0);
+	}
 }
