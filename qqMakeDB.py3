@@ -2,7 +2,7 @@
 #
 # Creates a table holding quran text statistics as columns:
 #  0    1     2         3     4     5     6     7
-# _id  txt  txt_nosym  sim1  sim2  sim3  aya  [simn] 
+# _id  txt  txt_nosym  sim1  sim2  sim3  aya  [simn]
 #
 import string
 import unicodedata
@@ -69,8 +69,7 @@ for i in range(id_-3):
   db[4].append(sim2)
   db[5].append(sim3)
   if i%1000 == 0:
-    print('.', end="")
-    break;
+    print('.'),
 
 #boundary unrolled loops
 sim1=0
@@ -99,32 +98,28 @@ db[3].append(sim1)
 db[4].append(sim2)
 db[5].append(sim3)
 
-"""
 # Dump into CSV file
-for i in range(id_-1):    
+for i in range(id_):
   fo.write(str(db[0][i]))
   fo.write(" , ")
-  fo.write(db[1][i])  
+  fo.write(db[1][i])
   fo.write(" , ")
-  fo.write(db[2][i])  
+  fo.write(db[2][i])
   fo.write(" , ")
   fo.write(str(db[3][i]))
   fo.write(" , ")
-  fo.write(str(db[4][i]))  
+  fo.write(str(db[4][i]))
   fo.write(" , ")
-  fo.write(str(db[5][i]))  
+  fo.write(str(db[5][i]))
   fo.write(" , ")
-  fo.write(db[6][i])  
+  fo.write(db[6][i])
   fo.write("\n")
-"""
-for i in range(5):    
-  print(db[0][i]," , ",db[1][i]," , ",db[2][i]," , ",db[3][i]," , ",db[4][i]," , ",db[5][i]," , ",db[6][i])
 
+"""
+for i in range(3):
+  print(db[0][i]," , ",db[1][i]," , ",db[2][i]," , ",db[3][i]," , ",db[4][i]," , ",db[5][i]," , ",db[6][i])
+"""
 
 # Close opened file
 fo.close()
 fi.close()
-
-
-
-
