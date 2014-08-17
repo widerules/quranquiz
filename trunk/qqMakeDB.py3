@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-
+#
+# Creates a table holding quran text statistics as columns:
+#  0    1     2         3     4     5     6     7
+# _id  txt  txt_nosym  sim1  sim2  sim3  aya  [simn] 
+#
 import string
 import unicodedata
 # Open a file
