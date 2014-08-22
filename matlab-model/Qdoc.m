@@ -10,25 +10,20 @@ words_cnt = 77878;
 last_p = -1; 
 simitem_id = 1;
 
-docNode = com.mathworks.xml.XMLUtils.createDocument('qdoc');
-toc = docNode.getDocumentElement;
-toc.setAttribute('version','0.01');
+fid=fopen('qsimdoc.xml','w');
+fprintf(fid,'<?xml version="1.0" encoding="utf-8"?>\n');
+fprintf(fid,'<qdoc version="0.01">\n');
+fprintf(fid,'<!-- This is an auto-generated file. -->\n');
+fprintf(fid,'<!-- Check: https://code.google.com/p/quranquiz/source/browse/trunk/matlab-model -->\n');
+
 for i=1:words_cnt-2
     simlength = q.simn(i).cnt;
     if simlength >0
-        simitem = docNode.createElement('simitem');
-        simitem.setAttribute('simitem_id',num2str(simitem_id));
-        simitem.setAttribute('simitem_len',num2str(simlength));
-        simitem.appendChild(docNode.createTextNode(strjoin(q.txt_sym(i:i+simlength))));
-        toc.appendChild(simitem);
-        
-        %simitem.appendChild(docNode.createComment(' Functions '));
+        fprintf(fid,'   <simitem simitem_id="%d" simitem_len="%d" simitem_txt="%s">\n',simitem_id,simlength,char(strjoin(q.txt_sym(i:i-1+simlength))));
         for occ = [i, q.simn(i).idx]
-            curr_node = docNode.createElement('simoccur');
-            curr_node.setAttribute('wrd_id',num2str(occ));
-            curr_node.appendChild(docNode.createTextNode(strjoin(q.txt_sym(occ+simlength+1: occ+simlength+8))));
-            simitem.appendChild(curr_node);
+            fprintf(fid,'     <simoccur wrd_id="%d">%s</simoccur>\n',occ,char(strjoin(q.txt_sym(occ+simlength: occ+simlength+8))));
         end
+        fprintf(fid,'   </simitem>\n');
         simitem_id = simitem_id+1;
         q.simn(occ).cnt = 0;
     end
@@ -38,4 +33,6 @@ for i=1:words_cnt-2
         last_p = round(i/words_cnt*100);
     end
 end
-xmlwrite('info.xml',docNode);
+fprintf(fid,'</qdoc>\n');
+fclose(fid);
+
