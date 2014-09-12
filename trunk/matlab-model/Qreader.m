@@ -43,7 +43,7 @@ for i=1:words_cnt-2
     q.sim3(i).cnt = length(q.sim3(i).idx);
     
     %Longer patterns are applicable!
-    if(gendoc==1 && q.sim3(i).cnt>1  && i<words_cnt-4)
+    if(gendoc==1 && q.sim3(i).cnt>0  && i<words_cnt-4)
             n=2;
             sim =  q.sim3(i).idx;
             while(~isempty(sim))
@@ -54,7 +54,7 @@ for i=1:words_cnt-2
             if( i==1)  % Initial condition for proper indexing
                 q.simn(i).idx=sim_shadow';
                 q.simn(i).cnt=n;
-                lskip = 1;
+                lskip = 1;    
             elseif(q.simn(i-lskip).cnt  ~= n+lskip )
                 q.simn(i).idx=sim_shadow';
                 q.simn(i).cnt=n;
@@ -64,6 +64,7 @@ for i=1:words_cnt-2
                 q.simn(i).cnt=0;
             end
     else
+        lskip = 0;
         q.simn(i).cnt=0;
     end
     
@@ -109,4 +110,3 @@ fido=fopen('idx-data.csv','w');
  
  fclose(fido);
 display('Done!');
-
