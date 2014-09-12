@@ -1,4 +1,4 @@
-function  Qdoc(q)
+function Qdoc(q)
 if nargin == 0
     if exist('QWords.mat','file') ~=0
         display('Loading ...');
@@ -25,7 +25,9 @@ for i=1:words_cnt-2
         fprintf(fid,'   <simitem simitem_id="%d" simitem_len="%d" simitem_txt="%s">\n',simitem_id,simlength,char(strjoin(q.txt_sym(i:i-1+simlength))));
         for occ = [i, q.simn(i).idx]
             fprintf(fid,'     <simoccur sura_id="%d" aya_id="%d">%s</simoccur>\n',idx2sura(occ),idx2aya(occ,q),char(strjoin(q.txt_sym(occ+simlength: occ+simlength+8))));
-            q.simn(occ).cnt = 0;
+            if q.simn(occ).cnt <= simlength
+                q.simn(occ).cnt = 0;
+            end
         end
         fprintf(fid,'   </simitem>\n');
         simitem_id = simitem_id+1;
@@ -64,4 +66,3 @@ while i >= ss(s)
 end
 a=s;
 end
-
