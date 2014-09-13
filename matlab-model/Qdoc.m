@@ -15,20 +15,34 @@ simitem_id = 1;
 
 fid=fopen('qsimdoc.xml','w');
 fprintf(fid,'<?xml version="1.0" encoding="utf-8"?>\n');
+fprintf(fid,'<?xml-stylesheet type="text/css" href="qsimdoc.css"?>\n');
 fprintf(fid,'<qdoc version="0.01">\n');
 fprintf(fid,'<!-- This is an auto-generated file. -->\n');
 fprintf(fid,'<!-- Check: https://code.google.com/p/quranquiz/source/browse/trunk/matlab-model -->\n');
+fprintf(fid,'  <note>\n');
+fprintf(fid,'    <ntitle>الجميل في متماثل التنزيل</ntitle>\n');
+fprintf(fid,'    <ntext>الحمد لله والصلاة على رسول الله صلى الله عليه وسلم، هذا كتاب الجميل لتبيان متماثل النصوص في القرآن الكريم، أرجو الله به ان ينفع أهل القرآن. هذه النسخة لا زالت تحت الانشاء والتدقيق، يرجى مراجعة المؤلف عند اي خطأ او افتراح:  tarekeldeeb@gmail.com </ntext>\n');
+fprintf(fid,'  </note>\n');
 
 for i=1:words_cnt-2
     simlength = q.simn(i).cnt;
     if simlength >0
-        fprintf(fid,'   <simitem simitem_id="%d" simitem_len="%d" simitem_txt="%s">\n',simitem_id,simlength,char(strjoin(q.txt_sym(i:i-1+simlength))));
+        fprintf(fid,'  <simitem>\n');
+        fprintf(fid,'    <qtxt>%s</qtxt>\n',char(strjoin(q.txt_sym(i:i-1+simlength))));
+        fprintf(fid,'    <id>%d</id>\n',simitem_id);
+        fprintf(fid,'    <len>%d</len>\n',simlength);
+        fprintf(fid,'    <occurances>\n');
         for occ = [i, q.simn(i).idx]
-            fprintf(fid,'     <simoccur sura_id="%d" aya_id="%d">%s</simoccur>\n',idx2sura(occ),idx2aya(occ,q),char(strjoin(q.txt_sym(occ+simlength: occ+simlength+8))));
+            fprintf(fid,'      <simoccur>\n');
+            fprintf(fid,'        <occur>%s</occur>\n',char(strjoin(q.txt_sym(occ+simlength: occ+simlength+8))));
+            fprintf(fid,'        <sura_id>%s</sura_id>\n',char(q.sname(idx2sura(occ))));
+            fprintf(fid,'        <aya_id>%d</aya_id>\n',idx2aya(occ,q));
+            fprintf(fid,'      </simoccur>\n');
             if q.simn(occ).cnt <= simlength
                 q.simn(occ).cnt = 0;
             end
         end
+        fprintf(fid,'    </occurances>\n');       
         fprintf(fid,'   </simitem>\n');
         simitem_id = simitem_id+1;
     end
