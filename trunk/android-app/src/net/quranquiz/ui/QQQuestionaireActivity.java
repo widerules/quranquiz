@@ -35,7 +35,6 @@ import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -551,12 +550,12 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong non-special answer
 				if(Quest.getQ().qType == QType.NOTSPECIAL)
-					if(myQQProfile.getLevel()>0)
+					if(myQQProfile.getLevel()>0 || isDailyQuizRunning_shadow)
 						myQQProfile.addIncorrect(CurrentPart);
 
 			} else { // A correct answer
 				if(QQinit == 0 && QOptIdx == Quest.getQ().rounds){
-					if(myQQProfile.getLevel()>0){
+					if(myQQProfile.getLevel()>0 || isDailyQuizRunning_shadow ){
 						if(Quest.getQ().qType == QType.NOTSPECIAL)
 							myQQProfile.addCorrect(CurrentPart);
 						else
@@ -582,10 +581,17 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			if( Quest == null || isDailyQuizRunning_shadow != myQQSession.isDailyQuizRunning){
 				isDailyQuizRunning_shadow = myQQSession.isDailyQuizRunning;
 				if(isDailyQuizRunning_shadow){
-					Quest = new DailyQuizQuestionnaire(myQQSession.dailyQuiz, myQQProfile);
+					Quest = myQQSession.getDailyQuizQuestionnaire();
+		        	((DailyQuizQuestionnaire)Quest).setPreDQCorrectAnswers(myQQProfile.getTotalCorrect());
 					setScoreUIVisible(true);
 					leftBar.setVisibility(View.VISIBLE);
 				}else{ 
+					if(Quest != null){
+						countUpHandler.removeCallbacks(updateTimerMethod);
+						tvCountUp.setVisibility(View.INVISIBLE);
+						tvCountUpTenths.setVisibility(View.INVISIBLE);
+						((DailyQuizQuestionnaire)Quest).postResults(myQQProfile, timeInMillies);
+					}
 					Quest = new QQQuestionaire(myQQProfile, q, myQQSession);
 					setScoreUIVisible(myQQProfile.getLevel()!=0);
 					leftBar.setVisibility(View.INVISIBLE);
@@ -729,6 +735,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	            //Yes button clicked
 	        	myQQSession.reportDialogDisplayed();
 	        	myQQSession.isDailyQuizRunning = true;
+
 	        	//TODO: Start The Daily Quiz!
 	        	/*
 	        	AlphaAnimation  glowing_anim= new AlphaAnimation(1, 0);
@@ -748,7 +755,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	        	tvCountUpTenths.setVisibility(View.VISIBLE);
 	        	
 	        	startTime = SystemClock.uptimeMillis();
-	            countUpHandler.postDelayed(updateTimerMethod, 0); //To Stop: countUpHandler.removeCallbacks(updateTimerMethod);
+	            countUpHandler.postDelayed(updateTimerMethod, 0);
 	     	   	leftBar.setVisibility(ProgressBar.VISIBLE);
 	     	   	leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
 	            leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);

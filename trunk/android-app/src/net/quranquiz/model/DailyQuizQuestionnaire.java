@@ -35,6 +35,7 @@ public class DailyQuizQuestionnaire implements QuestionnaireProvider {
 	private int sparseQuestions[];
 	private int remainingQuestions;
 	private QQQuestionObject qo;
+	private int preDQCorrectAnswers;
 	
 	public DailyQuizQuestionnaire(QQDailyQuiz dailyQuiz, QQProfile prof){
 		this.dailyQuiz 		= dailyQuiz;
@@ -72,6 +73,17 @@ public class DailyQuizQuestionnaire implements QuestionnaireProvider {
 	
 	public int getRemainingQuestions(){
 		return remainingQuestions;
+	}
+
+	public void postResults(QQProfile myQQProfile, long timeInMillies) {
+		int dqCorrectPoints = myQQProfile.getTotalCorrect() - preDQCorrectAnswers;
+		int dqSelectedParts = myQQProfile.getTotalStudyLength()/QQUtils.Juz2AvgWords;
+		Log.i("DQ-NextQ", "Posting: "+ 	dqCorrectPoints + "/10 @" + dqSelectedParts +" in "+ timeInMillies +" ms.");
+		//TODO: Make post
+	}
+
+	public void setPreDQCorrectAnswers(int totalCorrect) {
+		this.preDQCorrectAnswers = totalCorrect;
 	}
 
 }
