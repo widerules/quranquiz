@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- The drawables used here can be solid colors, gradients, shapes, images, etc. -->
+    <item android:drawable="@drawable/timed_background_100" android:duration="600" />
+    <item android:drawable="@drawable/timed_background_60" android:duration="600" />
+    <item android:drawable="@drawable/timed_background_30" android:duration="600" />
+    <item android:drawable="@color/white" android:duration="600" />
+    <item android:drawable="@drawable/timed_background_30" android:duration="600" />
+    <item android:drawable="@drawable/timed_background_60" android:duration="600" />
+</animation-list>

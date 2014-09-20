@@ -76,7 +76,8 @@ public class QQSession {
 	}
 	
 	public DailyQuizQuestionnaire getDailyQuizQuestionnaire(){
-		this.dailyQuizQuestionnaire = new DailyQuizQuestionnaire(this.dailyQuiz, prof);
+		if(dailyQuizQuestionnaire == null)
+			this.dailyQuizQuestionnaire = new DailyQuizQuestionnaire(this.dailyQuiz, prof);
 		return dailyQuizQuestionnaire;
 	}
 	
@@ -344,20 +345,20 @@ public class QQSession {
        }
   }
 
-public void reportDialogDisplayed() {
-	dailyQuizState = 2;
-}
-
-/**
- * Close all background ASyncTasks
- */
-public void close() {
-	if(casqqdq != null)
-		casqqdq.cancel(true);
-	if(sasqqdq != null)
-		sasqqdq.cancel(true);
-	if(gasqqdq != null)
-		gasqqdq.cancel(true);	
-} 
+	public void reportDialogDisplayed() {
+		dailyQuizState = 2;
+	}
+	
+	/**
+	 * Close all background ASyncTasks
+	 */
+	public void close() {
+		if(casqqdq != null)
+			casqqdq.cancel(true);
+		if(sasqqdq != null)
+			sasqqdq.cancel(true);
+		if(gasqqdq != null)
+			gasqqdq.cancel(true);	
+	}
 
 }
