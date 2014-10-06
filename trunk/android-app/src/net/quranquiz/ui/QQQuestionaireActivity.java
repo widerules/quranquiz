@@ -73,8 +73,6 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private TextView tvScoreUp;
 	private TextView tvScoreDown;
 	private TextView tvSymScore;
-	private ImageView ivSymScoreUp;
-	private ImageView ivSymScoreDown;
 	private TextView tvBack;
 	private TextView tvInstructions;
 	private Button btnBack;
@@ -83,6 +81,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	private TextView tvCountUp;
 	private TextView tvCountUpTenths;
 	public VerticalProgressBar leftBar;
+	private ImageView ivSymScoreUp;
+	private ImageView ivSymScoreDown;
 	private CountDownTimer cdt;
 	private Button[] btnArray;
 	private ActionBar actionbar;
