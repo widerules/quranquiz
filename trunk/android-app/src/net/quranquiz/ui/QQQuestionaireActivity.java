@@ -229,7 +229,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	 */
 	private void initProfile() {
 		Intent intentStudyList;
-		myQQProfileHandler = new QQProfileHandler(this);
+		myQQProfileHandler = new QQProfileHandler();
 		myQQProfile = myQQProfileHandler.getProfile();
 		//Load List Selector first time
 		if(myQQProfile.getTotalQuesCount()==0){
@@ -405,7 +405,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	 * to demonstrate a demo screen while the initial DB preparation. 
 	 */
 	private void initDBHandle() {
-		q = new QQDataBaseHelper(this);
+		q = new QQDataBaseHelper();
 		if (!q.checkDataBase()){
 			showUsage();
 			try {

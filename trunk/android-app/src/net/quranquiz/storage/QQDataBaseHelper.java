@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.zip.ZipInputStream;
 
 import net.quranquiz.R;
+import net.quranquiz.util.QQApp;
 import net.quranquiz.util.QQUtils;
 import net.quranquiz.util.QQUtils.QQTextFormat;
 import android.content.Context;
@@ -46,10 +47,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	public static int fileLength = 0;
 
-	public QQDataBaseHelper(Context context) {
-
-		super(context, DB_NAME, null, DB_VERSION);
-		this.myContext = context;
+	public QQDataBaseHelper() {
+		super(QQApp.getContext(), DB_NAME, null, DB_VERSION);
+		this.myContext = QQApp.getContext();
 	}
 
 	/**

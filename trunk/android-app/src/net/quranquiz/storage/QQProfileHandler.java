@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import net.quranquiz.model.QQScoreRecord;
+import net.quranquiz.util.QQApp;
 import net.quranquiz.util.QQUtils;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -27,8 +28,8 @@ public class QQProfileHandler implements Serializable {
 
 	public QQProfile CurrentProfile;
 
-	public QQProfileHandler(Context context) {
-		myContext = context;
+	public QQProfileHandler() {
+		myContext = QQApp.getContext();
 	}
 
 	private boolean checkLastProfile() {
