@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import mirror.android.os.AsyncTask;
-import net.quranquiz.R;
 import net.quranquiz.storage.QQProfile;
-import net.quranquiz.ui.QQQuestionaireActivity;
-import net.quranquiz.util.QQApp;
 import net.quranquiz.util.QQUtils;
 
 import org.apache.http.HttpResponse;
@@ -27,8 +24,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 /**
  * This session holds a vector of current questions to 
@@ -48,7 +43,7 @@ public class QQSession {
 	private GetAsyncQQDailyQuiz gasqqdq;
 	private Vector<Integer> vQStart;
 	private QQProfile prof;
-	private QQQuestionaireActivity activity;
+	private Model _model;
 	private static boolean blockRecursiveDailyQuizChecks = false;
 	private DailyQuizQuestionnaire dailyQuizQuestionnaire = null;
 	
@@ -65,9 +60,9 @@ public class QQSession {
 	private int dailyQuizState;
 	private int retries = 0;
 	
-	public QQSession(QQProfile profile, QQQuestionaireActivity QQQActivity){
+	public QQSession(QQProfile profile, Model model){
 		prof				= profile;
-		activity			= QQQActivity;
+		_model				= model;
 		isDailyQuizReady 	= false;
 		isDailyQuizRunning 	= false;
 		dailyQuiz		 	= null;
@@ -129,9 +124,14 @@ public class QQSession {
 			default: break;
 			}
 		}else{
-			activity.closeContextMenu();
+			
+			//TODO: Implement
+			//activity.closeContextMenu();
+			
 			if(dailyQuizState!=2) //Ask only once! FIXME: Better implementation?
-				activity.askDailyQuiz();
+				//_model.askDailyQuiz();
+		   		_model.getEventBus().dispatchEvent(new QQModelEvent(QQEventType.UI_DAILY_QUIZ_AVAILABLE),"");
+
 			dailyQuizState = 2;
 		}
 		Log.d("DailyQuiz", "State ="+dailyQuizState);
@@ -330,14 +330,16 @@ public class QQSession {
 
        @Override
        protected void onPreExecute() {
-    	   Toast.makeText(activity,QQApp.getContext().getResources().getString(R.string.daily_dialogue_building),Toast.LENGTH_LONG).show();
-    	   activity.leftBar.setVisibility(ProgressBar.VISIBLE);
-    	   activity.leftBar.setMax(QQUtils.DAILYQUIZ_PARTS_COUNT);
+   		_model.getEventBus().dispatchEvent(new QQModelEvent(QQEventType.UI_STATUS_DAILY_QUIZ_BUILDING), "");
+
+    	   /*Toast.makeText(activity,QQApp.getContext().getResources().getString(R.string.daily_dialogue_building),Toast.LENGTH_LONG).show();
+    	   _model.setVisibility(ProgressBar.VISIBLE);
+    	   _model.leftBar.setMax(QQUtils.DAILYQUIZ_PARTS_COUNT);*/
        }
 
        @Override
        protected void onProgressUpdate(Integer... values) {
-    	   activity.leftBar.setProgress(values[0]);
+    	   _model.setProgress(values[0]);
        }
        
        public void triggerUpdateProgress(int i){

@@ -177,8 +177,7 @@ public class QQDashboardActivity extends Activity {
 			public void onClick(View view) {
 				Intent intentStudyList;
 				if (myQQProfileHandler == null) {
-					myQQProfileHandler = new QQProfileHandler(
-							getApplicationContext());
+					myQQProfileHandler = new QQProfileHandler();
 					myQQProfileHandler.getProfile();
 				}
 				if(android.os.Build.VERSION.SDK_INT 
@@ -199,8 +198,7 @@ public class QQDashboardActivity extends Activity {
 
 			public void onClick(View view) {
 				if (myQQProfileHandler == null) {
-					myQQProfileHandler = new QQProfileHandler(
-							getApplicationContext());
+					myQQProfileHandler = new QQProfileHandler();
 					myQQProfileHandler.getProfile();
 				}
 				startActivity((new QQScoreChart(
