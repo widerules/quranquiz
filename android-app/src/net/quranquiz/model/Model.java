@@ -359,6 +359,13 @@ public class Model {
 	}	
 	public String[] getOptions(){
 		return _sOptions;
+	}
+	/**
+	 * Starts the model by creating the 
+	 * first Question
+	 */
+	public void start() {
+		userAction(-1);
 	} 
 	
 	
