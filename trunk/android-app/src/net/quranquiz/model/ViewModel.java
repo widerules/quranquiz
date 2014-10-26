@@ -1,5 +1,7 @@
 package net.quranquiz.model;
 
+import android.util.Log;
+
 /**
  * This class is the view model. Any UI class should bind to this model.
  * <ul>
@@ -11,7 +13,7 @@ package net.quranquiz.model;
  * @author TELDEEB
  *
  */
-public class ViewModel {
+public class ViewModel implements QQModelEvent.Listener{
 
 	private String 	question, correctAnswer;
 	private String 	options[];
@@ -23,10 +25,22 @@ public class ViewModel {
 	private boolean showingProgress;
 	private boolean showingCounter;
 	private boolean	showingQuestion;
+	private Model 	model;
 	
-	private Model model;
 	public ViewModel() {
 		model = new Model();
+		model.getEventBus().addEventListener(this);
+		model.start();
+	}
+	
+	@Override
+	public void onQQUIEvent(QQModelEvent event, String message) {
+		Log.d("vm", "Got Event:"+event.toString() + " - " + message);
+	}
+	@Override
+	public void onQQGenericEvent(QQModelEvent event, String message) {
+		// Auto-generated method stub
+		// Not yet needed!
 	}
 	public void setUserSelection(int optionID){
 		model.userAction(optionID);
