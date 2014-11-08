@@ -152,7 +152,7 @@ public class Model {
 
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
-			events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_ANSWER), "");
+			events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_ANSWER), "False");
 			//setBackCard();
 			QOptIdx = -1; // trigger a new question
 		} else {
@@ -177,7 +177,7 @@ public class Model {
 							myQQProfile.addSpecial(Quest.getQ().qType.getScore());
 					}
 					// Display Correct answer
-					events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_ANSWER), "");
+					events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_ANSWER), "True");
 
 					//setBackCard();
 				}
@@ -281,7 +281,8 @@ public class Model {
 		//Display Instructions
 		_sInstructions = Quest.getQ().qType.getInstructions();
 		
-		//TODO: Implement
+		events.dispatchEvent(new QQModelEvent(QQEventType.UI_QUESTION_TYPE_UPDATE),"");
+		
 		/*if(Quest.getQ().qType == QType.NOTSPECIAL)
 			QQUtils.tvSetBackgroundFromDrawable(tvInstructions, R.drawable.tv_instruction_background);
 		else
@@ -294,20 +295,20 @@ public class Model {
 			if(Quest.getQ().qType==QType.NOTSPECIAL)
 				strTemp = q.txt(Quest.getQ().op[QOptIdx][scrambled[j]], Quest.getQ().oLen, QQUtils.QQTextFormat.AYAMARKS_NONE);
 			else{
-				switch(Quest.getQ().qType){
-				case SURANAME:
-					strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.getQ().op[QOptIdx][scrambled[j]]);
-					break;
-				case SURAAYACOUNT:
-					strTemp = " آيات السورة " + Quest.getQ().op[QOptIdx][scrambled[j]];
-					break;
-				case AYANUMBER:
-					strTemp = " رقم الآية " + Quest.getQ().op[QOptIdx][scrambled[j]];
-					break;
-				default: 
-					strTemp = "-";
-					break;
-				}
+				 switch(Quest.getQ().qType){
+                 case SURANAME:
+                         strTemp = "  سورة  " + QQUtils.getSuraNameFromIdx(Quest.getQ().op[QOptIdx][scrambled[j]]);
+                         break;
+                 case SURAAYACOUNT:
+                         strTemp = " آيات السورة " + Quest.getQ().op[QOptIdx][scrambled[j]];
+                         break;
+                 case AYANUMBER:
+                         strTemp = " رقم الآية " + Quest.getQ().op[QOptIdx][scrambled[j]];
+                         break;
+                 default: 
+                         strTemp = "-";
+                         break;
+                 }
 			}
 			_sOptions[j] = QQUtils.fixQ(strTemp);
 		}
@@ -344,9 +345,11 @@ public class Model {
 	public void setProgress(int _iProgress) {
 		this._iProgress = _iProgress;
 	}
-	
 	public String getQuestion(){
 		return _sQuestion;
+	}
+	public String getScore(){
+		return String.valueOf(myQQProfile.getScore());
 	}
 	public String getScoreUp(){
 		return _sScoreUp;
@@ -360,13 +363,56 @@ public class Model {
 	public String[] getOptions(){
 		return _sOptions;
 	}
+	public boolean isSpecialQuestion() {
+		return (Quest.getQ().qType==QType.NOTSPECIAL)?false:true;
+	} 
 	/**
 	 * Starts the model by creating the 
 	 * first Question
 	 */
 	public void start() {
 		userAction(-1);
-	} 
-	
-	
+	}
+
+	public void close() {
+		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
+		myQQSession.close();
+		if (q != null)
+			q.closeDatabase();
+	}
+
+	public void setSpecialQuestionEnabled(Boolean isEnabled) {
+		myQQProfile.setSpecialEnabled(isEnabled);
+	}
+	public boolean getSpecialQuestionEnabled() {
+		return myQQProfile.isSpecialEnabled();
+	}
+
+	public void reload() {
+		myQQProfileHandler.reLoadCurrentProfile();
+    	events.dispatchEvent(new QQModelEvent(QQEventType.UI_REFRESH), "");
+	}
+
+	public String getQuranUri() {
+		return String.valueOf(QQUtils.getSuraIdx(Quest.getQ().startIdx)+1) +"/" +
+				 q.ayaNumberOf(Quest.getQ().startIdx);
+	}
+
+	public void startDailyQuiz() {
+    	myQQSession.reportDialogDisplayed();
+    	myQQSession.isDailyQuizRunning = true;
+        userAction(-1);
+    	events.dispatchEvent(new QQModelEvent(QQEventType.UI_SESSION_START_DAILY_QUIZ), "");
+
+	}
+
+	public String getCorrectAnswer() {
+		return "[" + "  سورة  "+ QQUtils.getSuraNameFromWordIdx(Quest.getQ().startIdx) + " - آياتها " + q.ayaCountOfSuraAt(Quest.getQ().startIdx)+ "] "+ "\n"
+				+ QQUtils.fixQ(q.txt(Quest.getQ().startIdx, 12 * Quest.getQ().oLen + Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_FULL))
+				+ " ...";
+	}
+
+	public int getCorrectChoiceIndex() {
+		return correct_choice;
+	}	
 }

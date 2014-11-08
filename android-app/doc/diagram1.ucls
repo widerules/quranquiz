@@ -345,18 +345,19 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="39">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="40" name="qType"/>      
-      <multiplicity id="41" minimum="0" maximum="1"/>    
+  <nesting id="39">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <association id="40">    
+    <bendpoint x="1410" y="1534"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="41" name="qo"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="42">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="36"/>  
-  </nesting>  
   <association id="43">    
     <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="44" name="q"/>      
@@ -374,189 +375,161 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="49">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="50" name="fragments"/>      
-      <multiplicity id="51" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="50" name="myQQSession"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="26" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="52">    
-    <end type="SOURCE" refId="32" navigable="false">      
-      <attribute id="53" name="QParts"/>      
-      <multiplicity id="54" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="53" name="q"/>      
+      <multiplicity id="54" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="33" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="55">    
-    <bendpoint x="2124" y="416"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="56" name="prof"/>      
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="56" name="scaleType"/>      
       <multiplicity id="57" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="37" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="58">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="59" name="prof"/>      
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="59" name="myQQProfileHandler"/>      
       <multiplicity id="60" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="31" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="61">    
-    <bendpoint x="2103" y="416"/>    
-    <bendpoint x="2084" y="903"/>    
-    <bendpoint x="2084" y="1534"/>    
+    <bendpoint x="2124" y="416"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="62" name="qo"/>      
+      <attribute id="62" name="prof"/>      
       <multiplicity id="63" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="64">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="65" name="prof"/>      
+      <attribute id="65" name="dailyQuizQuestionnaire"/>      
       <multiplicity id="66" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="67">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="68" name="myQQSession"/>      
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="68" name="session"/>      
       <multiplicity id="69" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="70">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="71" name="sasqqdq"/>      
-      <multiplicity id="72" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="32" navigable="false">      
+      <attribute id="71" name="QParts"/>      
+      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="73">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="74" name="objects"/>      
-      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="74" name="ProfileHandler"/>      
+      <multiplicity id="75" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="31" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="76">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="77" name="myQQProfileHandler"/>      
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="77" name="casqqdq"/>      
       <multiplicity id="78" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="79">    
     <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="80" name="myQQProfileHandler"/>      
+      <attribute id="80" name="leftBar"/>      
       <multiplicity id="81" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
+    <end type="TARGET" refId="24" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="82">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="83" name="ProfileHandler"/>      
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="83" name="prof"/>      
       <multiplicity id="84" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="85">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="86" name="ProfileHandler"/>      
-      <multiplicity id="87" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="88">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="89" name="dailyQuizQuestionnaire"/>      
-      <multiplicity id="90" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="91">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="92" name="CurrentProfile"/>      
-      <multiplicity id="93" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="94">    
-    <bendpoint x="1450" y="903"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="95" name="dailyQuiz"/>      
-      <multiplicity id="96" minimum="0" maximum="1"/>    
+  <association id="85">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="86" name="objects"/>      
+      <multiplicity id="87" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="97">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="14"/>  
+  <nesting id="88">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="36"/>  
   </nesting>  
+  <association id="89">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="90" name="fragments"/>      
+      <multiplicity id="91" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="92">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="93" name="qType"/>      
+      <multiplicity id="94" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="95">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="96" name="sasqqdq"/>      
+      <multiplicity id="97" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <realization id="98">    
     <bendpoint x="2061" y="416"/>    
     <bendpoint x="2061" y="903"/>    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="9"/>  
   </realization>  
-  <realization id="99">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="100">    
+  <association id="99">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="101" name="activity"/>      
-      <multiplicity id="102" minimum="0" maximum="1"/>    
+      <attribute id="100" name="gasqqdq"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="103">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="104" name="leftBar"/>      
-      <multiplicity id="105" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="106">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="107">    
+  <association id="102">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="108" name="dailyQuiz"/>      
-      <multiplicity id="109" minimum="0" maximum="1"/>    
+      <attribute id="103" name="dailyQuiz"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="110">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="111" name="q"/>      
-      <multiplicity id="112" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="33" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="113">    
+  <nesting id="105">    
     <bendpoint x="2458" y="416"/>    
     <bendpoint x="2458" y="903"/>    
     <bendpoint x="2458" y="1534"/>    
@@ -564,92 +537,119 @@
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="4"/>  
   </nesting>  
-  <association id="114">    
+  <association id="106">    
+    <bendpoint x="2103" y="416"/>    
+    <bendpoint x="2084" y="903"/>    
+    <bendpoint x="2084" y="1534"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="115" name="sparsed"/>      
-      <multiplicity id="116" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="117">    
-    <bendpoint x="2082" y="416"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="118" name="myQQProfile"/>      
-      <multiplicity id="119" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="120">    
-    <bendpoint x="1471" y="416"/>    
-    <bendpoint x="1471" y="903"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="121" name="Quest"/>      
-      <multiplicity id="122" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="123">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="37"/>  
-  </nesting>  
-  <nesting id="124">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="18"/>  
-  </nesting>  
-  <nesting id="125">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
-  </nesting>  
-  <association id="126">    
-    <bendpoint x="1410" y="1534"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="127" name="qo"/>      
-      <multiplicity id="128" minimum="0" maximum="1"/>    
+      <attribute id="107" name="qo"/>      
+      <multiplicity id="108" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="129">    
-    <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="130" name="scaleType"/>      
-      <multiplicity id="131" minimum="0" maximum="1"/>    
+  <nesting id="109">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="14"/>  
+  </nesting>  
+  <association id="110">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="111" name="CurrentProfile"/>      
+      <multiplicity id="112" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="37" navigable="true"/>    
+    <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="132">    
+  <nesting id="113">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="18"/>  
+  </nesting>  
+  <association id="114">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="115" name="prof"/>      
+      <multiplicity id="116" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="117">    
     <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="133" name="ProfileHandler"/>      
-      <multiplicity id="134" minimum="0" maximum="1"/>    
+      <attribute id="118" name="ProfileHandler"/>      
+      <multiplicity id="119" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="31" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="135">    
+  <realization id="120">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="121">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="122" name="ProfileHandler"/>      
+      <multiplicity id="123" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="124">    
+    <bendpoint x="1450" y="903"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="125" name="dailyQuiz"/>      
+      <multiplicity id="126" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="127">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <association id="128">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="129" name="_model"/>      
+      <multiplicity id="130" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="131">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="132" name="myQQProfileHandler"/>      
+      <multiplicity id="133" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="134">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="136" name="session"/>      
-      <multiplicity id="137" minimum="0" maximum="1"/>    
+      <attribute id="135" name="sparsed"/>      
+      <multiplicity id="136" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="138">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="139" name="gasqqdq"/>      
-      <multiplicity id="140" minimum="0" maximum="1"/>    
+  <association id="137">    
+    <bendpoint x="1471" y="416"/>    
+    <bendpoint x="1471" y="903"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="138" name="Quest"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <nesting id="140">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="37"/>  
+  </nesting>  
   <association id="141">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="142" name="casqqdq"/>      
+    <bendpoint x="2082" y="416"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="142" name="myQQProfile"/>      
       <multiplicity id="143" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

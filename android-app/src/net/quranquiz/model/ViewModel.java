@@ -1,5 +1,6 @@
 package net.quranquiz.model;
 
+import net.quranquiz.ui.QQQuestionaireActivity;
 import android.util.Log;
 
 /**
@@ -25,17 +26,89 @@ public class ViewModel implements QQModelEvent.Listener{
 	private boolean showingProgress;
 	private boolean showingCounter;
 	private boolean	showingQuestion;
+	private boolean isSpecialQuestion;
+	private int		level;
 	private Model 	model;
+	private QQQuestionaireActivity _activity = null;
 	
 	public ViewModel() {
-		model = new Model();
+		model 		= new Model();
 		model.getEventBus().addEventListener(this);
 		model.start();
+		
+	}
+	/*TODO: Cannot rely on UI, define interface*/
+	public ViewModel(QQQuestionaireActivity activity) {
+		_activity 	= activity;
+		model 		= new Model();
+		model.getEventBus().addEventListener(this);
+		model.start();
+		
+	}
+	
+	public boolean isBind(){
+		return (_activity==null)?false:true;
+	}
+	public void bindUI(QQQuestionaireActivity activity){
+		_activity 	= activity;		
 	}
 	
 	@Override
 	public void onQQUIEvent(QQModelEvent event, String message) {
-		Log.d("vm", "Got Event:"+event.toString() + " - " + message);
+		QQEventType src = (QQEventType) event.getSource();
+		if(src.toString().contains("UI")){
+			switch(src){
+			case UI_REFRESH:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_QUESTIONAIRE_UPDATE:
+				question 	= model.getQuestion();
+				options 	= model.getOptions();
+				_activity.vmSetQuestion(question);
+				_activity.vmSetOptions(options, model.getCorrectChoiceIndex());
+				break;
+			case UI_QUESTION_TYPE_UPDATE:
+				isSpecialQuestion = model.isSpecialQuestion();
+				break;
+			case UI_SHOW_ANSWER:
+				_activity.vmShowCorrectAnswer(message.contains("T"));
+				break;
+			case UI_PROGRESS_UPDATE:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_SESSION_START_DAILY_QUIZ:
+				_activity.vmStartDailyQuiz();
+				break;
+			case UI_SESSION_START_QUESTIONNAIRE:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_STATUS_DB_UNZIPPING:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_STATUS_DAILY_QUIZ_BUILDING:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_SHOW_STUDY_LIST:
+				_activity.vmShowUsage();
+				//TODO: Show Study list as well!
+				break;
+			case UI_DAILY_QUIZ_AVAILABLE:
+				_activity.vmDailyQuizAvailable();
+				break;
+			case UI_DAILY_QUIZ_REPORT_AVAILABLE:
+				Log.e("vm", "UnImplemented UI Event: "+src);
+				break;
+			case UI_SCORE_UPDATE:
+				scoreUp 	= model.getScoreUp();
+				scoreDown 	= model.getScoreDown();
+				score		= model.getScore();
+				break;
+			    
+			default:
+				Log.e("vm", "Unhandled UI Event!");
+				break;
+			}
+		}
 	}
 	@Override
 	public void onQQGenericEvent(QQModelEvent event, String message) {
@@ -52,6 +125,7 @@ public class ViewModel implements QQModelEvent.Listener{
 		this.question = question;
 	}
 	public String getCorrectAnswer() {
+		correctAnswer = model.getCorrectAnswer();
 		return correctAnswer;
 	}
 	public void setCorrectAnswer(String correctAnswer) {
@@ -122,5 +196,34 @@ public class ViewModel implements QQModelEvent.Listener{
 	}
 	public void setShowingQuestion(boolean showingQuestion) {
 		this.showingQuestion = showingQuestion;
+	}
+	public boolean isSpecialQuestion() {
+		return isSpecialQuestion;
+	}
+	public void setSpecialEnabled(Boolean isEnabled) {
+		model.setSpecialQuestionEnabled(isEnabled);
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+		_activity.vmSetScoreVisiblity(level!=0); // Hide score for practicing
+	}
+
+	public void close() {
+		model.close();		
+	}
+
+	public void reload() {
+		model.reload();
+	}
+
+	public String getQuranUri() {
+		return model.getQuranUri();
+	}
+
+	public void startDailyQuiz() {
+		model.startDailyQuiz();
 	}
 }

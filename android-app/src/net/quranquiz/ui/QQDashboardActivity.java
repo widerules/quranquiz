@@ -34,6 +34,7 @@ public class QQDashboardActivity extends Activity {
 
 	private QQProfileHandler myQQProfileHandler = null;
 	private FeedbackDialog feedBackDialog;
+	
 	// Function to read the result from newly created activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

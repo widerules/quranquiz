@@ -3,6 +3,7 @@
 	<name>QuranQuiz</name>
 	<comment></comment>
 	<projects>
+		<project>android-support-v4-preferencefragment</project>
 		<project>google_play_srvc</project>
 		<project>library</project>
 		<project>slidingmenu</project>
