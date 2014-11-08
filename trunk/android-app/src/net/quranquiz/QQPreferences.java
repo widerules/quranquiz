@@ -6,11 +6,17 @@
 package net.quranquiz;
 
 import android.os.Bundle;
+
 import android.preference.ListPreference;
 import android.preference.Preference;
-
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+/**
+ * Saves user UI preferences (not profile): Level Selection
+ * @author TELDEEB
+ * TODO: Save preferences with newer APIs
+ */
+@SuppressWarnings("deprecation")
 public class QQPreferences extends SherlockPreferenceActivity {
 
 	@Override

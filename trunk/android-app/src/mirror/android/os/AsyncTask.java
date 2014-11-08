@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class AsyncTask<Params, Progress, Result> {
   private static final String LOG_TAG = "AsyncTask";
 
@@ -163,7 +164,6 @@ public abstract class AsyncTask<Params, Progress, Result> {
   }
 
   private Result postResult(Result result) {
-      @SuppressWarnings("unchecked")
 	Message message = sHandler.obtainMessage(MESSAGE_POST_RESULT,
               new AsyncTaskResult<Result>(this, result));
       message.sendToTarget();
@@ -473,7 +473,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
   }
 
   private static class InternalHandler extends Handler {
-      @Override
+	@Override
       public void handleMessage(Message msg) {
           AsyncTaskResult result = (AsyncTaskResult) msg.obj;
           switch (msg.what) {
@@ -492,12 +492,11 @@ public abstract class AsyncTask<Params, Progress, Result> {
       Params[] mParams;
   }
 
-  @SuppressWarnings({"RawUseOfParameterizedType"})
   private static class AsyncTaskResult<Data> {
-      final AsyncTask mTask;
+	final AsyncTask mTask;
       final Data[] mData;
 
-      AsyncTaskResult(AsyncTask task, Data... data) {
+	AsyncTaskResult(AsyncTask task, Data... data) {
           mTask = task;
           mData = data;
       }

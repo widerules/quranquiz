@@ -13,6 +13,12 @@ import android.preference.Preference;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+/**
+ * 
+ * @author TELDEEB
+ * TODO: Use better preferences() implementation
+ */
+@SuppressWarnings("deprecation")
 public class QQPreferencesActivity extends SherlockPreferenceActivity {
 
 	@Override

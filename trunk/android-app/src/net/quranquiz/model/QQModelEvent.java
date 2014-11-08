@@ -45,7 +45,7 @@ public class QQModelEvent extends EventObject{
 	protected EventListenerList eventListenerList = new EventListenerList();
 	 
 	/**
-	 * Adds the eventListenerList for MapViewController
+	 * Adds the eventListenerList for Event Bus
 	 * @param listener
 	 */
 	public void addEventListener(Listener listener){
@@ -53,7 +53,7 @@ public class QQModelEvent extends EventObject{
 	}
 	 
 	/**
-	 * Removes the eventListenerList for MapViewController
+	 * Removes the eventListenerList for Event Bus
 	 * @param listener
 	 */
 	public void removeEventListener(Listener listener){

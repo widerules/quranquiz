@@ -184,8 +184,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				do {
 					ids.add(cur.getInt(0));
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 		}
 		return ids;
 	}
@@ -198,8 +198,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getInt(0);
-				cur.close();
 			}
+			cur.close();
 		}
 		return s;
 	}
@@ -225,8 +225,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				do {
 					ids.add(cur.getInt(0));
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 		}
 		return ids;
 	}
@@ -239,8 +239,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getInt(0);
-				cur.close();
 			}
+			cur.close();
 		}
 		return s;
 	}
@@ -273,8 +273,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				do {
 					ids.add(cur.getInt(0));
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 		}
 		return ids;
 	}
@@ -288,8 +288,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getString(0);
-				cur.close();
 			}
+			cur.close();
 		}
 		return s;
 	}
@@ -309,8 +309,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					s = s + "   " +	word;
 					str.add(word);
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 			if((idx+len)>QQUtils.QuranWords){
 				cur = myDataBase.rawQuery("select txtsym from q where _id>"
 						+ (idx - QQUtils.QuranWords -1) + " and _id<" + (idx + len - QQUtils.QuranWords), null);
@@ -320,8 +320,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 						s = s + "   " +	word;
 						str.add(word);
 					} while (cur.moveToNext());
-					cur.close();
 				}	
+				cur.close();
 			}
 		}
 		
@@ -371,8 +371,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				do {
 					ids.add(cur.getInt(0));
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 		}
 		return ids;
 	}
@@ -392,8 +392,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 				do {
 					ids.add(cur.getInt(0));
 				} while (cur.moveToNext());
-				cur.close();
 			}
+			cur.close();
 		}
 		return ids;
 	}	
@@ -407,8 +407,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					null);
 			if (cur.moveToFirst()) {
 				aya = cur.getInt(0);
-				cur.close();
 			}
+			cur.close();
 		}
 		return aya;
 	}
@@ -426,8 +426,8 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 					null);
 			if (cur.moveToFirst()) {
 				aya = cur.getInt(0);
-				cur.close();
 			}
+			cur.close();
 		}
 		return aya-idx;
 	}

@@ -11,6 +11,13 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Encapsulates the score record entry for user progress
+ * 
+ * @author TELDEEB
+ * TODO: Use better date() implementation
+ */
+@SuppressWarnings("deprecation")
 public class QQScoreRecord implements Serializable {
 
 	private static final long serialVersionUID = 1L;
