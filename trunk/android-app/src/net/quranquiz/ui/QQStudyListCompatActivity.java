@@ -7,6 +7,7 @@ package net.quranquiz.ui;
 
 import net.quranquiz.R;
 import net.quranquiz.storage.QQProfileHandler;
+import net.quranquiz.util.QQApp;
 import net.quranquiz.util.QQUtils;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.preference.PreferenceCategory;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.google.analytics.tracking.android.EasyTracker;
+//import com.google.analytics.tracking.android.EasyTracker;
 
 public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 
@@ -58,8 +59,9 @@ public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 		targetCategory = (PreferenceCategory) findPreference("pref_studyList");
 
 		// Get the passed QQProfile
-		ProfileHandler = (QQProfileHandler) getIntent().getSerializableExtra(
-				"ProfileHandler");
+		//ProfileHandler = (QQProfileHandler) getIntent().getSerializableExtra(
+		//		"ProfileHandler");
+		ProfileHandler = QQApp.getViewModel().getProfileHandler();
 		ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
 
 		for (int i = 0; i < 45; i++) {
@@ -134,13 +136,13 @@ public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 	  @Override
 	  public void onStart() {
 	    super.onStart();
-	    EasyTracker.getInstance().activityStart(this);
+	    //EasyTracker.getInstance().activityStart(this);
 	  }
 
 	  @Override
 	  public void onStop() {
 	    super.onStop();
-	    EasyTracker.getInstance().activityStop(this);
+	    //EasyTracker.getInstance().activityStop(this);
 	  }
 	  
 	@Override

@@ -174,10 +174,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> sim1idx(int idx) {
-
+		Cursor cur;
 		List<Integer> ids = new ArrayList<Integer>();
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery(
+			cur = myDataBase.rawQuery(
 					"select _id from q where txt=(select txt from q where _id="
 							+ idx + ") and _id !=" + idx, null);
 			if (cur.moveToFirst()) {
@@ -192,9 +192,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	public int sim2cnt(int idx) {
 		int s = 0;
-
+		Cursor cur;
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select sim2 from q where _id="
+			cur = myDataBase.rawQuery("select sim2 from q where _id="
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getInt(0);
@@ -205,12 +205,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> sim2idx(int idx) {
-
+		Cursor cur;
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.clear();
 
 		if (myDataBase != null) {
-			Cursor cur = myDataBase
+			cur = myDataBase
 					.rawQuery(
 							"select q1._id from q q1 join q q2 where q1._id+1=q2._id "
 									+ "and q1._id in (select _id from q where txt=(select txt from q where _id="
@@ -233,9 +233,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 
 	public int sim3cnt(int idx) {
 		int s = 0;
-
+		Cursor cur;
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select sim3 from q where _id="
+			cur = myDataBase.rawQuery("select sim3 from q where _id="
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getInt(0);
@@ -246,12 +246,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> sim3idx(int idx) {
-
+		Cursor cur;
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.clear();
 
 		if (myDataBase != null) {
-			Cursor cur = myDataBase
+			cur = myDataBase
 					.rawQuery(
 							"select q1._id from q q1 join q q2 join q q3 where q1._id+1=q2._id and q1._id+2=q3._id "
 									+ "and q1._id in (select _id from q where txt=(select txt from q where _id="
@@ -282,9 +282,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	/* QQ Adaptors set */
 	public String txt(int idx) {
 		String s = new String("");
-
+		Cursor cur;
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txtsym from q where _id="
+			cur = myDataBase.rawQuery("select txtsym from q where _id="
 					+ idx, null);
 			if (cur.moveToFirst()) {
 				s = cur.getString(0);
@@ -295,13 +295,14 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public String txt(int idx, int len, QQUtils.QQTextFormat fmt) {
+		Cursor cur;
 		String s = new String("");
 		String word;
 		List<String> str = new ArrayList<String>();
 		str.clear();
 		
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery("select txtsym from q where _id>"
+			cur = myDataBase.rawQuery("select txtsym from q where _id>"
 					+ (idx - 1) + " and _id<" + (idx + len), null);
 			if (cur.moveToFirst()) {
 				do {
@@ -346,11 +347,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> uniqueSim1Not2Plus1(int idx) {
+		Cursor cur;
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.clear();
 
 		if (myDataBase != null) {
-			Cursor cur = myDataBase
+			cur = myDataBase
 					.rawQuery(
 							"select min(_id) from q where _id in (select _id+1 from q where "
 									+ "_id in (select _id from q where txt=(select txt from q where _id="
@@ -378,12 +380,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<Integer> randomUnique4NotMatching(int idx) {
-
+		Cursor cur;
 		List<Integer> ids = new ArrayList<Integer>();
 		if (myDataBase != null) {
 			//TODO: Slow table creation: Any optimization?
 			myDataBase.execSQL("CREATE TEMP TABLE IF NOT EXISTS xy as select _id,txt from q order by random() limit 200");
-			Cursor cur = myDataBase.rawQuery(
+			cur = myDataBase.rawQuery(
 					"select q1._id from xy q1 inner join xy q2 on q2.txt = q1.txt "+
 					"group by q1._id,q1.txt having q1._id = min(q2._id) "+
 					"and q1.txt !=(select txt from q where _id="+idx+") order by random() limit 4",
@@ -399,10 +401,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}	
 
 	public int ayaNumberOf(int idx) {
-
+		Cursor cur;
 		int aya=0;
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery(
+			cur = myDataBase.rawQuery(
 					"select  aya from q where _id >=" + idx +" and aya IS NOT NULL LIMIT 1",
 					null);
 			if (cur.moveToFirst()) {
@@ -418,10 +420,10 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	public int ayaEndsAfter(int idx) {
-
+		Cursor cur;
 		int aya=0;
 		if (myDataBase != null) {
-			Cursor cur = myDataBase.rawQuery(
+			cur = myDataBase.rawQuery(
 					"select _id from q where _id >=" + idx +" and aya IS NOT NULL LIMIT 1",
 					null);
 			if (cur.moveToFirst()) {
@@ -435,5 +437,9 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 	public boolean isAyaStart(int idx) {
 		//Check if the previous word is an aya end
 		return (ayaEndsAfter(idx-1)==0);
+	}
+
+	public boolean isOpen() {
+		return myDataBase.isOpen();
 	}
 }

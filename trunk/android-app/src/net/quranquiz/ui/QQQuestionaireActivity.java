@@ -21,8 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +40,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+//import com.google.analytics.tracking.android.EasyTracker;
 import com.tekle.oss.android.animation.AnimationFactory;
 import com.tekle.oss.android.animation.AnimationFactory.FlipDirection;
 
@@ -137,10 +132,11 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.questionaire_layout);
-				
+		// Get the passed QQProfile
+		vm = QQApp.getViewModel();
 		initUI();
 
-		vm = new ViewModel(this);
+		vm.bindUI(this);
 
 		if(android.os.Build.VERSION.SDK_INT 
 				>= android.os.Build.VERSION_CODES.HONEYCOMB)
@@ -208,9 +204,9 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
             	Boolean isEnabled = tbSpecialQ.isChecked();
             	vm.setSpecialEnabled(isEnabled);
             	if(isEnabled)
-            		Toast.makeText(getApplicationContext(), "ØªÙ… ØªØ´ØºÙŠÙ„ Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø®Ø§ØµØ©", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getApplicationContext(), "تم تشغيل الأسئلة الخاصة", Toast.LENGTH_SHORT).show();
             	else
-            		Toast.makeText(getApplicationContext(), "ØªÙ… Ø¥ÙŠÙ‚Ø§Ù� Ø§Ù„Ø§Ø³Ø¦Ù„Ø© Ø§Ù„Ø®Ø§ØµØ©", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getApplicationContext(), "تم إيقاف الاسئلة الخاصة", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -277,6 +273,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 		
 		// configure the SlidingMenu
 		if(QQUtils.QQDebug == 2){
+			/*
 			SlidingMenu menu = new SlidingMenu(this);
 	
 	        menu.setMode(SlidingMenu.LEFT_RIGHT);
@@ -309,6 +306,8 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 			//getFragmentManager().beginTransaction()
 	        //.replace(R.layout.lastscreen_layout, new QQStudyListSideFragment().getTargetFragment())
 	        //.commit();
+	         * 
+	         */
 		}
 	}
 
@@ -355,14 +354,14 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onStart() {
 	    super.onStart();
-	    EasyTracker.getInstance().activityStart(this); // Add this method.
+	    //EasyTracker.getInstance().activityStart(this); // Add this method.
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		vm.close();
-		EasyTracker.getInstance().activityStop(this); // Add this method.
+		//EasyTracker.getInstance().activityStop(this); // Add this method.
 	}
 
 	private void updateOptionButtonsColor(int CorrectIdx){
@@ -512,5 +511,24 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
  	   	leftBar.setVisibility(ProgressBar.VISIBLE);
  	   	leftBar.setMax(QQUtils.DAILYQUIZ_QPERPART_COUNT);
         leftBar.setProgress(QQUtils.DAILYQUIZ_QPERPART_COUNT);
+	}
+
+	public void vmShowStudyList() {
+		Intent intentStudyList;
+
+		if(android.os.Build.VERSION.SDK_INT 
+				>= android.os.Build.VERSION_CODES.HONEYCOMB)
+			intentStudyList = new Intent(QQQuestionaireActivity.this,
+				QQStudyListActivity.class);
+		else
+			intentStudyList = new Intent(QQQuestionaireActivity.this,
+					QQStudyListCompatActivity.class);
+		
+		startActivity(intentStudyList);		
+	}
+
+	public void vmSetLevel(int level) {
+		actionbar.setSelectedNavigationItem(level);
+		
 	}
 }

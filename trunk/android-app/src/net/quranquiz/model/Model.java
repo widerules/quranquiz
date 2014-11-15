@@ -113,7 +113,6 @@ public class Model {
 		q = new QQDataBaseHelper();
 		if (!q.checkDataBase()){
 			events.dispatchEvent(new QQModelEvent(QQEventType.UI_STATUS_DB_UNZIPPING), "");
-			//showUsage();
 			try {
 				q.createDataBase(); //slow!
 			} catch (Exception sqle) {
@@ -150,6 +149,9 @@ public class Model {
 
 	public void userAction(int selID) {
 
+		if(!q.isOpen())//TODO: Who/When it gets closed?!
+			q.openDataBase(); 
+		
 		if (QOptIdx >= 0 && correct_choice != selID) {// Wrong choice!!
 
 			events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_ANSWER), "False");
@@ -371,6 +373,10 @@ public class Model {
 	 * first Question
 	 */
 	public void start() {
+		
+		if(myQQProfile.getTotalQuesCount()<2)
+	    	events.dispatchEvent(new QQModelEvent(QQEventType.UI_SHOW_STUDY_LIST), "");
+
 		userAction(-1);
 	}
 

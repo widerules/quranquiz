@@ -1,5 +1,6 @@
 package net.quranquiz.model;
 
+import net.quranquiz.storage.QQProfileHandler;
 import net.quranquiz.ui.QQQuestionaireActivity;
 import android.util.Log;
 
@@ -33,9 +34,7 @@ public class ViewModel implements QQModelEvent.Listener{
 	
 	public ViewModel() {
 		model 		= new Model();
-		model.getEventBus().addEventListener(this);
-		model.start();
-		
+		model.getEventBus().addEventListener(this);		
 	}
 	/*TODO: Cannot rely on UI, define interface*/
 	public ViewModel(QQQuestionaireActivity activity) {
@@ -51,6 +50,7 @@ public class ViewModel implements QQModelEvent.Listener{
 	}
 	public void bindUI(QQQuestionaireActivity activity){
 		_activity 	= activity;		
+		model.start();
 	}
 	
 	@Override
@@ -59,13 +59,15 @@ public class ViewModel implements QQModelEvent.Listener{
 		if(src.toString().contains("UI")){
 			switch(src){
 			case UI_REFRESH:
-				Log.e("vm", "UnImplemented UI Event: "+src);
+				level = model.getProfileHandler().getProfile().getLevel();
+				_activity.vmSetScoreVisiblity(level>0);
+				_activity.vmSetLevel(level);
+				_activity.vmSetProgressVisiblity(model.getProgress()>0);
+				updateQustionaireUI();
+				updateScoreUI();
 				break;
 			case UI_QUESTIONAIRE_UPDATE:
-				question 	= model.getQuestion();
-				options 	= model.getOptions();
-				_activity.vmSetQuestion(question);
-				_activity.vmSetOptions(options, model.getCorrectChoiceIndex());
+				updateQustionaireUI();
 				break;
 			case UI_QUESTION_TYPE_UPDATE:
 				isSpecialQuestion = model.isSpecialQuestion();
@@ -90,7 +92,7 @@ public class ViewModel implements QQModelEvent.Listener{
 				break;
 			case UI_SHOW_STUDY_LIST:
 				_activity.vmShowUsage();
-				//TODO: Show Study list as well!
+				_activity.vmShowStudyList();
 				break;
 			case UI_DAILY_QUIZ_AVAILABLE:
 				_activity.vmDailyQuizAvailable();
@@ -99,9 +101,7 @@ public class ViewModel implements QQModelEvent.Listener{
 				Log.e("vm", "UnImplemented UI Event: "+src);
 				break;
 			case UI_SCORE_UPDATE:
-				scoreUp 	= model.getScoreUp();
-				scoreDown 	= model.getScoreDown();
-				score		= model.getScore();
+				updateScoreUI();
 				break;
 			    
 			default:
@@ -109,6 +109,20 @@ public class ViewModel implements QQModelEvent.Listener{
 				break;
 			}
 		}
+	}
+	private void updateScoreUI() {
+		scoreUp 	= model.getScoreUp();
+		scoreDown 	= model.getScoreDown();
+		score		= model.getScore();	
+		_activity.vmSetScore(score);
+		_activity.vmSetScoreUp(scoreUp);
+		_activity.vmSetScoreDown(scoreDown);
+	}
+	private void updateQustionaireUI() {
+		question 	= model.getQuestion();
+		options 	= model.getOptions();
+		_activity.vmSetQuestion(question);
+		_activity.vmSetOptions(options, model.getCorrectChoiceIndex());
 	}
 	@Override
 	public void onQQGenericEvent(QQModelEvent event, String message) {
@@ -225,5 +239,9 @@ public class ViewModel implements QQModelEvent.Listener{
 
 	public void startDailyQuiz() {
 		model.startDailyQuiz();
+	}
+	
+	public QQProfileHandler getProfileHandler(){
+		return model.getProfileHandler();
 	}
 }
