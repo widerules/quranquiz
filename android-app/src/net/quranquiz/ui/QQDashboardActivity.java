@@ -6,7 +6,6 @@
 package net.quranquiz.ui;
 
 import net.quranquiz.R;
-import net.quranquiz.storage.QQProfileHandler;
 import net.quranquiz.util.QQUtils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,13 +25,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.analytics.tracking.android.EasyTracker;
+//import com.google.analytics.tracking.android.EasyTracker;
 import com.suredigit.inappfeedback.FeedbackDialog;
 import com.suredigit.inappfeedback.FeedbackSettings;
 
 public class QQDashboardActivity extends Activity {
 
-	private QQProfileHandler myQQProfileHandler = null;
+	//HACK:: private QQProfileHandler myQQProfileHandler = null;
 	private FeedbackDialog feedBackDialog;
 	
 	// Function to read the result from newly created activity
@@ -40,8 +39,8 @@ public class QQDashboardActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == 12345) {
-			myQQProfileHandler = (QQProfileHandler) data.getExtras().get(
-					"ProfileHandler");
+			//HACK::myQQProfileHandler = (QQProfileHandler) data.getExtras().get(
+			//HACK::		"ProfileHandler");
 		}
 	}
 
@@ -61,12 +60,13 @@ public class QQDashboardActivity extends Activity {
 	    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO)
 	    	new BackupManager(this).dataChanged();
 		
-	    if (myQQProfileHandler != null) {
+	  //HACK::
+	    /*if (myQQProfileHandler != null) {
 			Intent lastIntent = new Intent(QQDashboardActivity.this,
 					QQLastScreenActivity.class);
 			lastIntent.putExtra("ProfileHandler", myQQProfileHandler);
 			startActivity(lastIntent);
-		}
+		}*/
 	    
 		finish();
 	}
@@ -126,13 +126,13 @@ public class QQDashboardActivity extends Activity {
 	  @Override
 	  public void onStart() {
 	    super.onStart();
-	    EasyTracker.getInstance().activityStart(this);
+	    //EasyTracker.getInstance().activityStart(this);
 	  }
 
 	  @Override
 	  public void onStop() {
 	    super.onStop();
-	    EasyTracker.getInstance().activityStop(this);
+	    //EasyTracker.getInstance().activityStop(this);
 	  }
 
 	@Override
@@ -141,6 +141,7 @@ public class QQDashboardActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dashboard_layout);
 
+		
 		/**
 		 * Creating all buttons instances
 		 * */
@@ -177,10 +178,12 @@ public class QQDashboardActivity extends Activity {
 		btnSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Intent intentStudyList;
-				if (myQQProfileHandler == null) {
+				//HACK::
+				/*if (myQQProfileHandler == null) {
 					myQQProfileHandler = new QQProfileHandler();
 					myQQProfileHandler.getProfile();
 				}
+				*/
 				if(android.os.Build.VERSION.SDK_INT 
 						>= android.os.Build.VERSION_CODES.HONEYCOMB)
 					intentStudyList = new Intent(QQDashboardActivity.this,
@@ -189,7 +192,7 @@ public class QQDashboardActivity extends Activity {
 					intentStudyList = new Intent(QQDashboardActivity.this,
 							QQStudyListCompatActivity.class);
 				
-				intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
+				//HACK:: intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 				startActivity(intentStudyList);
 			}
 		});
@@ -198,13 +201,15 @@ public class QQDashboardActivity extends Activity {
 		btnScoreHistory.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				if (myQQProfileHandler == null) {
+				//HACK::
+				/*if (myQQProfileHandler == null) {
 					myQQProfileHandler = new QQProfileHandler();
 					myQQProfileHandler.getProfile();
 				}
 				startActivity((new QQScoreChart(
 						myQQProfileHandler.CurrentProfile))
 						.execute(getApplicationContext()));
+				*/
 			}
 		});        
 		
