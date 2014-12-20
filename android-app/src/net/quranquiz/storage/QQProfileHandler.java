@@ -19,6 +19,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 public class QQProfileHandler implements Serializable {
 
@@ -26,7 +27,7 @@ public class QQProfileHandler implements Serializable {
 	public static final String MY_PROFILE = "MyQQProfile";
 	private transient static Context myContext;
 
-	public QQProfile CurrentProfile;
+	private QQProfile _currentProfile;
 
 	public QQProfileHandler() {
 		myContext = QQApp.getContext();
@@ -92,7 +93,7 @@ public class QQProfileHandler implements Serializable {
 		return uid[0]+"+"+uid[1]+"+"+uid[2]+"+"+uid[3]+"+"+uid[4];
 	}
 
-	private QQProfile getLastProfile() {
+	private QQProfile loadLastSavedProfile() {
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(myContext);
 
@@ -110,26 +111,23 @@ public class QQProfileHandler implements Serializable {
 	}
 
 	public QQProfile getProfile() {
-		QQProfile myQQProfile;
-
+		if(_currentProfile != null){
+			return _currentProfile;
+		}
+		
 		if (checkLastProfile()) { // Found a previously saved profile
-			myQQProfile = getLastProfile();
+			_currentProfile = loadLastSavedProfile();
 		} else { // Create a new profile with a random start
 					// Toast.makeText(myContext, "Created a new profile!",
 					// Toast.LENGTH_LONG).show();
-			myQQProfile = new QQProfile(getHashedUID(),
+			_currentProfile = new QQProfile(getHashedUID(),
 					new Random().nextInt(QQUtils.QuranWords), 1,
 					QQProfileHandler.getInitStudyParts(),
 					QQScoreRecord.getInitScoreRecordPack(),
 					0);
-			saveProfile(myQQProfile);
+			saveProfile();
 		}
-		CurrentProfile = myQQProfile;
-		return myQQProfile;
-	}
-
-	public void reLoadCurrentProfile() {
-		CurrentProfile = getLastProfile();
+		return _currentProfile;
 	}
 
 	public void reLoadParts(QQProfile profile) {
@@ -177,26 +175,25 @@ public class QQProfileHandler implements Serializable {
 				+ String.valueOf(profile.getAvgLevel(49))+ ";";
 		*/
 		profile.setStudyParts(newParts);
-		saveProfile(profile);
+		saveProfile();
 	}
 
-	public void saveProfile(QQProfile prof) {
-
+	public void saveProfile() {
+		
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(myContext);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("pref_uid", prof.getuid());
-		editor.putInt("lastSeed", prof.getLastSeed());
-		editor.putString("pref_userLevel", Integer.toString(prof.getLevel()));
-		// editor.putInt("score", prof.getCorrect());
-		// editor.putInt("quesCount", prof.getQuesCount());
-		editor.putString("studyParts", prof.getStudyParts());
-		editor.putString("pref_scores", prof.getScores());
-		editor.putInt("specialScore", prof.getSpecialScore());
+		editor.putString("pref_uid", _currentProfile.getuid());
+		editor.putInt("lastSeed", _currentProfile.getLastSeed());
+		editor.putString("pref_userLevel", Integer.toString(_currentProfile.getLevel()));
+		// editor.putInt("score", _currentProfile.getCorrect());
+		// editor.putInt("quesCount", _currentProfile.getQuesCount());
+		editor.putString("studyParts", _currentProfile.getStudyParts());
+		editor.putString("pref_scores", _currentProfile.getScores());
+		editor.putInt("specialScore", _currentProfile.getSpecialScore());
 
 		editor.commit();
 
-		CurrentProfile = prof;
 	}
 	
 	public static final String getInitStudyParts(){

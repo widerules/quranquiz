@@ -74,12 +74,20 @@ public class QQUtils {
 			sura_idx[56], sura_idx[65], sura_idx[76], QuranWords };
 	public static final String QQ_MD5_KEY = ""; // Edited only upon release!
 
-	/* Each Study Part Weight in relative to an average Juz2. 
-	 * Fatiha is 1%, while Juz2 Amma is 95% of an average Juz2 length*/
+	/** 
+	 * Each Study Part Weight in relative to an average Juz2. 
+	 * Fatiha is 1%, while Juz2 Amma is 95% of an average Juz2 length
+	 */
 	public static final int[] PartWeight100 = { 1, 236, 134, 145, 108, 118, 128, 48,
 			96, 71, 74, 69, 33, 32, 25, 71, 60, 61, 37, 52, 45, 49, 41, 51, 35, 51,
 			44, 55, 38, 32, 21, 14, 50, 34, 30, 28, 33, 28, 45, 47, 31, 33, 32, 13, 
 			19, 96, 104, 102, 104, 95 };
+	
+	/**
+	 * If study parts contain suras count more than this threshold, then 
+	 * the user profile is eligible for more special questions.
+	 */
+	public static final int SurasSpecialQuestionEligibilityThreshold = 7;
 	
 	public static int findIdx(int[] scrambled, int i) {
 		for (int j = 0; j < scrambled.length; j++)

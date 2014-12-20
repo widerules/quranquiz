@@ -11,6 +11,5 @@
 	<classpathentry exported="true" kind="lib" path="C:/Users/TELDEEB/Personal/quranquiz/android-app/libs/libGoogleAnalytics.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/TELDEEB/Personal/quranquiz/android-app/libs/microlog4android-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/TELDEEB/Personal/quranquiz/android-app/libs/feedback.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/google_play_srvc"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
