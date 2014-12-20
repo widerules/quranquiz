@@ -51,6 +51,10 @@ public class QQStudyPart implements Serializable {
 		return avgLevel;
 	}
 	
+	/**
+	 * Return the studied length. If this part is not selected, 0 is returned.
+	 * @return
+	 */
 	public int getLength() {
 		if (start > 0)
 			return length;
@@ -58,6 +62,10 @@ public class QQStudyPart implements Serializable {
 			return 0;
 	}
 
+	/**
+	 * Non-zero value of the part, regardless if selected in profile or not.
+	 * @return
+	 */
 	public int getNonZeroLength() {
 		return length;
 	}
@@ -72,6 +80,10 @@ public class QQStudyPart implements Serializable {
 
 	public int getStart() {
 		return start;
+	}
+	
+	public boolean isSelected(){
+		return (start>0);
 	}
 
 }

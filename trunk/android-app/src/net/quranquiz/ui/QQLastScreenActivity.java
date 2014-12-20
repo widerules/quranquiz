@@ -78,7 +78,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 		// Get the passed QQProfile
 		ProfileHandler = (QQProfileHandler) getIntent().getSerializableExtra(
 				"ProfileHandler");
-		conclusionMessage = getMessageFromProfile(ProfileHandler.CurrentProfile);
+		conclusionMessage = getMessageFromProfile(ProfileHandler.getProfile());
 		tvScore = (TextView) findViewById(R.id.textViewScore);
 		tvShare = (TextView) findViewById(R.id.textViewShare);
 
@@ -86,7 +86,7 @@ public class QQLastScreenActivity extends SherlockActivity {
 		tvShare.setText(ExtraInfo);
 
 		// If score history needs update, do so then save and post it
-		if (ProfileHandler.CurrentProfile.updateScoreRecord() ||
+		if (ProfileHandler.getProfile().updateScoreRecord() ||
 			QQUtils.QQDebug==1) {
 			new UserPostAnonymous().execute(ProfileHandler);
 		}
@@ -118,10 +118,10 @@ public class QQLastScreenActivity extends SherlockActivity {
     		String uid, score, juz2, qcount, avglevel, md5;
     		String[] ids;
     		String response="";
-    		QQProfile currentProfile = params[0].CurrentProfile;
+    		QQProfile currentProfile = params[0].getProfile();
     		
     		/******************* 1- Save profile *****************/
-			ProfileHandler.saveProfile(currentProfile);
+			ProfileHandler.saveProfile();
 			
     		/******************* 2- Post User Data ***************/
     		uid = currentProfile.getuid();

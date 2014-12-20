@@ -1,661 +1,593 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.6" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+<class-diagram version="1.1.7" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="net.quranquiz.QQPreferences" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/QQPreferences.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2686" y="1950"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="1" language="java" name="net.quranquiz.model.QQDailyQuiz" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQDailyQuiz.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="858" y="2677"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="net.quranquiz.model.QQQuestionObject" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionObject.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="195" width="130" x="1807" y="1805"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="2" language="java" name="net.quranquiz.model.QQSparseResult" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQSparseResult.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1641" y="1727"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="net.quranquiz.model.DailyQuizQuestionnaire" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/DailyQuizQuestionnaire.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="123" width="156" x="1264" y="903"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="4" language="java" name="net.quranquiz.model.QQQuestionaire.QType" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionaire.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="177" width="148" x="2449" y="2040"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </enumeration>  
-  <class id="5" language="java" name="net.quranquiz.model.QQQuestionaire" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionaire.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="123" width="145" x="2052" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="net.quranquiz.model.QQSession.SetAsyncQQDailyQuiz" project="QuranQuiz" 
+  <class id="3" language="java" name="net.quranquiz.model.QQSession.GetAsyncQQDailyQuiz" project="QuranQuiz" 
     file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="69" width="148" x="1707" y="903"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+    <position height="-1" width="-1" x="555" y="1986"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="net.quranquiz.model.QQScoreRecord" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQScoreRecord.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="177" width="149" x="2279" y="1534"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="net.quranquiz.model.QQSession.CheckAsyncQQDailyQuiz" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="51" width="165" x="1502" y="903"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="9" language="java" name="net.quranquiz.model.QuestionnaireProvider" project="QuranQuiz" 
+  <interface id="4" language="java" name="net.quranquiz.model.QuestionnaireProvider" project="QuranQuiz" 
     file="/QuranQuiz/src/net/quranquiz/model/QuestionnaireProvider.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="87" width="152" x="1602" y="1534"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+    <position height="-1" width="-1" x="1521" y="2695"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="10" language="java" name="net.quranquiz.model.QQSession" project="QuranQuiz" 
+  <class id="5" language="java" name="net.quranquiz.model.ViewModel" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/ViewModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1279" y="653"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="6" language="java" name="net.quranquiz.model.QQQuestionaire.QType" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionaire.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="824" y="3143"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="7" language="java" name="net.quranquiz.model.QQQuestionObject" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionObject.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="881" y="3000"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="8" language="java" name="net.quranquiz.model.QQModelEvent.Listener" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQModelEvent.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1636" y="1514"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="9" language="java" name="net.quranquiz.model.QQQuestionaire" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQQuestionaire.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1959" y="1527"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="net.quranquiz.model.QQModelEvent" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQModelEvent.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1566" y="1356"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="net.quranquiz.model.QQSession.CheckAsyncQQDailyQuiz" project="QuranQuiz" 
     file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="177" width="162" x="1502" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+    <position height="-1" width="-1" x="141" y="1986"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="net.quranquiz.model.QQSparseResult" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQSparseResult.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="87" width="119" x="1912" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="12" language="java" name="net.quranquiz.model.QQSession" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="839" y="1763"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="net.quranquiz.model.QQStudyPart" project="QuranQuiz" 
+  <class id="13" language="java" name="net.quranquiz.model.Model" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/Model.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1276" y="1352"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="net.quranquiz.model.QQScoreRecord" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQScoreRecord.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1090" y="2740"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="net.quranquiz.model.DailyQuizQuestionnaire" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/DailyQuizQuestionnaire.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="797" y="2049"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="net.quranquiz.model.QQSession.SetAsyncQQDailyQuiz" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="352" y="1995"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="net.quranquiz.model.QQStudyPart" project="QuranQuiz" 
     file="/QuranQuiz/src/net/quranquiz/model/QQStudyPart.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="231" width="124" x="2115" y="1534"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+    <position height="-1" width="-1" x="1312" y="2776"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="net.quranquiz.model.QQDailyQuiz" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQDailyQuiz.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="105" width="121" x="1441" y="1534"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="net.quranquiz.model.QQSession.GetAsyncQQDailyQuiz" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/model/QQSession.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="51" width="148" x="1076" y="903"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="15" language="java" name="net.quranquiz.ui.QQCheckBoxPreference" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQCheckBoxPreference.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2908" y="1633"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="16" language="java" name="net.quranquiz.ui.QQDashboardActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQDashboardActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="159" width="145" x="2413" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="17" language="java" name="net.quranquiz.ui.QQLastScreenActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQLastScreenActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="123" width="149" x="2818" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="18" language="java" name="net.quranquiz.ui.QQLastScreenActivity.UserPostAnonymous" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQLastScreenActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="33" width="144" x="2818" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="19" language="java" name="net.quranquiz.ui.QQDashboardLayout" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQDashboardLayout.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="3061" y="1784"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="20" language="java" name="net.quranquiz.ui.QQInstructionsActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQInstructionsActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2858" y="1959"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="21" language="java" name="net.quranquiz.ui.QQQuestionaireActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQQuestionaireActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="249" width="196" x="1704" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="22" language="java" name="net.quranquiz.ui.QQScoreChart" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQScoreChart.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="105" width="107" x="2155" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="23" language="java" name="net.quranquiz.ui.QQStudyListActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQStudyListActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="105" width="136" x="2237" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="24" language="java" name="net.quranquiz.ui.VerticalProgressBar" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/VerticalProgressBar.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="123" width="140" x="1301" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="25" language="java" name="net.quranquiz.ui.QQPreferencesActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQPreferencesActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2873" y="1766"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="26" language="java" name="net.quranquiz.ui.PreferenceListFragment" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/PreferenceListFragment.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2745" y="1155"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="27" language="java" name="net.quranquiz.ui.PagerAdapter" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/PagerAdapter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2710" y="677"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="28" language="java" name="net.quranquiz.ui.QQMap" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQMap.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2691" y="1811"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="29" language="java" name="net.quranquiz.ui.QQStudyListCompatActivity" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/ui/QQStudyListCompatActivity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="105" width="180" x="2598" y="37"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="30" language="java" name="net.quranquiz.storage.QQBackupAgent" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/storage/QQBackupAgent.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2692" y="1624"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="31" language="java" name="net.quranquiz.storage.QQProfileHandler" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/storage/QQProfileHandler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="195" width="146" x="2489" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="32" language="java" name="net.quranquiz.storage.QQProfile" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/storage/QQProfile.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="591" width="186" x="2115" y="903"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="33" language="java" name="net.quranquiz.storage.QQDataBaseHelper" project="QuranQuiz" 
+  <class id="18" language="java" name="net.quranquiz.storage.QQDataBaseHelper" project="QuranQuiz" 
     file="/QuranQuiz/src/net/quranquiz/storage/QQDataBaseHelper.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="447" width="168" x="1704" y="416"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+    <position height="-1" width="-1" x="1409" y="1907"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="34" language="java" name="net.quranquiz.net.QQDownloader" project="QuranQuiz" 
-    file="/QuranQuiz/src/net/quranquiz/net/QQDownloader.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="3092" y="1624"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="19" language="java" name="net.quranquiz.storage.QQProfileHandler" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/storage/QQProfileHandler.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1111" y="1790"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="35" language="java" name="com.tekle.oss.android.animation.FlipAnimation" project="QuranQuiz" 
-    file="/QuranQuiz/src/com/tekle/oss/android/animation/FlipAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="3134" y="1296"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="20" language="java" name="net.quranquiz.storage.QQProfile" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/storage/QQProfile.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1103" y="2274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="36" language="java" name="com.tekle.oss.android.animation.AnimationFactory.FlipDirection" 
-    project="QuranQuiz" file="/QuranQuiz/src/com/tekle/oss/android/animation/AnimationFactory.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2970" y="1092"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="37" language="java" name="com.tekle.oss.android.animation.FlipAnimation.ScaleUpDownEnum" 
-    project="QuranQuiz" file="/QuranQuiz/src/com/tekle/oss/android/animation/FlipAnimation.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2854" y="1458"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
-    </display>  
-  </enumeration>  
-  <class id="38" language="java" name="com.tekle.oss.android.animation.AnimationFactory" project="QuranQuiz" 
-    file="/QuranQuiz/src/com/tekle/oss/android/animation/AnimationFactory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2953" y="794"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
-      <operations public="true" package="true" protected="false" private="false" static="true"/>    
+  <class id="21" language="java" name="net.quranquiz.util.QQApp" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/util/QQApp.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="130" width="160" x="1197" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <nesting id="39">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="40">    
-    <bendpoint x="1410" y="1534"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="41" name="qo"/>      
-      <multiplicity id="42" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="44" name="q"/>      
-      <multiplicity id="45" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="33" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="46">    
-    <end type="SOURCE" refId="32" navigable="false">      
-      <attribute id="47" name="QScores"/>      
-      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
+  <class id="22" language="java" name="net.quranquiz.util.QQUtils" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/util/QQUtils.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="400" width="270" x="1860" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="net.quranquiz.ui.QQQuestionaireActivity" project="QuranQuiz" 
+    file="/QuranQuiz/src/net/quranquiz/ui/QQQuestionaireActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="873" y="407"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="24">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="25">    
+    <bendpoint x="2000" y="1879"/>    
+    <bendpoint x="2000" y="2355"/>    
+    <bendpoint x="2000" y="3029"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="26" name="qo">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="50" name="myQQSession"/>      
-      <multiplicity id="51" minimum="0" maximum="1"/>    
+  <association id="28">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="29" name="sasqqdq">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="52">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="53" name="q"/>      
-      <multiplicity id="54" minimum="0" maximum="1"/>    
+  <association id="31">    
+    <bendpoint x="1185" y="1879"/>    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="32" name="myQQProfile">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="33" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="55">    
-    <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="56" name="scaleType"/>      
-      <multiplicity id="57" minimum="0" maximum="1"/>    
+  <realization id="34">    
+    <bendpoint x="1979" y="1879"/>    
+    <bendpoint x="1979" y="2355"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="35">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="36" name="q">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="37" navigable="true"/>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="58">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="59" name="myQQProfileHandler"/>      
-      <multiplicity id="60" minimum="0" maximum="1"/>    
+  <association id="38">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="39" name="QParts">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
+    <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="61">    
-    <bendpoint x="2124" y="416"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="62" name="prof"/>      
-      <multiplicity id="63" minimum="0" maximum="1"/>    
+  <association id="41">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="42" name="prof">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="64">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="65" name="dailyQuizQuestionnaire"/>      
-      <multiplicity id="66" minimum="0" maximum="1"/>    
+  <association id="44">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="45" name="vm">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="67">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="68" name="session"/>      
-      <multiplicity id="69" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="70">    
-    <end type="SOURCE" refId="32" navigable="false">      
-      <attribute id="71" name="QParts"/>      
-      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
+  <association id="47">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="48" name="session">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="49" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="73">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="74" name="ProfileHandler"/>      
-      <multiplicity id="75" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="76">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="77" name="casqqdq"/>      
-      <multiplicity id="78" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="79">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="80" name="leftBar"/>      
-      <multiplicity id="81" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="82">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="83" name="prof"/>      
-      <multiplicity id="84" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="85">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="86" name="objects"/>      
-      <multiplicity id="87" minimum="0" maximum="2147483647"/>    
+  <association id="50">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="51" name="sparsed">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="52" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="88">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="36"/>  
-  </nesting>  
-  <association id="89">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="90" name="fragments"/>      
-      <multiplicity id="91" minimum="0" maximum="2147483647"/>    
+  <realization id="53">    
+    <bendpoint x="1748" y="1352"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
+  <association id="54">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="55" name="objects">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="26" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="92">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="93" name="qType"/>      
-      <multiplicity id="94" minimum="0" maximum="1"/>    
+  <association id="57">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="58" name="mViewModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="59" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="95">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="96" name="sasqqdq"/>      
-      <multiplicity id="97" minimum="0" maximum="1"/>    
+  <association id="60">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="61" name="myQQSession">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="62" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <bendpoint x="693" y="3029"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="64" name="qo">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="65" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="67" name="dailyQuizQuestionnaire">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <bendpoint x="1691" y="1879"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="70" name="prof">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="72">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="73" name="_currentProfile">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="76" name="model">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="77" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="79" name="qType">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="98">    
-    <bendpoint x="2061" y="416"/>    
-    <bendpoint x="2061" y="903"/>    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="99">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="100" name="gasqqdq"/>      
-      <multiplicity id="101" minimum="0" maximum="1"/>    
+  <association id="81">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="82" name="myQQProfileHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="83" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="84">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="85" name="gasqqdq">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="86" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="88" name="QScores">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="89" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="102">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="103" name="dailyQuiz"/>      
-      <multiplicity id="104" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="105">    
-    <bendpoint x="2458" y="416"/>    
-    <bendpoint x="2458" y="903"/>    
-    <bendpoint x="2458" y="1534"/>    
-    <bendpoint x="2458" y="1805"/>    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
-  </nesting>  
-  <association id="106">    
-    <bendpoint x="2103" y="416"/>    
-    <bendpoint x="2084" y="903"/>    
-    <bendpoint x="2084" y="1534"/>    
+  <association id="90">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="107" name="qo"/>      
-      <multiplicity id="108" minimum="0" maximum="1"/>    
+      <attribute id="91" name="_activity">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="109">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="14"/>  
-  </nesting>  
-  <association id="110">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="111" name="CurrentProfile"/>      
-      <multiplicity id="112" minimum="0" maximum="1"/>    
+  <association id="93">    
+    <bendpoint x="1206" y="1879"/>    
+    <bendpoint x="1232" y="2355"/>    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="94" name="Quest">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="95" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="113">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="18"/>  
-  </nesting>  
-  <association id="114">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="115" name="prof"/>      
-      <multiplicity id="116" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="117">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="118" name="ProfileHandler"/>      
-      <multiplicity id="119" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="120">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="121">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="122" name="ProfileHandler"/>      
-      <multiplicity id="123" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="124">    
-    <bendpoint x="1450" y="903"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="125" name="dailyQuiz"/>      
-      <multiplicity id="126" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="127">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
-  </nesting>  
-  <association id="128">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="129" name="_model"/>      
-      <multiplicity id="130" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="131">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="132" name="myQQProfileHandler"/>      
-      <multiplicity id="133" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="134">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="135" name="sparsed"/>      
-      <multiplicity id="136" minimum="0" maximum="1"/>    
+  <association id="96">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="97" name="casqqdq">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="98" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="137">    
-    <bendpoint x="1471" y="416"/>    
-    <bendpoint x="1471" y="903"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="138" name="Quest"/>      
-      <multiplicity id="139" minimum="0" maximum="1"/>    
+  <association id="99">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="100" name="_model">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="140">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="37"/>  
-  </nesting>  
-  <association id="141">    
-    <bendpoint x="2082" y="416"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="142" name="myQQProfile"/>      
-      <multiplicity id="143" minimum="0" maximum="1"/>    
+  <association id="102">    
+    <bendpoint x="937" y="2355"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="103" name="dailyQuiz">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="104" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="106" name="dailyQuiz">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="107" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="108">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <association id="109">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="110" name="events">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="111" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="112">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="113" name="q">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="114" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-    accessors="true" visibility="true">    
-    <attributes public="true" package="true" protected="false" private="false" static="false"/>    
-    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="false" protected="false" private="false" static="false"/>    
+    <operations public="true" package="false" protected="true" private="true" static="true"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="true"/>
 </class-diagram>

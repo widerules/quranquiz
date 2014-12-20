@@ -110,20 +110,7 @@ public class ViewModel implements QQModelEvent.Listener{
 			}
 		}
 	}
-	private void updateScoreUI() {
-		scoreUp 	= model.getScoreUp();
-		scoreDown 	= model.getScoreDown();
-		score		= model.getScore();	
-		_activity.vmSetScore(score);
-		_activity.vmSetScoreUp(scoreUp);
-		_activity.vmSetScoreDown(scoreDown);
-	}
-	private void updateQustionaireUI() {
-		question 	= model.getQuestion();
-		options 	= model.getOptions();
-		_activity.vmSetQuestion(question);
-		_activity.vmSetOptions(options, model.getCorrectChoiceIndex());
-	}
+
 	@Override
 	public void onQQGenericEvent(QQModelEvent event, String message) {
 		// Auto-generated method stub
@@ -223,6 +210,8 @@ public class ViewModel implements QQModelEvent.Listener{
 	public void setLevel(int level) {
 		this.level = level;
 		_activity.vmSetScoreVisiblity(level!=0); // Hide score for practicing
+		
+		model.getProfileHandler().getProfile().setLevel(level);
 	}
 
 	public void close() {
@@ -243,5 +232,19 @@ public class ViewModel implements QQModelEvent.Listener{
 	
 	public QQProfileHandler getProfileHandler(){
 		return model.getProfileHandler();
+	}
+	private void updateScoreUI() {
+		scoreUp 	= model.getScoreUp();
+		scoreDown 	= model.getScoreDown();
+		score		= model.getScore();	
+		_activity.vmSetScore(score);
+		_activity.vmSetScoreUp(scoreUp);
+		_activity.vmSetScoreDown(scoreDown);
+	}
+	private void updateQustionaireUI() {
+		question 	= model.getQuestion();
+		options 	= model.getOptions();
+		_activity.vmSetQuestion(question);
+		_activity.vmSetOptions(options, model.getCorrectChoiceIndex());
 	}
 }

@@ -27,13 +27,6 @@ public class QQProfile implements Serializable {
 	private boolean specialEnabled;
 	private int specialScore;
 
-	public QQProfile(int lastSeed, int level) {
-		setLastSeed(lastSeed);
-		setLevel(level);
-		specialEnabled = true;
-		specialScore = 0;
-	}
-
 	public QQProfile(String uid, int lastSeed, int level, String QPartsString,
 			String QScoresString, int specialScore) {
 
@@ -44,6 +37,8 @@ public class QQProfile implements Serializable {
 		setuid(uid);
 		specialEnabled = true;
 		setSpecialScore(specialScore);
+		Log.e("New Profile!");
+		Thread.dumpStack();
 	}
 
 	public void addCorrect(int currentPart) {
@@ -428,5 +423,23 @@ public class QQProfile implements Serializable {
 	private void dumpWeights(){
 		for(int i=0;i<QParts.size();i++)
 			System.out.println("["+i+"]= " + Math.round(((double)QParts.get(i).getNonZeroLength()*100)/QQUtils.Juz2AvgWords));
+	}
+	
+	/**
+	 * If current profile selections has too few suras, then the user 
+	 * is not eligible to some special questions; example: State Sura Name.
+	 * @return
+	 */
+	public boolean isSurasSpecialQuestionEligible(){
+		for(int i=QParts.size()-1;i>=QParts.size()-5;i--)
+			if(QParts.get(i).isSelected()) return true;
+		
+		int s=0;
+		for(int j=QParts.size()-6;j>0;j--){
+			if(QParts.get(j).isSelected()) s++;
+			if(s>=QQUtils.SurasSpecialQuestionEligibilityThreshold)
+				return true;
+		}
+		return false; 
 	}
 }

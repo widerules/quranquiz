@@ -62,13 +62,13 @@ public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 		//ProfileHandler = (QQProfileHandler) getIntent().getSerializableExtra(
 		//		"ProfileHandler");
 		ProfileHandler = QQApp.getViewModel().getProfileHandler();
-		ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
+		ProfileHandler.reLoadParts(ProfileHandler.getProfile());
 
 		for (int i = 0; i < 45; i++) {
 			// create one check box for each item you need
 			// make sure each key is unique
-			corr = ProfileHandler.CurrentProfile.getCorrect(i);
-			tot  = ProfileHandler.CurrentProfile.getQuesCount(i);
+			corr = ProfileHandler.getProfile().getCorrect(i);
+			tot  = ProfileHandler.getProfile().getQuesCount(i);
 			
 			checkBoxPreference = new QQCheckBoxPreference(this, null);
 			checkBoxPreference.setKey("QPart_s" + String.valueOf(i + 1));
@@ -100,8 +100,8 @@ public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 		for (int i = 0; i < 5; i++) {
 			// create one check box for each item you need
 			// make sure each key is unique
-			corr = ProfileHandler.CurrentProfile.getCorrect(45 + i);
-			tot  = ProfileHandler.CurrentProfile.getQuesCount(45 + i);
+			corr = ProfileHandler.getProfile().getCorrect(45 + i);
+			tot  = ProfileHandler.getProfile().getQuesCount(45 + i);
 			
 			checkBoxPreference = new QQCheckBoxPreference(this, null);
 			checkBoxPreference.setKey("QPart_j" + String.valueOf(i + 26));
@@ -147,13 +147,13 @@ public class QQStudyListCompatActivity extends SherlockPreferenceActivity{
 	  
 	@Override
 	protected void onDestroy() {
-		ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
+		ProfileHandler.reLoadParts(ProfileHandler.getProfile());
 		
-		if(ProfileHandler.CurrentProfile.getTotalStudyLength()<0.75*QQUtils.Juz2AvgWords){
+		if(ProfileHandler.getProfile().getTotalStudyLength()<0.75*QQUtils.Juz2AvgWords){
     		//Select Juz2 3amma (#30)
 			((CheckBoxPreference)targetCategory.getPreferenceManager().
 					findPreference("QPart_j30")).setChecked(true);
-			ProfileHandler.reLoadParts(ProfileHandler.CurrentProfile);
+			ProfileHandler.reLoadParts(ProfileHandler.getProfile());
 			Toast.makeText(getApplicationContext(), "إختياراتك أقل من جزء: تم اضافة جزء عم", Toast.LENGTH_LONG).show();
 			
 			/* Leaks at onDestroy

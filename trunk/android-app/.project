@@ -4,9 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>android-support-v4-preferencefragment</project>
-		<project>google_play_srvc</project>
 		<project>library</project>
-		<project>slidingmenu</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -32,6 +30,7 @@
 	</buildSpec>
 	<natures>
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
+		<nature>fr.obeo.dsl.viewpoint.nature.modelingproject</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>

@@ -163,7 +163,7 @@ public class Model {
 		}
 
 		if (QOptIdx == -1 || QOptIdx == Quest.getQ().rounds) {
-			myQQProfile = myQQProfileHandler.CurrentProfile;
+			myQQProfile = myQQProfileHandler.getProfile();
 			
 			if (QQinit == 0 && QOptIdx == -1) { // A wrong non-special answer
 				if(Quest.getQ().qType == QType.NOTSPECIAL)
@@ -242,14 +242,10 @@ public class Model {
 			lastSeed = Quest.getSeed();
 			myQQProfile.setLastSeed(lastSeed);
 
-			// Update the Score
-        	events.dispatchEvent(new QQModelEvent(QQEventType.UI_SCORE_UPDATE), "");
-        	//tvScore.setText(String.valueOf(myQQProfile.getScore()));
-
-			myQQProfileHandler.saveProfile(myQQProfile); // TODO: Do I need to
-															// save after each
-															// question? On exit
-															// only?
+			myQQProfileHandler.saveProfile(); // TODO: Do I need to
+			// save after each
+			// question? On exit
+			// only?
 
 			// Show the Question!
 			_sQuestion = QQUtils.fixQ(q.txt(Quest.getQ().startIdx, Quest.getQ().qLen,QQUtils.QQTextFormat.AYAMARKS_BRACKETS_START)); 
@@ -264,7 +260,11 @@ public class Model {
 				_sScoreDown = "-";				
 			}
 			
-			//TODO: Check!
+			// Update the Score UI
+        	events.dispatchEvent(new QQModelEvent(QQEventType.UI_SCORE_UPDATE), "");
+        	//tvScore.setText(String.valueOf(myQQProfile.getScore()));
+        	
+        	//TODO: Check!
 			events.dispatchEvent(new QQModelEvent(QQEventType.UI_QUESTIONAIRE_UPDATE), "");
 
 		}
@@ -381,7 +381,7 @@ public class Model {
 	}
 
 	public void close() {
-		myQQProfileHandler.saveProfile(myQQProfileHandler.CurrentProfile);
+		myQQProfileHandler.saveProfile();
 		myQQSession.close();
 		if (q != null)
 			q.closeDatabase();

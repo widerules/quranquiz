@@ -74,8 +74,7 @@ public class QQQuestionaire implements QuestionnaireProvider {
 		int previousSeed = prof.getLastSeed();
 		rand = new Random(previousSeed);
 
-		// Keep Reference of Level, Q
-		level = prof.getLevel();
+		// Keep Reference of Q
 		if(qdb != null) q = qdb;
 		if(s != null) session = s;
 		
@@ -104,22 +103,28 @@ public class QQQuestionaire implements QuestionnaireProvider {
 		return tmp.qo ;
 	}
 	
-	private boolean selectSpecial() {
-		if(prof.getLevel()==0 || Math.random()>0.20) 
+	private boolean selectSpecial(QQProfile prof) {
+		if(prof.getLevel()==0)
 			return false;
+		else if(prof.isSurasSpecialQuestionEligible())
+			return (Math.random()<0.20);
 		else
-			return true;
+			return (Math.random()<0.05);
 	}
 	
 	private void createSpecialQ(QQProfile prof) {
 		qo.rounds = 1;
 
-		if(Math.random()>0.5)
-			qo.qType = QType.SURANAME; 
-		else if(Math.random()>0.3)
-			qo.qType = QType.SURAAYACOUNT;
-		else
+		if(prof.isSurasSpecialQuestionEligible()){
+			if(Math.random()>0.5)
+				qo.qType = QType.SURANAME; 
+			else if(Math.random()>0.3)
+				qo.qType = QType.SURAAYACOUNT;
+			else
+				qo.qType = QType.AYANUMBER;
+		}else{
 			qo.qType = QType.AYANUMBER;
+		}
 		
 		switch(qo.qType){
 			case SURANAME: 
@@ -446,7 +451,9 @@ public class QQQuestionaire implements QuestionnaireProvider {
 
 	@Override
 	public void createNextQ() {
-		if(prof.isSpecialEnabled() && selectSpecial()){
+		prof = QQApp.getViewModel().getProfileHandler().getProfile();
+		level = prof.getLevel();
+		if(prof.isSpecialEnabled() && selectSpecial(prof)){
 			createSpecialQ(prof);
 		}else {
 			createNormalQ(prof);

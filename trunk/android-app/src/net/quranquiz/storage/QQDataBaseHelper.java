@@ -65,9 +65,12 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		int v = -1;
 		
 		try {
-			checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
-					SQLiteDatabase.OPEN_READONLY);
-			v = checkDB.getVersion();
+			File f = new File(myDBFile);
+			if(f.exists()){
+				checkDB = SQLiteDatabase.openDatabase(myDBFile, null,
+						SQLiteDatabase.OPEN_READONLY);
+				v = checkDB.getVersion();
+			}
 		} catch (SQLiteException e) {
 		}
 
@@ -148,7 +151,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		 SQLiteDatabase myDataBase =
 		 SQLiteDatabase.openDatabase(DB_PATH+DB_NAME, null,SQLiteDatabase.OPEN_READWRITE);
 		 if(myDataBase != null){
-			 myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt ASC);");
+			 myDataBase.execSQL("CREATE INDEX Q_TXT_INDEX ON q (txt);");
 			 myDataBase.setVersion(DB_VERSION);
 			 myDataBase.close(); // Close the READWRITE session.
 		 }
@@ -385,6 +388,7 @@ public class QQDataBaseHelper extends SQLiteOpenHelper {
 		if (myDataBase != null) {
 			//TODO: Slow table creation: Any optimization?
 			myDataBase.execSQL("CREATE TEMP TABLE IF NOT EXISTS xy as select _id,txt from q order by random() limit 200");
+			myDataBase.execSQL("CREATE INDEX IF NOT EXISTS xy_txt_index ON xy (txt);");
 			cur = myDataBase.rawQuery(
 					"select q1._id from xy q1 inner join xy q2 on q2.txt = q1.txt "+
 					"group by q1._id,q1.txt having q1._id = min(q2._id) "+
