@@ -330,16 +330,12 @@ public class QQSession {
 
        @Override
        protected void onPreExecute() {
-   		_model.getEventBus().dispatchEvent(new QQModelEvent(QQEventType.UI_STATUS_DAILY_QUIZ_BUILDING), "");
-
-    	   /*Toast.makeText(activity,QQApp.getContext().getResources().getString(R.string.daily_dialogue_building),Toast.LENGTH_LONG).show();
-    	   _model.setVisibility(ProgressBar.VISIBLE);
-    	   _model.leftBar.setMax(QQUtils.DAILYQUIZ_PARTS_COUNT);*/
+   			_model.getEventBus().dispatchEvent(new QQModelEvent(QQEventType.UI_STATUS_DAILY_QUIZ_BUILDING), "");
        }
 
        @Override
        protected void onProgressUpdate(Integer... values) {
-    	   _model.setProgress(values[0]);
+    	   _model.setProgress(values[0]*100/QQUtils.DAILYQUIZ_PARTS_COUNT);
        }
        
        public void triggerUpdateProgress(int i){

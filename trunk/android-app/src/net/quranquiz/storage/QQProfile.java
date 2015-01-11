@@ -37,8 +37,6 @@ public class QQProfile implements Serializable {
 		setuid(uid);
 		specialEnabled = true;
 		setSpecialScore(specialScore);
-		Log.e("New Profile!");
-		Thread.dumpStack();
 	}
 
 	public void addCorrect(int currentPart) {

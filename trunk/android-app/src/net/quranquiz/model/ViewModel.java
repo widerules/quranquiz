@@ -76,7 +76,7 @@ public class ViewModel implements QQModelEvent.Listener{
 				_activity.vmShowCorrectAnswer(message.contains("T"));
 				break;
 			case UI_PROGRESS_UPDATE:
-				Log.e("vm", "UnImplemented UI Event: "+src);
+				_activity.vmSetProgress(model.getProgress());
 				break;
 			case UI_SESSION_START_DAILY_QUIZ:
 				_activity.vmStartDailyQuiz();
@@ -88,7 +88,7 @@ public class ViewModel implements QQModelEvent.Listener{
 				Log.e("vm", "UnImplemented UI Event: "+src);
 				break;
 			case UI_STATUS_DAILY_QUIZ_BUILDING:
-				Log.e("vm", "UnImplemented UI Event: "+src);
+				_activity.vmDailyQuizBuilding();
 				break;
 			case UI_SHOW_STUDY_LIST:
 				_activity.vmShowUsage();
@@ -216,10 +216,6 @@ public class ViewModel implements QQModelEvent.Listener{
 
 	public void close() {
 		model.close();		
-	}
-
-	public void reload() {
-		model.reload();
 	}
 
 	public String getQuranUri() {
