@@ -189,9 +189,7 @@ public class Model {
 	/*		if(QQinit==0){ // Need Card Flip if game not initialized
 				AnimationFactory.flipTransition(viewAnimator, FlipDirection.LEFT_RIGHT);				
 			}*/
-			
-			myQQProfileHandler.reLoadCurrentProfile(); // For first Question, optimize?
-			
+					
 			// Check for DailyQuiz end
 			if(Quest != null && myQQSession.isDailyQuizRunning 
 					&& myQQSession.getDailyQuizQuestionnaire().getRemainingQuestions()<1)
@@ -346,6 +344,7 @@ public class Model {
 
 	public void setProgress(int _iProgress) {
 		this._iProgress = _iProgress;
+    	events.dispatchEvent(new QQModelEvent(QQEventType.UI_PROGRESS_UPDATE), "");
 	}
 	public String getQuestion(){
 		return _sQuestion;
@@ -392,11 +391,6 @@ public class Model {
 	}
 	public boolean getSpecialQuestionEnabled() {
 		return myQQProfile.isSpecialEnabled();
-	}
-
-	public void reload() {
-		myQQProfileHandler.reLoadCurrentProfile();
-    	events.dispatchEvent(new QQModelEvent(QQEventType.UI_REFRESH), "");
 	}
 
 	public String getQuranUri() {

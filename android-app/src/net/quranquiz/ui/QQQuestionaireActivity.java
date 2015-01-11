@@ -327,13 +327,12 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) { //TODO: Clean, unused
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//TODO: Clean, unused
 		switch (item.getItemId()) {
 		case R.id.Profile:
 			Intent intentStudyList = new Intent(QQQuestionaireActivity.this,
 					QQStudyListActivity.class);
-			//TODO: Implement
-			//intentStudyList.putExtra("ProfileHandler", myQQProfileHandler);
 			startActivity(intentStudyList);
 			break;
 		case R.id.Settings:
@@ -347,7 +346,7 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 
 	@Override
 	protected void onResume() {
-		vm.reload();
+		//vm.reload();
 		super.onResume();
 	}
 
@@ -530,5 +529,10 @@ public class QQQuestionaireActivity extends SherlockFragmentActivity implements
 	public void vmSetLevel(int level) {
 		actionbar.setSelectedNavigationItem(level);
 		
+	}
+
+	public void vmDailyQuizBuilding() {
+ 	   Toast.makeText(this,QQApp.getContext().getResources().getString(R.string.daily_dialogue_building),Toast.LENGTH_LONG).show();
+ 	   leftBar.setVisibility(ProgressBar.VISIBLE);
 	}
 }
